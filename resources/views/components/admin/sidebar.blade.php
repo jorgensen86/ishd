@@ -33,12 +33,16 @@
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <li class="nav-item menu-open">
-            <a href="{{ route('dashboard') }}" class="nav-link">
+            <a href="{{ route('dashboard') }}" class="nav-link {{ request()->is('dashboard') ? 'active' : null }}">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>Dashboard</p>
             </a>
+            <a href="{{ route('users.index') }}" class="nav-link {{ request()->is('users') ? 'active' : null }}">
+              <i class="nav-icon fas fa-tag"></i>
+              <p>Tickets</p>
+            </a>
             <a href="{{ route('users.index') }}" class="nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <i class="nav-icon fas fa-user-alt"></i>
               <p>Users</p>
             </a>
             <!-- <ul class="nav nav-treeview">

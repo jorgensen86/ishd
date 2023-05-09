@@ -23,7 +23,7 @@
                         </div>
 
                         <div class="card-body table-responsive p-0">
-                            <table class="table table-hover text-nowrap">
+                            <table class="table table-hover text-nowrap" id="example">
                                 <thead>
                                     <tr>
                                         <th>ID</th>
@@ -57,8 +57,27 @@
 
 @section('scripts')
 <script type="module">
-    $(function(){
-
-    })
+    $(document).ready(function() {
+    $('#example').DataTable( {
+        searchDelay: 2000,
+        search: true,
+        columnDefs: [
+            { targets: 0, orderable: false },
+            { targets: 1, orderable: false },
+            { targets: 4, orderable: false },
+      
+        ],
+        processing: true,
+        serverSide: true,
+        searchDelay: 350,
+        ajax: {
+            url: "http://127.0.0.1:8000/users",
+            data: function ( params ) {
+            console.log(params);
+            }
+        },
+    });
+    console.log($('#example'));
+});
 </script>
 @endsection
