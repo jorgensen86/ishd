@@ -54,7 +54,7 @@
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="./index2.html" class="nav-link">
+                  <a href="{{ route('customer.index') }}" class="nav-link {{ request()->is('customer') ? 'active' : null }}">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Customers</p>
                   </a>

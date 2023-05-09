@@ -27,6 +27,7 @@ Route::middleware(['auth','admin'])->group(function() {
         return redirect('/dashboard');
     });
     Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
+    Route::get('/user/customer', [\App\Http\Controllers\Admin\ClientController::class, 'index'])->name('customer.index');
     Route::resource('user',  App\Http\Controllers\Admin\UserController::class);
 });
 

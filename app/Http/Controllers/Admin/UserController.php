@@ -18,7 +18,7 @@ class UserController extends Controller
         // if (request()->ajax()) {
         //     return [ 'users' => User::all()];
         // }
-        return view('layouts.admin.user.userList', ['class'=> 'user', 'users' => User::all()]);
+        return view('layouts.admin.user.userList', ['class'=> 'user', 'users' => User::where('administrator', 1)->get()]);
     }
 
     /**
