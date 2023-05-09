@@ -15,10 +15,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        if (request()->ajax()) {
-            return [ 'users' => User::all()];
-        }
-        return view('layouts.admin.user.list', ['class'=> 'user', 'users' => User::all()]);
+        // if (request()->ajax()) {
+        //     return [ 'users' => User::all()];
+        // }
+        return view('layouts.admin.user.userList', ['class'=> 'user', 'users' => User::all()]);
     }
 
     /**

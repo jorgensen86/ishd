@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -38,9 +39,39 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
+    /**
+     * Change credential email to username
+     */
+    public function username()
+    {
+        return 'username';
+    }
 
+    /**
+     * Check if user is active at login
+     */
+    protected function attemptLogin(Request $request)
+    {
+        return $this->guard()->attempt( 
+            array_merge($this->credentials($request), ['active' => 1]), $request->filled('remember')
+        );
+    }
+
+    protected function authenticated()
+    {
+        // if ((auth()->user()->administrator)) {
+        //     return redirect()->route('dashboard');
+        // } elseif (!auth()->user()->administrator) {
+        //     return redirect()->route('home');
+        // }
+    }
+
+    /**
+     * change view for login form
+     */
     public function showLoginForm()
     {
         return view('layouts.admin.common.login', ['class' => 'login-page']);
     }
+    
 }

@@ -16,12 +16,17 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes(['register' => false, 'reset' => false, 'confirm' => false]);
 
-Route::get('/', function () {
-    return redirect('/dashboard');
+Route::middleware(['auth','client'])->group(function() {
+    Route::get('/home', function () {
+       echo "Homepage";
+    })->name('home');
 });
 
-Route::middleware(['auth'])->group(function() {
-    Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard')->middleware('auth');
-    Route::resource('users',  App\Http\Controllers\Admin\UserController::class);
+Route::middleware(['auth','admin'])->group(function() {
+    Route::get('/', function () {
+        return redirect('/dashboard');
+    });
+    Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
+    Route::resource('user',  App\Http\Controllers\Admin\UserController::class);
 });
 
