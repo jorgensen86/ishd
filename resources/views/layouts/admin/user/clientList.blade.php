@@ -20,10 +20,11 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($users as $user)
+                           
                                         <tr>
                                             <td>{{ $user->user_id }}</td>
-                                            <td>{{ $user->name }}</td>
-                                            <td>{{ $user->email }}</td>
+                                            <td>{{ $user->clientInfo->invoice }}</td>
+                                           
                                             <td><span class="tag tag-success">Approved</span></td>
                                             <td>
                                                 <a href="{{ route('user.show', $user) }}" class="btn btn-sm btn-outline-primary">
