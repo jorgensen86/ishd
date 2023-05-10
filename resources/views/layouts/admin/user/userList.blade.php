@@ -4,8 +4,6 @@
 <x-admin.content-header :headingTitle="$heading_title" :breadcrumbs="$breadcrumbs"></x-admin.content-header>
     <section class="content">
         <div class="container-fluid">
-
-
                     <div class="card">
                         <div class="card-body table-responsive p-0">
                             <table class="table table-hover text-nowrap" id="example">

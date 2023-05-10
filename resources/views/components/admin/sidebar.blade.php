@@ -64,9 +64,9 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="{{ route('user.index') }}" class="nav-link {{ request()->is('user/user') ? 'active' : null }}">
+              <a href="{{ route('setting') }}" class="nav-link {{ request()->is('user/user') ? 'active' : null }}">
                 <i class="far fa-circle nav-icon"></i>
-                <p>Users</p>
+                <p>Settings</p>
               </a>
             </li>
             <li class="nav-item">
