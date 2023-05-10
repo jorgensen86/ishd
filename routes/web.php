@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes(['register' => false, 'reset' => false, 'confirm' => false]);
 
+Route::get('logout', [\App\Http\Controllers\Auth\LogoutController::class, 'index'])->name('logout');
+
 Route::middleware(['auth','client'])->group(function() {
     Route::get('/home', function () {
        echo "Homepage";
@@ -28,6 +30,6 @@ Route::middleware(['auth','admin'])->group(function() {
     });
     Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
     Route::get('/user/customer', [\App\Http\Controllers\Admin\ClientController::class, 'index'])->name('customer.index');
-    Route::resource('user',  App\Http\Controllers\Admin\UserController::class);
+    Route::resource('user/user',  App\Http\Controllers\Admin\UserController::class);
 });
 

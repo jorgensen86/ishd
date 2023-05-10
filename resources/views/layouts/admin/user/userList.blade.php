@@ -1,7 +1,9 @@
 @extends('admin')
 
 @section('content')
+    <x-admin.content-header :headingTitle="$heading_title" :breadcrumbs="$breadcrumbs"></x-admin.content-header>
     <section class="content">
+        
         <div class="container-fluid">
 
             <div class="row">

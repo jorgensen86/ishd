@@ -28,7 +28,9 @@
         <x-admin.sidebar></x-admin.sidebar>
         @endauth
 
-        <div class="content-wrapper">@yield('content')</div>
+        <div class="content-wrapper">
+            @yield('content')
+        </div>
         
         @auth
         <!-- Footer Componnent -->
