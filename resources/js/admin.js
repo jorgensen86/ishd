@@ -1,12 +1,15 @@
 // Open Modal
 $('.btn-open-modal').on('click', function () {
-    $('#user-modal .modal-body').empty()
+    const selector = '#' + $(this).data('modal');
+    
+    $(selector).find('.modal-body').empty()
     $.ajax({
         type: 'get',
+        dataType: 'html',
         url: $(this).data('url'),
         success: (html) => {
-            $('#user-modal .modal-body').append(html)
-            $('#user-modal').modal('show')
+            $(selector).find('.modal-body').append(html)
+            $(selector).modal('show')
         }
     })
 }) 

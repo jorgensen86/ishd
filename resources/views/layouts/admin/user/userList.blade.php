@@ -29,7 +29,7 @@
                             <td>{{ $user->email }}</td>
                             <td><span class="tag tag-success">Approved</span></td>
                             <td>
-                                <button data-url="{{ route('user.edit', $user) }}" class="btn btn-default btn-open-modal">
+                                <button data-modal="user-modal" data-url="{{ route('user.edit', $user) }}" class="btn btn-default btn-open-modal">
                                     <i class="fas fa-edit"></i>
                                 </button>
                             </td>
