@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -28,6 +30,7 @@ class UserController extends Controller
             'href' => route('user.index')
         );
         $data['users'] =  User::where('administrator', 1)->get();
+        $data['add_action'] = route('user.create');
         // if (request()->ajax()) {
         //     return [ 'users' => User::all()];
         // }
@@ -41,7 +44,12 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        if(request()->ajax()) {
+            return view('layouts.admin.user.userForm')
+                ->with('action', route('user.store'))
+                ->with('method', 'post')
+                ->with('user', new User());
+        }
     }
 
     /**
@@ -63,7 +71,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        //
+       
     }
 
     /**
@@ -74,7 +82,12 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        //
+        if(request()->ajax()) {
+            return view('layouts.admin.user.userForm')
+                ->with('action', route('user.update', $user))
+                ->with('method', 'put')
+                ->with('user', $user);
+        }
     }
 
     /**
@@ -86,7 +99,20 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'username' => ['required', Rule::unique('users','username')->ignore( $user->user_id, 'user_id')],
+            'email' => ['required', 'email',  Rule::unique('users','email')->ignore( $user->user_id, 'user_id')],
+
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(array(
+                'errors' => $validator->getMessageBag()->toArray()
+            ), 200);
+        } else {
+
+        }
     }
 
     /**

@@ -11,7 +11,6 @@
 
                 <div class="card-body">
                     <form>
-
                         @method('post')
                         @csrf
                         <div class="row">
