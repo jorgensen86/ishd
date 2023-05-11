@@ -60,7 +60,17 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'username' => 'required|unique:users',
+            'email' => 'required|unique:users',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(array(
+                'errors' => $validator->getMessageBag()->toArray()
+            ), 200);
+        }
     }
 
     /**
@@ -103,7 +113,6 @@ class UserController extends Controller
             'name' => 'required',
             'username' => ['required', Rule::unique('users','username')->ignore( $user->user_id, 'user_id')],
             'email' => ['required', 'email',  Rule::unique('users','email')->ignore( $user->user_id, 'user_id')],
-
         ]);
 
         if ($validator->fails()) {

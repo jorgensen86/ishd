@@ -38,7 +38,7 @@
         @endauth
 
     </div>
-    @vite(['resources/js/app.js', 'resources/adminlte/adminlte.js'])
+    @vite(['resources/js/app.js', 'resources/adminlte/adminlte.js', 'resources/js/admin.js'])
     @yield('scripts')
 </body>
 

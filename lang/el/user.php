@@ -12,7 +12,8 @@ return [
 | these language lines according to your application's requirements.
 |
 */
-
+    'add'       => 'Νέος Χρήστης',
+    'edit'      => 'Επεξεργασία Χρήστη',
     'fullname'  => 'Ονοματεπώνυμο',
     'email'     => 'Email',
     'username'  => 'Όνομα Χρήστη',
