@@ -4,16 +4,20 @@ namespace App\View\Components\admin;
 
 use Illuminate\View\Component;
 
-class modal extends Component
+class Modal extends Component
 {
+
+    public $size;
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct()
+
+    
+    public function __construct($size)
     {
-        //
+        $this->size = $size;
     }
 
     /**

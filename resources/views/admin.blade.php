@@ -9,11 +9,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
-
-    <!-- Fonts -->
-    <!-- <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet"> -->
-
+    
     <!-- Scripts -->
     @vite(['resources/sass/app.scss'])
 </head>
@@ -38,7 +34,7 @@
         @endauth
 
     </div>
-    @vite(['resources/js/app.js', 'resources/adminlte/adminlte.js', 'resources/js/admin.js'])
+    @vite(['resources/js/app.js', 'resources/js/admin.js'])
     @yield('scripts')
 </body>
 

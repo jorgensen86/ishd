@@ -12,6 +12,22 @@ window.axios = axios;
 import $ from 'jquery'
 window.jQuery = window.$ = $
 
+import './plugins/CardRefresh'
+import CardWidget from './plugins/CardWidget'
+import ControlSidebar from './plugins/ControlSidebar'
+import DirectChat from './plugins/DirectChat'
+import Dropdown from './plugins/Dropdown'
+import ExpandableTable from './plugins/ExpandableTable'
+import Fullscreen from './plugins/Fullscreen'
+import IFrame from './plugins/IFrame'
+import Layout from './plugins/Layout'
+import PushMenu from './plugins/PushMenu'
+import SidebarSearch from './plugins/SidebarSearch'
+import NavbarSearch from './plugins/NavbarSearch'
+import  './plugins/Toasts'
+import TodoList from './plugins/TodoList'
+import Treeview from './plugins/Treeview'
+
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 

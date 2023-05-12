@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
@@ -64,12 +65,22 @@ class UserController extends Controller
             'name' => 'required',
             'username' => 'required|unique:users',
             'email' => 'required|unique:users',
+            'password' => 'required|min:8'
         ]);
 
         if ($validator->fails()) {
             return response()->json(array(
                 'errors' => $validator->getMessageBag()->toArray()
             ), 200);
+        } else {
+            $user = User::create([
+                'administrator' => 1,
+                'email' => $request->email,
+                'name' => $request->name,
+                'username' => $request->username,
+                'active' => $request->active ?? 0,
+                'password' => Hash::make($request->password)
+            ]);
         }
     }
 
@@ -113,6 +124,7 @@ class UserController extends Controller
             'name' => 'required',
             'username' => ['required', Rule::unique('users','username')->ignore( $user->user_id, 'user_id')],
             'email' => ['required', 'email',  Rule::unique('users','email')->ignore( $user->user_id, 'user_id')],
+            'password' => $request->password ? 'min:8' : ''
         ]);
 
         if ($validator->fails()) {
@@ -120,7 +132,13 @@ class UserController extends Controller
                 'errors' => $validator->getMessageBag()->toArray()
             ), 200);
         } else {
+            $user->name = $request->name;
+            $user->username = $request->username;
+            $user->email = $request->email;
+            $user->active = $request->active ?? 0;
+            if ($request->password) $user->password = Hash::make($request->password);
 
+            $user->save();
         }
     }
 

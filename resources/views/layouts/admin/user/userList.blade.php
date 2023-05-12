@@ -7,18 +7,18 @@
         <div class="card">
             <div class="card-header">
                 <div class="card-tools">
-                    <button data-url="{{ $add_action }}" class="btn btn-primary btn-open-modal">dsd</button>
+                    <button data-url="{{ $add_action }}" data-modal="user-modal" class="btn btn-sm btn-primary btn-open-modal">{{ __('el.button_add' )}}</button>
                 </div>
             </div>
             <div class="card-body table-responsive p-0">
                 <table class="table table-hover text-nowrap" id="example">
                     <thead>
-                        <tr>
-                            <th>ID</th>
+                        <tr> 
+                            <th>ID</th> 
                             <th>User</th>
                             <th>Date</th>
                             <th>Status</th>
-                            <th>Action</th>
+                            <th>Action</th> 
                         </tr>
                     </thead>
                     <tbody>
@@ -41,7 +41,7 @@
         </div>
 
     </div>
-    <x-admin.modal id="user-modal"></x-admin.modal>
+    <x-admin.modal id="user-modal" size="lg" :title="''"></x-admin.modal>
 </section>
 @endsection
 
@@ -55,6 +55,9 @@
             url: $('#user-modal form').attr('action'),
             beforeSend: () => {
                 $('#user-modal button').prop('disabled', true)
+            },
+            complete: () => {
+                $('#user-modal button').prop('disabled', false)
             },
             success: (json) => {
                 if (json.errors) {
