@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Yajra\DataTables\Facades\DataTables;
+
 
 class UserController extends Controller
 {
@@ -35,6 +37,23 @@ class UserController extends Controller
         // if (request()->ajax()) {
         //     return [ 'users' => User::all()];
         // }
+
+        if (request()->ajax()) 
+        {
+            
+            $data = User::where('administrator', 1)->get();
+
+            return Datatables::of($data)
+  
+        ->addColumn('intro',function ($data){
+            return '<button data-modal="user-modal" data-url="' . route('user.edit', $data) . '" class="btn btn-default btn-open-modal">
+            <i class="fas fa-edit"></i>
+        </button>';
+        })
+        ->rawColumns(['intro'])
+            ->addIndexColumn()
+            ->make(true);
+        }
         return view('layouts.admin.user.userList', $data);
     }
 

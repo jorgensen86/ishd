@@ -1,7 +1,8 @@
-// Open Modal
-$('.btn-open-modal').on('click', function () {
+$(function() {
+    // Open Modal
+$(document).on('click', '.btn-open-modal', function () {
     const selector = '#' + $(this).data('modal');
-    console.log($(selector));
+    
     $(selector).find('.modal-body').empty()
     $.ajax({
         type: 'get',
@@ -13,3 +14,4 @@ $('.btn-open-modal').on('click', function () {
         }
     })
 }) 
+})

@@ -11,32 +11,18 @@
                 </div>
             </div>
             <div class="card-body table-responsive p-0">
-                <table class="table table-hover text-nowrap" id="example">
+                <table class="table table-bordered data-table">
                     <thead>
-                        <tr> 
-                            <th>ID</th> 
-                            <th>User</th>
-                            <th>Date</th>
-                            <th>Status</th>
-                            <th>Action</th> 
-                        </tr>
+                       <tr>
+                          <th>ID</th>
+                          <th>Name</th>
+                          <th>Email</th>
+                          <th>Intro</th>
+                       </tr>
                     </thead>
                     <tbody>
-                        @foreach ($users as $user)
-                        <tr>
-                            <td>{{ $user->user_id }}</td>
-                            <td>{{ $user->name }}</td>
-                            <td>{{ $user->email }}</td>
-                            <td><span class="tag tag-success">Approved</span></td>
-                            <td>
-                                <button data-modal="user-modal" data-url="{{ route('user.edit', $user) }}" class="btn btn-default btn-open-modal">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        @endforeach
                     </tbody>
-                </table>
+                 </table>
             </div>
         </div>
 
@@ -46,7 +32,23 @@
 @endsection
 
 @section('scripts')
+
 <script type="module">
+      $(function () {
+           var table = $('.data-table').DataTable({
+               processing: true,
+               serverSide: true,
+               
+               ajax: "http://127.0.0.1:8000/user/user",
+               columns: [
+                    {data: 'user_id', name: 'user_id'},
+                   {data: 'name', name: 'name'},
+                   {data: 'email', name: 'email'},
+                   {data: 'intro', name: 'intro'},
+                   
+               ]
+           });
+         });
     $(document).on('click', '#buttonSave', function () {
         $('form input').removeClass('is-invalid')
         $.ajax({
