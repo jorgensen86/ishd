@@ -28,6 +28,6 @@
         <div class="input-group-prepend">
             <span class="input-group-text"><i class="fas fa-lock"></i></span>
         </div>
-        <input type="text" name="password" class="form-control" value="{{ $user->username }}" placeholder="{{ __('user.password') }}">
+        <input type="text" name="password" class="form-control" value="" placeholder="{{ __('user.password') }}">
     </div>
 </form>

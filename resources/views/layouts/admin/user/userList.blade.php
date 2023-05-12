@@ -17,7 +17,9 @@
                           <th>ID</th>
                           <th>Name</th>
                           <th>Email</th>
-                          <th>Intro</th>
+                          <th>Username</th>
+                          <th>Active</th>
+                          <th>Actions</th>
                        </tr>
                     </thead>
                     <tbody>
@@ -32,25 +34,28 @@
 </section>
 @endsection
 
-@push('scripts')
+@push('scripts') 
 <script type="module">
       $(function () {
-           var table = $('.data-table').DataTable({
+           var table = $('.data-table').DataTable({ 
                processing: true,
                serverSide: true,
                pageLength: 5,
                
-               ajax: "http://127.0.0.1:8000/user/user",
-               columns: [
-                    {data: 'user_id', name: 'user_id'},
-                   {data: 'name', name: 'name'},
-                   {data: 'email', name: 'email'},
-                   {data: 'intro', name: 'intro'},
+               ajax: "{{ route('user.index') }}",
+               columns: [ 
+                    {data: 'user_id'},
+                    {data: 'name'},
+                    {data: 'email'},
+                    {data: 'username'},
+                    {data: 'active', className: 'text-center'},
+                    {data: 'action', className: 'text-right'},
                    
                ]
            });
-         });
-    $(document).on('click', '#buttonSave', function () {
+
+
+           $(document).on('click', '#buttonSave', function () {
         $('form input').removeClass('is-invalid')
         $.ajax({
             type: $('#user-modal form').attr('method'),
@@ -77,9 +82,16 @@
                         autohide: true,
                         delay: 2500,
                     })
+
                 }
+                $('#user-modal').modal('hide');
+                table.ajax.reload( null, false );
             }
         })
     })
+
+         });
+
+    
 </script>
 @endpush

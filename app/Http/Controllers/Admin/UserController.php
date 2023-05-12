@@ -39,7 +39,10 @@ class UserController extends Controller
         if (request()->ajax()) {
 
             return Datatables::eloquent(User::where('administrator', 1))
-                ->addColumn('intro', function ($data) {
+                ->editColumn('active', function ($data) {
+                    return $data->active ? '<i class="text-success fas fa-check"></i>' : '<i class="text-danger fas fa-ban"></i>';
+                })
+                ->addColumn('action', function ($data) {
                     return '
                         <button data-modal="user-modal" data-url="' . route('user.edit', $data) . '" class="btn btn-sm btn-default btn-open-modal">
                             <i class="fas fa-edit"></i>
@@ -49,7 +52,7 @@ class UserController extends Controller
                         </button>
                     ';
                 })
-                ->rawColumns(['intro'])
+                ->rawColumns(['action', 'active'])
                 ->addIndexColumn()
                 ->make(true);
 
