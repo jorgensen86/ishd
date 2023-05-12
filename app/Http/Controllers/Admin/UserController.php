@@ -32,28 +32,29 @@ class UserController extends Controller
             'name' => 'User',
             'href' => route('user.index')
         );
-        $data['users'] =  User::where('administrator', 1)->get();
+
         $data['add_action'] = route('user.create');
-        // if (request()->ajax()) {
-        //     return [ 'users' => User::all()];
-        // }
 
-        if (request()->ajax()) 
-        {
-            
-            $data = User::where('administrator', 1)->get();
 
-            return Datatables::of($data)
-  
-        ->addColumn('intro',function ($data){
-            return '<button data-modal="user-modal" data-url="' . route('user.edit', $data) . '" class="btn btn-default btn-open-modal">
-            <i class="fas fa-edit"></i>
-        </button>';
-        })
-        ->rawColumns(['intro'])
-            ->addIndexColumn()
-            ->make(true);
+        if (request()->ajax()) {
+
+            return Datatables::eloquent(User::where('administrator', 1))
+                ->addColumn('intro', function ($data) {
+                    return '
+                        <button data-modal="user-modal" data-url="' . route('user.edit', $data) . '" class="btn btn-sm btn-default btn-open-modal">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button data-modal="delete-modal" data-url="' . route('user.destroy', $data) . '" class="btn btn-sm btn-danger btn-delete-modal">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    ';
+                })
+                ->rawColumns(['intro'])
+                ->addIndexColumn()
+                ->make(true);
+
         }
+
         return view('layouts.admin.user.userList', $data);
     }
 
@@ -64,7 +65,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        if(request()->ajax()) {
+        if (request()->ajax()) {
             return view('layouts.admin.user.userForm')
                 ->with('action', route('user.store'))
                 ->with('method', 'post')
@@ -111,7 +112,6 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-       
     }
 
     /**
@@ -122,7 +122,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        if(request()->ajax()) {
+        if (request()->ajax()) {
             return view('layouts.admin.user.userForm')
                 ->with('action', route('user.update', $user))
                 ->with('method', 'put')
@@ -141,8 +141,8 @@ class UserController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required',
-            'username' => ['required', Rule::unique('users','username')->ignore( $user->user_id, 'user_id')],
-            'email' => ['required', 'email',  Rule::unique('users','email')->ignore( $user->user_id, 'user_id')],
+            'username' => ['required', Rule::unique('users', 'username')->ignore($user->user_id, 'user_id')],
+            'email' => ['required', 'email',  Rule::unique('users', 'email')->ignore($user->user_id, 'user_id')],
             'password' => $request->password ? 'min:8' : ''
         ]);
 

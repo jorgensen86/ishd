@@ -8,6 +8,8 @@ class Modal extends Component
 {
 
     public $size;
+    public $type;
+    public $title;
     /**
      * Create a new component instance.
      *
@@ -15,9 +17,11 @@ class Modal extends Component
      */
 
     
-    public function __construct($size)
+    public function __construct($size, $type, $title)
     {
         $this->size = $size;
+        $this->type = $type;
+        $this->title = $title;
     }
 
     /**

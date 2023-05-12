@@ -11,7 +11,7 @@
                 </div>
             </div>
             <div class="card-body table-responsive p-0">
-                <table class="table table-bordered data-table">
+                <table class="table table-hover data-table">
                     <thead>
                        <tr>
                           <th>ID</th>
@@ -27,7 +27,8 @@
         </div>
 
     </div>
-    <x-admin.modal id="user-modal" size="lg" :title="''"></x-admin.modal>
+    <x-admin.modal id="user-modal" size="lg" :type="'form'" :title="''"></x-admin.modal>
+    <x-admin.modal id="delete-modal" size="sm" :type="'delete'" :title=" __('user.delete')"></x-admin.modal>
 </section>
 @endsection
 
@@ -38,6 +39,7 @@
            var table = $('.data-table').DataTable({
                processing: true,
                serverSide: true,
+               pageLength: 5,
                
                ajax: "http://127.0.0.1:8000/user/user",
                columns: [
