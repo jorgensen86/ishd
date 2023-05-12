@@ -29,7 +29,7 @@ Route::middleware(['auth','admin'])->group(function() {
         return redirect('/dashboard');
     });
     Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
-    Route::get('/user/customer', [\App\Http\Controllers\Admin\ClientController::class, 'index'])->name('customer.index');
+    Route::get('/user/client', [\App\Http\Controllers\Admin\ClientController::class, 'index'])->name('client.index');
     Route::get('/setting', [App\Http\Controllers\Admin\SettingController::class, 'index'])->name('setting');
     Route::post('/setting', [App\Http\Controllers\Admin\SettingController::class, 'store'])->name('setting');
     

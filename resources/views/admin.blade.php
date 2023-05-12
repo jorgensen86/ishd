@@ -35,7 +35,7 @@
 
     </div>
     @vite(['resources/js/app.js', 'resources/js/admin.js'])
-    @yield('scripts')
+    @stack('scripts')
 </body>
 
 </html>

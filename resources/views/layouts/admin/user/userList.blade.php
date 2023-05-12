@@ -10,7 +10,7 @@
                     <button data-url="{{ $add_action }}" data-modal="user-modal" class="btn btn-sm btn-primary btn-open-modal">{{ __('el.button_add' )}}</button>
                 </div>
             </div>
-            <div class="card-body table-responsive p-0">
+            <div class="card-body table-responsive p-3">
                 <table class="table table-hover data-table">
                     <thead>
                        <tr>
@@ -32,8 +32,7 @@
 </section>
 @endsection
 
-@section('scripts')
-
+@push('scripts')
 <script type="module">
       $(function () {
            var table = $('.data-table').DataTable({
@@ -82,28 +81,5 @@
             }
         })
     })
-
-    $(document).ready(function () {
-        // $('#example').DataTable( {
-        //     searchDelay: 2000,
-        //     search: true,
-        //     columnDefs: [
-        //         { targets: 0, orderable: false },
-        //         { targets: 1, orderable: false },
-        //         { targets: 4, orderable: false },
-
-        //     ],
-        //     processing: true,
-        //     serverSide: true,
-        //     searchDelay: 350,
-        //     ajax: {
-        //         url: "http://127.0.0.1:8000/users",
-        //         data: function ( params ) {
-        //         console.log(params);
-        //         }
-        //     },
-        // });
-        // console.log($('#example'));
-    });
 </script>
-@endsection
+@endpush

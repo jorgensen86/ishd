@@ -46,7 +46,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="{{ route('customer.index') }}" class="nav-link {{ request()->is('user/customer') ? 'active' : null }}">
+              <a href="{{ route('client.index') }}" class="nav-link {{ request()->is('user/client') ? 'active' : null }}">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Customers</p>
               </a>
@@ -69,12 +69,7 @@
                 <p>Settings</p>
               </a>
             </li>
-            <li class="nav-item">
-              <a href="{{ route('customer.index') }}" class="nav-link {{ request()->is('user/customer') ? 'active' : null }}">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Customers</p>
-              </a>
-            </li>
+            
           </ul>
         </li>
         <!-- settings-menu -->
