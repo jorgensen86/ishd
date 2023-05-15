@@ -5,6 +5,8 @@
             <input type="checkbox" name="active" class="custom-control-input" id="input-active" value="1" {{ $user->active ? 'checked' : null }}>
             <label class="custom-control-label" for="input-active"></label>
         </div>
+        <input type="checkbox" name="my-checkbox" checked data-bootstrap-switch>
+<input type="checkbox" name="my-checkbox" checked data-bootstrap-switch data-off-color="danger" data-on-color="success">
     </div>
     <div class="input-group mb-3">
         <div class="input-group-prepend">

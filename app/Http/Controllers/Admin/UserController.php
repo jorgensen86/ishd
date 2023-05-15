@@ -22,22 +22,12 @@ class UserController extends Controller
     {
 
         $data['class'] = 'user-page';
-        $data['heading_title'] = 'Users';
-        $data['breadcrumbs'][] = array(
-            'name' => 'Home',
-            'href' => route('dashboard')
-        );
 
-        $data['breadcrumbs'][] = array(
-            'name' => 'User',
-            'href' => route('user.index')
-        );
 
         $data['add_action'] = route('user.create');
 
 
         if (request()->ajax()) {
-
             return Datatables::eloquent(User::where('administrator', 1))
                 ->editColumn('active', function ($data) {
                     return $data->active ? '<i class="text-success fas fa-check"></i>' : '<i class="text-danger fas fa-ban"></i>';
@@ -55,7 +45,6 @@ class UserController extends Controller
                 ->rawColumns(['action', 'active'])
                 ->addIndexColumn()
                 ->make(true);
-
         }
 
         return view('layouts.admin.user.userList', $data);

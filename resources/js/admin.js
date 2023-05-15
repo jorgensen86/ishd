@@ -19,5 +19,7 @@ $(function() {
         const selector = '#' + $(this).data('modal');
 
         $(selector).modal('show')
-    }) 
+    })
+
+
 })

@@ -9,6 +9,7 @@
         "@popperjs/core": "^2.11.6",
         "axios": "^1.1.2",
         "bootstrap": "^4.6.1",
+        "bootstrap-switch": "^3.4.0",
         "jquery": "^3.6.4",
         "laravel-datatables-vite": "^0.5.2",
         "laravel-vite-plugin": "^0.7.2",

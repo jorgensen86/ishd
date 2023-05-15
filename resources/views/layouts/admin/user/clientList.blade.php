@@ -1,40 +1,99 @@
 @extends('admin')
 
 @section('content')
-<x-admin.content-header :headingTitle="$heading_title" :breadcrumbs="[]"></x-admin.content-header>
+<x-admin.page-header :heading="__('client.title' )"></x-admin.page-header>
 <section class="content">
     <div class="container-fluid">
         <div class="card">
-            <div class="card-body table-responsive p-0">
-                <table class="table table-hover text-nowrap" id="example">
+            {{-- <div class="card-header">
+                <div class="card-tools">
+                    <button data-url="{{ $add_action }}" data-modal="user-modal" class="btn btn-sm btn-primary btn-open-modal">{{ __('el.button_add' ) }}</button>
+                </div>
+            </div> --}}
+            <div class="card-body table-responsive p-3">
+                <table class="table table-hover data-table">
                     <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>User</th>
-                            <th>Date</th>
-                            {{-- <th>Status</th> --}}
-                            {{-- <th>Action</th> --}}
-                        </tr>
+                       <tr>
+                        <th>Id</th>
+                          <th>Invoice</th>
+                          <th>Invoice</th>
+                          <th>Invoice</th>
+                          <th>Invoice</th>
+                       </tr>
                     </thead>
                     <tbody>
-                        @foreach ($users as $user)
-                        <tr>
-                            <td>{{ $user->user_id }}</td>
-                            <td>{{ $user->clientInfo->invoice }}</td>
-
-                            <td><span class="tag tag-success">Approved</span></td>
-                            {{-- <td>
-                                <a href="{{ route('user.show', $user) }}" class="btn btn-sm btn-outline-primary">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                            </td> --}}
-                        </tr>
-                        @endforeach
                     </tbody>
-                </table>
+                 </table>
             </div>
-
         </div>
+
     </div>
+    <x-admin.modal id="user-modal" size="lg" :type="'form'" :title="''"></x-admin.modal>
+    <x-admin.modal id="delete-modal" size="sm" :type="'delete'" :title=" __('user.delete')"></x-admin.modal>
 </section>
 @endsection
+
+@push('scripts') 
+<script type="module">
+      $(function () {
+           var table = $('.data-table').DataTable({ 
+               processing: true,
+               serverSide: true,
+               pageLength: 5,
+               
+               ajax: "{{ route('client.index') }}",
+               columns: [ 
+                    {data: 'user_id', name: 'client_infos.user_id'},
+                    {data: 'invoice', name: 'invoice'},
+                    {data: 'username', name: 'invoice'},
+                    {data: 'active', name: 'active'},
+                    // {data: 'name'},
+                    // {data: 'email'},
+                    // {data: 'username'},
+                    // {data: 'active', className: 'text-center'},
+                    // {data: 'action', className: 'text-right'},
+                   
+               ]
+           });
+
+
+           $(document).on('click', '#buttonSave', function () {
+        $('form input').removeClass('is-invalid')
+        $.ajax({
+            type: $('#user-modal form').attr('method'),
+            data: $('#user-modal form').serialize(),
+            url: $('#user-modal form').attr('action'),
+            beforeSend: () => {
+                $('#user-modal button').prop('disabled', true)
+            },
+            complete: () => {
+                $('#user-modal button').prop('disabled', false)
+            },
+            success: (json) => {
+                if (json.errors) {
+                    let errors = '';
+                    Object.keys(json.errors).forEach(function (key) {
+                        $('input[name="' + key + '"]').addClass('is-invalid')
+                        errors += json.errors[key] + "<br>";
+                    });
+
+                    $(document).Toasts('create', {
+                        class: 'bg-danger',
+                        title: 'Προσοχή',
+                        body: errors,
+                        autohide: true,
+                        delay: 2500,
+                    })
+
+                }
+                $('#user-modal').modal('hide');
+                table.ajax.reload( null, false );
+            }
+        })
+    })
+
+         });
+
+    
+</script>
+@endpush
