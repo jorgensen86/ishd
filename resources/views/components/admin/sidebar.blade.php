@@ -33,7 +33,7 @@
 
          <!-- users-menu -->
         <li class="nav-item {{ request()->is('user/*') ? 'menu-open' : null }}">
-          <a href="{{ route('user.index') }}" class="nav-link {{ request()->is('user/*') ? 'active' : null }}">
+          <a href="#" class="nav-link {{ request()->is('user/*') ? 'active' : null }}">
             <i class="nav-icon fas fa-user-alt"></i>
             <p>Users</p>
             <i class="fas fa-angle-left right"></i>

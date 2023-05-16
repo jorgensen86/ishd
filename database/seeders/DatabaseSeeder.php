@@ -24,6 +24,6 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make("11111111"), // password
         ]);
 
-        \App\Models\User::factory(10)->has(\App\Models\ClientInfo::factory()->count(1))->create();
+        \App\Models\User::factory(10)->create();
     }
 }

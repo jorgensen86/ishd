@@ -43,7 +43,7 @@ class UserController extends Controller
                     ';
                 })
                 ->rawColumns(['action', 'active'])
-                ->addIndexColumn()
+                ->addIndexColumn('user_id')
                 ->make(true);
         }
 

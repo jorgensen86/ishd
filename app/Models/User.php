@@ -47,7 +47,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function clientInfo() {
-        return $this->hasOne(ClientInfo::class, 'user_id');
+    public function invoices() {
+        return $this->hasMany(Invoice::class, 'user_id');
     }
 }

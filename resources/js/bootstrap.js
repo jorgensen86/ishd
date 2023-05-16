@@ -6,8 +6,8 @@ import 'bootstrap';
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
-import axios from 'axios';
-window.axios = axios;
+// import axios from 'axios';
+// window.axios = axios;
 
 import $ from 'jquery'
 window.jQuery = window.$ = $
@@ -20,18 +20,18 @@ window.jQuery = window.$ = $
 // import ExpandableTable from './plugins/ExpandableTable'
 // import Fullscreen from './plugins/Fullscreen'
 // import IFrame from './plugins/IFrame'
-// import Layout from './plugins/Layout'
-// import PushMenu from './plugins/PushMenu'
+import './plugins/Layout'
+import './plugins/PushMenu'
 // import SidebarSearch from './plugins/SidebarSearch'
 // import NavbarSearch from './plugins/NavbarSearch'
 import  './plugins/Toasts'
 // import TodoList from './plugins/TodoList'
-// import Treeview from './plugins/Treeview'
+import  './plugins/Treeview'
 
 import 'bootstrap-switch';
 
 
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+// window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 import 'laravel-datatables-vite';
 

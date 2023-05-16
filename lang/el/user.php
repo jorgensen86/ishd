@@ -12,13 +12,28 @@ return [
 | these language lines according to your application's requirements.
 |
 */
-    'title'     => 'Χρήστες',
-    'add'       => 'Νέος Χρήστης',
-    'edit'      => 'Επεξεργασία Χρήστη',
-    'delete'    => 'Διαγραφή Χρήστη',
-    'fullname'  => 'Ονοματεπώνυμο',
-    'email'     => 'Email',
-    'username'  => 'Όνομα Χρήστη',
-    'password'  => 'Κωιδικός'
+    /* Titles */
+    'title_user'    => 'Χρήστες',
+    'title_client'  => 'Πελάτες',
 
+    /* Users & Clients*/
+    'fullname'      => 'Ονοματεπώνυμο',
+    'email'         => 'Email',
+    'active'        => 'Ενεργός',
+    
+    /* Users */
+
+
+    /* Clients */
+    'invoice'       => 'Συμβόλαιο',
+    'company'       => 'Επωνυμία',
+    'domain'        => 'Domain',
+
+    
+    'add'           => 'Νέος Χρήστης',
+    'edit'          => 'Επεξεργασία Χρήστη',
+    'delete'        => 'Διαγραφή Χρήστη',
+
+    'username'      => 'Όνομα Χρήστη',
+    'password'      => 'Κωιδικός'
 ];
