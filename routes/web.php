@@ -29,12 +29,15 @@ Route::middleware(['auth','admin'])->group(function() {
         return redirect('/dashboard');
     });
     Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
+
+    Route::get('/invoice', [App\Http\Controllers\Admin\InvoiceController::class, 'index'])->name('invoice.index');
     Route::get('/setting', [App\Http\Controllers\Admin\SettingController::class, 'index'])->name('setting');
     Route::post('/setting', [App\Http\Controllers\Admin\SettingController::class, 'store'])->name('setting');
     
     Route::resource('user/user',  App\Http\Controllers\Admin\UserController::class)->except(['show']);
     Route::resource('user/client',  App\Http\Controllers\Admin\ClientController::class)->except(['show']);
     Route::resource('ticket/ticket',  App\Http\Controllers\Admin\TicketController::class)->except(['show']);
+    
 
 });
 

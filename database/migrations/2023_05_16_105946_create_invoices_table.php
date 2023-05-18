@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('invoices', function (Blueprint $table) {
             $table->id('invoice_id');
             $table->unsignedInteger('invoice_number')->unique();
-            $table->foreignId('user_id')->nullable()->references('user_id')->on('users')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->nullable()->references('user_id')->on('users');
             $table->string('domain');
             $table->boolean('active');
         });

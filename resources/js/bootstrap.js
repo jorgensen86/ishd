@@ -23,17 +23,16 @@ window.jQuery = window.$ = $
 import './plugins/Layout'
 import './plugins/PushMenu'
 // import SidebarSearch from './plugins/SidebarSearch'
-// import NavbarSearch from './plugins/NavbarSearch'
+import NavbarSearch from './plugins/NavbarSearch'
 import  './plugins/Toasts'
 // import TodoList from './plugins/TodoList'
 import  './plugins/Treeview'
-
-import 'bootstrap-switch';
-
-
+import select2 from 'select2';
+select2();
 // window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 import 'laravel-datatables-vite';
+
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening

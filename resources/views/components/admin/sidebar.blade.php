@@ -26,7 +26,7 @@
         <li class="nav-item menu-open">
           <a href="{{ route('dashboard') }}" class="nav-link {{ request()->is('dashboard') ? 'active' : null }}">
             <i class="nav-icon fas fa-tachometer-alt"></i>
-            <p>Dashboard</p>
+            <p>{{ __('sidebar.dashboard') }}</p>
           </a>
         </li>
         <!-- /.dashboard-menu -->
@@ -35,20 +35,20 @@
         <li class="nav-item {{ request()->is('user/*') ? 'menu-open' : null }}">
           <a href="#" class="nav-link {{ request()->is('user/*') ? 'active' : null }}">
             <i class="nav-icon fas fa-user-alt"></i>
-            <p>Users</p>
+            <p>{{ __('sidebar.user') }}</p>
             <i class="fas fa-angle-left right"></i>
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
               <a href="{{ route('user.index') }}" class="nav-link {{ request()->is('user/user') ? 'active' : null }}">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Users</p>
+                <i class="fas fa-angle-right nav-icon"></i>
+                <p>{{ __('sidebar.user_list') }}</p>
               </a>
             </li>
             <li class="nav-item">
               <a href="{{ route('client.index') }}" class="nav-link {{ request()->is('user/client') ? 'active' : null }}">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Customers</p>
+                <i class="fas fa-angle-right nav-icon"></i>
+                <p>{{ __('sidebar.client_list') }}</p>
               </a>
             </li>
           </ul>
@@ -65,7 +65,7 @@
           <ul class="nav nav-treeview">
             <li class="nav-item">
               <a href="{{ route('setting') }}" class="nav-link {{ request()->is('user/user') ? 'active' : null }}">
-                <i class="far fa-circle nav-icon"></i>
+                <i class="fas fa-angle-right nav-icon"></i>
                 <p>Settings</p>
               </a>
             </li>
@@ -77,8 +77,8 @@
         <!-- logout-menu -->
         <li class="nav-item menu-open">
           <a href="{{ route('logout') }}" class="nav-link">
-            <i class="nav-icon fas fa-right-from-bracket"></i>
-            <p>Logout</p>
+            <i class="nav-icon fas fa-rotate-left"></i>
+            <p>{{ __('sidebar.logout') }}</p>
           </a>
         </li>
         <!-- /.logout-menu -->

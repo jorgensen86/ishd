@@ -13,13 +13,8 @@ $(function() {
                 $(selector).modal('show')
             }
         })
-    })
-
-    $(document).on('click', '.btn-delete-modal', function () {
+    }).on('click', '.btn-delete-modal', function () {
         const selector = '#' + $(this).data('modal');
-
         $(selector).modal('show')
     })
-
-
 })

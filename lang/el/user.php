@@ -15,6 +15,8 @@ return [
     /* Titles */
     'title_user'    => 'Χρήστες',
     'title_client'  => 'Πελάτες',
+    'edit_user'     => 'Επεξεργασία Χρήστη',
+    'edit_client'   => 'Επεξεργασία Πελάτη',
 
     /* Users & Clients*/
     'fullname'      => 'Ονοματεπώνυμο',

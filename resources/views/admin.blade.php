@@ -8,10 +8,10 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ $title ?? config('app.name', 'Laravel') }}</title>
     
     <!-- Scripts -->
-    @vite(['resources/sass/app.scss'])
+    @vite(['resources/sass/app.scss', 'resources/css/app.css'])
 </head>
 
 <body class="hold-transition sidebar-mini {{ $class }}">
@@ -37,5 +37,4 @@
     @vite(['resources/js/app.js', 'resources/js/admin.js'])
     @stack('scripts')
 </body>
-
 </html>

@@ -1,0 +1,32 @@
+/* Global */
+a {
+    color: #006adb;
+}
+
+/* Headings */
+.content-header h1 {
+    font-size: 1.4rem;
+}
+
+/* Sidebar */
+[class*=sidebar-dark-] {
+    background-color: #00274e;
+}
+
+.sidebar-dark-primary .nav-sidebar>.nav-item>.nav-link.active, .sidebar-light-primary .nav-sidebar>.nav-item>.nav-link.active {
+    background-color: #3a71ff;
+}
+
+[class*=sidebar-dark-] .nav-treeview>.nav-item>.nav-link.active, [class*=sidebar-dark-] .nav-treeview>.nav-item>.nav-link.active:focus, [class*=sidebar-dark-] .nav-treeview>.nav-item>.nav-link.active:hover {
+    background-color: rgb(255 255 255);
+    color: rgb(0 62 147);
+}
+
+/* Forms */
+.custom-control-label {
+    cursor: pointer;
+}
+.custom-control-input:checked~.custom-control-label::before {
+    border-color: #28a745;
+    background-color: #28a745;
+}

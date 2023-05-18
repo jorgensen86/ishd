@@ -2,11 +2,11 @@
   <!-- Left navbar links -->
   <ul class="navbar-nav">
     <li class="nav-item">
-      <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i>sda</a>
+      <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
     </li>
     <li class="nav-item">
       <a class="nav-link" data-widget="navbar-search" href="#" role="button">
-        <i class="fas fa-search"></i> sdsd
+        <i class="fas fa-search"></i>
       </a>
     </li>
   </ul>
@@ -20,8 +20,6 @@
           <input class="form-control form-control-navbar" name="ticket_id" id="search" type="search"
             placeholder="Αναζήτηση με αριθμό αιτήματος" aria-label="Search" />
           <div class="input-group-append">
-            <router-link class="btn btn-navbar" :to="{ name: 'getTickets', params: { id: 2}}"><i
-                class="fas fa-search"></i></router-link>
             <button class="btn btn-navbar" type="button" data-widget="navbar-search">
               <i class="fas fa-times"></i>
             </button>

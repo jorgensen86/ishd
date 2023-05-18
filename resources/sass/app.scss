@@ -1,10 +1,10 @@
-// Fonts
-@import url('https://fonts.bunny.net/css?family=Nunito');
-
-@import '/node_modules/@fortawesome/fontawesome-free/css/all.min.css';
+@import '/node_modules/@fortawesome/fontawesome-free/css/fontawesome.min.css';
+@import '/node_modules/@fortawesome/fontawesome-free/css/solid.min.css';
 
 // Adminlte
 @import '../adminlte/adminlte.min.css';
+
+@import '/node_modules/select2/dist/css/select2.min.css';
 
 @import 'bootstrap-icons/font/bootstrap-icons.css';
 @import "datatables.net-bs5/css/dataTables.bootstrap5.min.css";

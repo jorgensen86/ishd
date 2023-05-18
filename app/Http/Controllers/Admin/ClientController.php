@@ -3,14 +3,18 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Invoice;
 use App\Models\User;
+use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 class ClientController extends Controller
 {
     public function index() { 
-        $data['class'] = 'client-page';
+
         if (request()->ajax()) {
             return DataTables::eloquent(User::with('invoices')->where('users.administrator', 0))
             ->addColumn('invoices', function (User $user) {
@@ -28,14 +32,26 @@ class ClientController extends Controller
                 })
                 ->implode(', ');
             })
+            ->addColumn('action', function ($data) {
+                return '
+                    <button data-modal="client-modal" data-url="' . route('client.edit', $data) . '" class="btn btn-sm btn-open-modal">
+                        <i class="fas fa-edit text-info"></i>
+                    </button>
+                    <button data-modal="delete-modal" data-url="' . route('client.destroy', $data) . '" class="btn btn-sm btn-delete-modal">
+                        <i class="fas fa-trash text-danger"></i>
+                    </button>
+                ';
+            })
             ->editColumn('active', function ($data) {
                 return $data->active ? '<i class="text-success fas fa-check"></i>' : '<i class="text-danger fas fa-ban"></i>';
             })
-            ->rawColumns(['domain', 'active', 'invoices'])
+            ->rawColumns(['domain', 'active', 'invoices', 'action'])
             ->toJson();
         }
 
-        return view('layouts.admin.user.clientList', $data);
+        return view('layouts.admin.user.clientList')
+                ->with('class' ,'client-page')
+                ->with('title' , trans('user.title_client'));
     }
 
     /**
@@ -52,4 +68,93 @@ class ClientController extends Controller
                 ->with('user', new User());
         }
     }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'username' => 'required|unique:users',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:8',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(array(
+                'errors' => $validator->getMessageBag()->toArray()
+            ), 200);
+        } else {
+            User::create([
+                'administrator' => 0,
+                'email' => $request->email,
+                'name' => $request->name,
+                'username' => $request->username,
+                'active' => $request->active ?? 0,
+                'password' => Hash::make($request->password)
+            ]);
+        }
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(User $client)
+    {
+        if (request()->ajax()) {
+            return view('layouts.admin.user.clientForm')
+                ->with('action', route('client.update', $client))
+                ->with('method', 'put')
+                ->with('user', $client)
+                ->with('invoices', $client->invoices);
+        }
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, User $client)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'username' => ['required', Rule::unique('users', 'username')->ignore($client->user_id, 'user_id')],
+            'email' => ['required', 'email',  Rule::unique('users', 'email')->ignore($client->user_id, 'user_id')],
+            'password' => $request->password ? 'min:8' : ''
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(array(
+                'errors' => $validator->getMessageBag()->toArray()
+            ), 200);
+        } else {
+            
+            $client->name = $request->name;
+            $client->username = $request->username;
+            $client->email = $request->email;
+            $client->active = $request->active ?? 0;
+            if ($request->password) $client->password = Hash::make($request->password);
+
+            $client->save();
+
+            Invoice::where('user_id', $client->user_id)->update(['user_id' => null]);
+            
+            if($request->invoice) {
+                foreach ($request->invoice as $invoice) {
+                    Invoice::find($invoice)->user()->associate($client)->save();
+                }
+            }
+        }
+    }
+    
 }
