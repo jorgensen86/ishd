@@ -14,7 +14,7 @@
     @vite(['resources/sass/app.scss', 'resources/css/app.css'])
 </head>
 
-<body class="hold-transition sidebar-mini {{ $class }}">
+<body class="hold-transition sidebar-mini {{ $class ?? null }}">
     <div class="wrapper">
         <!-- Navbar Componnent -->
         @auth

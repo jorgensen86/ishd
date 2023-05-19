@@ -20,13 +20,6 @@ class UserController extends Controller
      */
     public function index()
     {
-
-        $data['class'] = 'user-page';
-
-
-        $data['add_action'] = route('user.create');
-
-
         if (request()->ajax()) {
             return Datatables::eloquent(User::where('administrator', 1))
                 ->editColumn('active', function ($data) {
@@ -34,10 +27,10 @@ class UserController extends Controller
                 })
                 ->addColumn('action', function ($data) {
                     return '
-                        <button data-modal="user-modal" data-url="' . route('user.edit', $data) . '" class="btn btn-sm btn-default btn-open-modal">
+                        <button data-modal="user-modal" data-url="' . route('user.edit', $data) . '" class="btn btn-outline-info btn-flat btn-sm btn-open-modal">
                             <i class="fas fa-edit"></i>
                         </button>
-                        <button data-modal="delete-modal" data-url="' . route('user.destroy', $data) . '" class="btn btn-sm btn-danger btn-delete-modal">
+                        <button data-modal="delete-modal" data-url="' . route('user.destroy', $data) . '" class="btn btn-danger btn-flat btn-sm btn-delete-modal">
                             <i class="fas fa-trash"></i>
                         </button>
                     ';
@@ -47,7 +40,9 @@ class UserController extends Controller
                 ->make(true);
         }
 
-        return view('layouts.admin.user.userList', $data);
+        return view('layouts.admin.user.userList')
+            ->with('class' ,'user-page')
+            ->with('title' , trans('user.title_user'));
     }
 
     /**
@@ -96,15 +91,6 @@ class UserController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function show(User $user)
-    {
-    }
 
     /**
      * Show the form for editing the specified resource.

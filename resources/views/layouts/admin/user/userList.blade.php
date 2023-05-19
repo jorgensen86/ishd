@@ -1,26 +1,26 @@
 @extends('admin')
 
 @section('content')
-<x-admin.page-header :heading="__('user.title')"></x-admin.page-header>
+<x-admin.page-header :heading="__('sidebar.user_list')"></x-admin.page-header>
 <section class="content">
     <div class="container-fluid">
         <div class="card">
             <div class="card-header">
                 <div class="card-tools">
-                    <button data-url="{{ $add_action }}" data-modal="user-modal"
-                        class="btn btn-sm btn-primary btn-open-modal">{{ __('el.button_add') }}</button>
+                    <button data-url="{{ route('user.create') }}" data-modal="user-modal"
+                        class="btn btn-sm btn-info btn-open-modal">{{ __('el.button_add') }}</button>
                 </div>
             </div>
             <div class="card-body table-responsive p-3">
-                <table class="table table-hover data-table">
+                <table class="table table-hover" id="users-table">
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Username</th>
-                            <th>Active</th>
-                            <th>Actions</th>
+                            <th>{{ __('user.invoice') }}</th>
+                            <th>{{ __('user.username') }}</th>
+                            <th>{{ __('user.invoice') }}</th>
+                            <th>{{ __('user.domain') }}</th>
+                            <th>{{ __('user.active') }}</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -30,20 +30,19 @@
         </div>
 
     </div>
-    <x-admin.modal id="user-modal" size="lg" :type="'form'" :title="''"></x-admin.modal>
+    <x-admin.modal id="user-modal" size="md" :type="'form'" :title="__('user.edit_user')"></x-admin.modal>
     <x-admin.modal id="delete-modal" size="sm" :type="'delete'" :title="__('user.delete')"></x-admin.modal>
 </section>
 @endsection
 
 @push('scripts')
+
 <script type="module">
     $(function () {
-        $("input[data-bootstrap-switch]").bootstrapSwitch();
-        var table = $('.data-table').DataTable({
+        var table = $('#users-table').DataTable({
             processing: true,
             serverSide: true,
             pageLength: 5,
-
             ajax: "{{ route('user.index') }}",
             columns: [
                 { data: 'user_id' },
@@ -55,7 +54,6 @@
 
             ]
         });
-
 
         $(document).on('click', '#buttonSave', function () {
             $('form input').removeClass('is-invalid')
@@ -85,9 +83,10 @@
                             delay: 2500,
                         })
 
+                    } else {
+                        $('#user-modal').modal('hide');
+                        table.ajax.reload(null, false);
                     }
-                    $('#user-modal').modal('hide');
-                    table.ajax.reload(null, false);
                 }
             })
         })

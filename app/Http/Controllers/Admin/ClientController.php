@@ -34,11 +34,11 @@ class ClientController extends Controller
             })
             ->addColumn('action', function ($data) {
                 return '
-                    <button data-modal="client-modal" data-url="' . route('client.edit', $data) . '" class="btn btn-sm btn-open-modal">
-                        <i class="fas fa-edit text-info"></i>
+                    <button data-modal="client-modal" data-url="' . route('client.edit', $data) . '" class="btn btn-outline-info btn-flat btn-sm btn-open-modal">
+                        <i class="fas fa-edit"></i>
                     </button>
-                    <button data-modal="delete-modal" data-url="' . route('client.destroy', $data) . '" class="btn btn-sm btn-delete-modal">
-                        <i class="fas fa-trash text-danger"></i>
+                    <button data-modal="delete-modal" data-url="' . route('client.destroy', $data) . '" class="btn btn-danger btn-flat btn-sm btn-delete-modal">
+                        <i class="fas fa-trash"></i>
                     </button>
                 ';
             })

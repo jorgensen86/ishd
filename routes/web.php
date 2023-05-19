@@ -37,7 +37,5 @@ Route::middleware(['auth','admin'])->group(function() {
     Route::resource('user/user',  App\Http\Controllers\Admin\UserController::class)->except(['show']);
     Route::resource('user/client',  App\Http\Controllers\Admin\ClientController::class)->except(['show']);
     Route::resource('ticket/ticket',  App\Http\Controllers\Admin\TicketController::class)->except(['show']);
-    
-
 });
 

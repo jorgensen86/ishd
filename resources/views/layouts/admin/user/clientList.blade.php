@@ -1,7 +1,7 @@
 @extends('admin')
 
 @section('content')
-<x-admin.page-header :heading="__('user.title_client')"></x-admin.page-header>
+<x-admin.page-header :heading="__('sidebar.client_list')"></x-admin.page-header>
 <section class="content">
     <div class="container-fluid">
         <div class="card">
