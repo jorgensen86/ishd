@@ -1,7 +1,7 @@
 export default {
     processing: true,
     serverSide: true,
-    pageLength: 1,
+    pageLength: 5,
     dom: 'lrtip',
     language: {
         "lengthMenu": "_MENU_ εγγραφές ανά σελίδα",
