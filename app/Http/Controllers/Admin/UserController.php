@@ -13,6 +13,11 @@ use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller
 {
+
+    public function __construct()
+    {
+        // $this->middleware(['permission:view users']);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -20,23 +25,23 @@ class UserController extends Controller
      */
     public function index()
     {
+        
         if (request()->ajax()) {
             return Datatables::eloquent(User::where('administrator', 1))
                 ->editColumn('active', function ($data) {
                     return $data->active ? '<i class="text-success fas fa-check"></i>' : '<i class="text-danger fas fa-ban"></i>';
                 })
                 ->addColumn('action', function ($data) {
-                    return '
-                        <button data-modal="user-modal" data-url="' . route('user.edit', $data) . '" class="btn btn-outline-info btn-flat btn-sm btn-open-modal">
+                    return 
+                    '<button data-modal="user-modal" data-url="' . route('user.edit', $data) . '" class="btn btn-outline-info btn-flat btn-sm btn-open-modal">
                             <i class="fas fa-edit"></i>
                         </button>
-                        <button data-modal="delete-modal" data-url="' . route('user.destroy', $data) . '" class="btn btn-danger btn-flat btn-sm btn-delete-modal">
+                    <button data-modal="delete-modal" data-url="' . route('user.destroy', $data) . '" class="btn btn-danger btn-flat btn-sm btn-delete-modal">
                             <i class="fas fa-trash"></i>
-                        </button>
-                    ';
+                    </button>';
                 })
                 ->rawColumns(['action', 'active'])
-                ->addIndexColumn('user_id')
+                ->addIndexColumn()
                 ->make(true);
         }
 
@@ -147,6 +152,6 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        // User::find($user->user_id)->delete();
     }
 }

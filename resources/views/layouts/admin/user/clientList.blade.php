@@ -41,7 +41,6 @@
         const table = $('.client-datatable').DataTable({
             processing: true,
             serverSide: true,
-            buttons: false,
             pageLength: 5,
             ajax: "{{ route('client.index') }}",
             searchDelay: 800,

@@ -15,6 +15,22 @@ $(function() {
         })
     }).on('click', '.btn-delete-modal', function () {
         const selector = '#' + $(this).data('modal');
+        $(selector + ' #deleteForm').prop('action', $(this).data('url'));
         $(selector).modal('show')
+    })
+
+    $(document).on('submit', '#deleteForm', function (e) {
+        e.preventDefault();
+        $.ajax({
+            type: 'post',
+            url: $(this).attr('action'),
+            data: $('#deleteForm').serialize(),
+            beforeSend: () => {
+                alert()
+            },
+            complete: () => {
+                alert();
+            }
+        });
     })
 })

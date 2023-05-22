@@ -51,6 +51,12 @@
                 <p>{{ __('sidebar.client_list') }}</p>
               </a>
             </li>
+            <li class="nav-item">
+              <a href="{{ route('permission.index') }}" class="nav-link {{ request()->is('user/permission') ? 'active' : null }}">
+                <i class="fas fa-angle-right nav-icon"></i>
+                <p>{{ __('sidebar.permission_list') }}</p>
+              </a>
+            </li>
           </ul>
         </li>
          <!-- ./ users-menu -->

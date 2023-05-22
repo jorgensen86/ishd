@@ -1,7 +1,7 @@
 @extends('admin')
 
 @section('content')
-    <x-admin.page-header :heading="__('sidebar.user_list')"></x-admin.page-header>
+    <x-admin.page-header :heading="__('sidebar.permission_list')"></x-admin.page-header>
     <section class="content">
         <div class="container-fluid">
             <div class="card">
@@ -15,10 +15,8 @@
                     <table class="table table-hover" id="users-table">
                         <thead>
                             <tr>
-                                <th>{{ __('user.fullname') }}</th>
-                                <th>{{ __('user.email') }}</th>
-                                <th>{{ __('user.username') }}</th>
-                                <th>{{ __('user.active') }}</th>
+                                <th>Id</th>
+                                <th>Slug</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -42,14 +40,11 @@
             $.extend(
                 datatablesConfig,
                 {
-                    ajax: "{{ route('user.index') }}",
+                    ajax: "{{ route('permission.index') }}",
                     columns: [
+                        { data: 'id' },
                         { data: 'name' },
-                        { data: 'email' },
-                        { data: 'username' },
-                        { data: 'active', className: 'text-center', orderable: false },
                         { data: 'action', className: 'text-right', orderable: false},
-
                     ]
                 }
             )

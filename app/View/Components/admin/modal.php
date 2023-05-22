@@ -10,6 +10,7 @@ class Modal extends Component
     public $size;
     public $type;
     public $title;
+    public $action;
     /**
      * Create a new component instance.
      *
