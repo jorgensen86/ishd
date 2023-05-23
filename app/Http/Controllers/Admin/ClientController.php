@@ -10,10 +10,12 @@ use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
+use Yajra\DataTables\Html\Builder;
+use Yajra\DataTables\Html\Column;
 
 class ClientController extends Controller
 {
-    public function index() { 
+    public function index(Builder $builder) { 
 
         if (request()->ajax()) {
             return DataTables::eloquent(User::with('invoices')->where('users.administrator', 0))
@@ -49,9 +51,19 @@ class ClientController extends Controller
             ->toJson();
         }
 
+        $table = $builder->columns([
+            Column::make(['title' => __('client.fullname')]),
+            Column::make(['title' => __('client.username')]),
+            Column::make(['title' => __('client.invoice')]),
+            Column::make(['title' => __('client.domain')]),
+            Column::make(['title' => __('client.active')]),
+            Column::make(),
+        ]);
+
         return view('layouts.admin.user.clientList')
                 ->with('class' ,'client-page')
-                ->with('title' , trans('user.title_client'));
+                ->with('title' , __('client.title'))
+                ->with('table', $table);
     }
 
     /**
@@ -155,6 +167,22 @@ class ClientController extends Controller
                 }
             }
         }
+    }
+
+    public function destroy(User $client)
+    {
+        $json = [];
+
+        if($client->invoices()->count()) {
+            $json['errors'] = __('client.error_invoice');
+        }
+
+        if(!$json) {
+            User::find($client->user_id)->delete();
+            $json['success'] = __('client.text_success');
+        }
+
+        return response()->json($json, 200);
     }
     
 }

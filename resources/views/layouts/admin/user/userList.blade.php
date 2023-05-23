@@ -12,33 +12,22 @@
                     </div>
                 </div>
                 <div class="card-body table-responsive p-3">
-                    <table class="table table-hover" id="users-table">
-                        <thead>
-                            <tr>
-                                <th>{{ __('user.fullname') }}</th>
-                                <th>{{ __('user.email') }}</th>
-                                <th>{{ __('user.username') }}</th>
-                                <th>{{ __('user.active') }}</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
+                    {{ $table->table() }}
                 </div>
             </div>
 
         </div>
-        <x-admin.modal id="user-modal" size="md" :type="'form'" :title="__('user.edit_user')"></x-admin.modal>
-        <x-admin.modal id="delete-modal" size="sm" :type="'delete'" :title="__('user.delete')"></x-admin.modal>
+        <x-admin.form-modal id="user-modal" size="md" :title="__('user.edit_user')"></x-admin.form-modal>
+        <x-admin.delete-modal id="delete-modal" size="sm" :title="__('user.delete')"></x-admin.delete-modal>
     </section>
 @endsection
 
 @push('scripts')
 <script type="module">
-        import datatablesConfig from "{{ Vite::asset('resources/js/config/datatables.js') }}" 
+    import datatablesConfig from "{{ Vite::asset('resources/js/config/datatables.js') }}" 
+    
     $(function () {
-        var table = $('#users-table').DataTable(
+        var table = $('#dataTableBuilder').DataTable(
             $.extend(
                 datatablesConfig,
                 {
@@ -47,8 +36,8 @@
                         { data: 'name' },
                         { data: 'email' },
                         { data: 'username' },
-                        { data: 'active', className: 'text-center', orderable: false },
-                        { data: 'action', className: 'text-right', orderable: false},
+                        { data: 'active', className: 'text-center', orderable: false, searchable: false},
+                        { data: 'action', className: 'text-right', orderable: false, searchable: false},
 
                     ]
                 }
@@ -80,7 +69,7 @@
                             title: 'Προσοχή',
                             body: errors,
                             autohide: true,
-                            delay: 2500,
+                            delay: 4000,
                         })
 
                     } else {

@@ -8,52 +8,41 @@
             <div class="card-header">
                 <div class="card-tools">
                     <button data-url="{{ route('client.create') }}" data-modal="client-modal"
-                        class="btn btn-sm btn-primary btn-open-modal">{{ __('el.button_add') }}</button>
+                        class="btn btn-sm btn-info btn-open-modal">{{ __('el.button_add') }}</button>
                 </div>
             </div>
             <div class="card-body table-responsive p-3">
-                <table class="table table-hover client-datatable">
-                    <thead>
-                        <tr>
-                            <th>{{ __('user.invoice') }}</th>
-                            <th>{{ __('user.username') }}</th>
-                            <th>{{ __('user.invoice') }}</th>
-                            <th>{{ __('user.domain') }}</th>
-                            <th>{{ __('user.active') }}</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
+                {{ $table->table() }}
             </div>
         </div>
 
     </div>
-    <x-admin.modal id="client-modal" size="md" :type="'form'" :title="__('user.edit_client')"></x-admin.modal>
-    <x-admin.modal id="delete-modal" size="sm" :type="'delete'" :title="__('user.delete')"></x-admin.modal>
+    <x-admin.form-modal id="client-modal" size="md" :title="__('client.edit_title')"></x-admin.form-modal>
+    <x-admin.delete-modal id="delete-modal" size="sm" :title="__('client.delete_title')"></x-admin.delete-modal>
 </section>
 @endsection
 
 @push('scripts')
 <script type="module">
+    import datatablesConfig from "{{ Vite::asset('resources/js/config/datatables.js') }}" 
+    
     $(function () {
-        const table = $('.client-datatable').DataTable({
-            processing: true,
-            serverSide: true,
-            pageLength: 5,
-            ajax: "{{ route('client.index') }}",
-            searchDelay: 800,
-            dom: 'frtip',
-            columns: [
-                { data: 'user_id', name: 'user_id' },
-                { data: 'username', name: 'username' },
-                { data: 'invoices', name: 'invoices.invoice_number', searchable: false, orderable: false },
-                { data: 'domain', name: 'invoices.domain', searchable: false, orderable: false },
-                { data: 'active', name: 'active', className: 'text-center', searchable: false, orderable: false },
-                { data: 'action', name: 'active', className: 'text-center', searchable: false, orderable: false },
-            ],
-        });
+        const table = $('#dataTableBuilder').DataTable(
+            $.extend(
+                datatablesConfig,
+                {
+                    ajax: "{{ route('client.index') }}",
+                    columns: [
+                        { data: 'name', name: 'name' },
+                        { data: 'username', name: 'username' },
+                        { data: 'invoices', name: 'invoices.invoice_number', orderable: false },
+                        { data: 'domain', name: 'invoices.domain', orderable: false },
+                        { data: 'active', name: 'active', className: 'text-center', searchable: false, orderable: false },
+                        { data: 'action', name: 'active', className: 'text-center', searchable: false, orderable: false },
+                    ],
+                }
+            )
+        );
 
         $(document).on('click', '#buttonSave', function () {
             $('form input').removeClass('is-invalid')

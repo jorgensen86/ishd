@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Yajra\DataTables\Facades\DataTables;
+use Yajra\DataTables\Html\Column;
+use Yajra\DataTables\Html\Builder;
 
 
 class UserController extends Controller
@@ -23,7 +25,7 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Builder $builder)
     {
         
         if (request()->ajax()) {
@@ -45,9 +47,19 @@ class UserController extends Controller
                 ->make(true);
         }
 
+        $table = $builder->columns([
+            Column::make(['title' => __('user.fullname')]),
+            Column::make(['title' => __('user.email')]),
+            Column::make(['title' => __('user.username')]),
+            Column::make(['title' => __('user.active')]),
+            Column::make(),
+        ]);
+
+
         return view('layouts.admin.user.userList')
             ->with('class' ,'user-page')
-            ->with('title' , trans('user.title_user'));
+            ->with('title' , __('user.title_user'))
+            ->with('table', $table);
     }
 
     /**
@@ -152,6 +164,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        // User::find($user->user_id)->delete();
+
+        User::find($user->user_id)->delete();
     }
 }

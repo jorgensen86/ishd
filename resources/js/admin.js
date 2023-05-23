@@ -1,3 +1,13 @@
+function displayToast(bg, msg) {
+    $(document).Toasts('create', {
+        class: bg,
+        title: 'Προσοχή',
+        body: msg,
+        autohide: true,
+        delay: 3000,
+    })
+} 
+
 $(function() {
     // Open Modal
     $(document).on('click', '.btn-open-modal', function () {
@@ -26,10 +36,20 @@ $(function() {
             url: $(this).attr('action'),
             data: $('#deleteForm').serialize(),
             beforeSend: () => {
-                alert()
+                $('.modal button').prop('disable', true)
             },
             complete: () => {
-                alert();
+                
+            },
+            success: (json) => {
+                if(json.errors) {
+                    displayToast('bg-danger', json.errors);
+                } 
+                if(json.success) {
+                    $('#delete-modal').modal('hide');
+                    displayToast('bg-success', json.success);
+                    $('table').DataTable().ajax.reload(null, false);
+                }
             }
         });
     })

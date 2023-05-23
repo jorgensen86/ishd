@@ -14,9 +14,7 @@ return [
 */
     /* Titles */
     'title_user'    => 'Χρήστες',
-    'title_client'  => 'Πελάτες',
     'edit_user'     => 'Επεξεργασία Χρήστη',
-    'edit_client'   => 'Επεξεργασία Πελάτη',
 
     /* Users & Clients*/
     'fullname'      => 'Ονοματεπώνυμο',
@@ -24,18 +22,11 @@ return [
     'active'        => 'Ενεργός',
     
     /* Users */
-
-
-    /* Clients */
-    'invoice'       => 'Συμβόλαιο',
-    'company'       => 'Επωνυμία',
-    'domain'        => 'Domain',
-
     
     'add'           => 'Νέος Χρήστης',
     'edit'          => 'Επεξεργασία Χρήστη',
     'delete'        => 'Διαγραφή Χρήστη',
-
     'username'      => 'Όνομα Χρήστη',
     'password'      => 'Κωιδικός'
+    
 ];
