@@ -30,6 +30,8 @@ import  './plugins/Treeview'
 import select2 from 'select2';
 select2();
 // window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+import { DTABLE_CONFIG } from  './config/datatables'
+$.DTABLE_CONFIG = DTABLE_CONFIG;
 
 import 'laravel-datatables-vite';
 

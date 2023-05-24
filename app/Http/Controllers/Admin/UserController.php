@@ -164,7 +164,16 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        $json = [];
 
-        User::find($user->user_id)->delete();
+        if($user->user_id === auth()->user()->user_id) {
+            $json['errors'] = __('user.error_delete');
+        }
+        
+        if(!$json) {
+            User::find($user->user_id)->delete();
+            $json['success'] = __('user.text_success');
+        }
+        return response()->json($json, 200);
     }
 }

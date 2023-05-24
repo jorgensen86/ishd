@@ -1,4 +1,4 @@
-export default {
+const DTABLE_CONFIG = {
     processing: true,
     serverSide: true,
     pageLength: 10,
@@ -18,3 +18,5 @@ export default {
         processing:"<i class='fa fa-refresh fa-spin'></i>"
     }
 }
+
+export { DTABLE_CONFIG } 

@@ -23,13 +23,11 @@
 @endsection
 
 @push('scripts')
-<script type="module">
-    import datatablesConfig from "{{ Vite::asset('resources/js/config/datatables.js') }}" 
-    
+<script type="module">    
     $(function () {
         var table = $('#dataTableBuilder').DataTable(
             $.extend(
-                datatablesConfig,
+                $.DTABLE_CONFIG,
                 {
                     ajax: "{{ route('user.index') }}",
                     columns: [

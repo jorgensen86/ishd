@@ -29,6 +29,9 @@ $(function() {
         $(selector).modal('show')
     })
 
+    // Add/Edit Modal Form 
+
+    // Delete Modal Form
     $(document).on('submit', '#deleteForm', function (e) {
         e.preventDefault();
         $.ajax({
@@ -45,10 +48,17 @@ $(function() {
                 if(json.errors) {
                     displayToast('bg-danger', json.errors);
                 } 
+
                 if(json.success) {
                     $('#delete-modal').modal('hide');
                     displayToast('bg-success', json.success);
                     $('table').DataTable().ajax.reload(null, false);
+                }
+            },
+            error: (xhr) => {
+                alert(xhr.status + ' - ' + xhr.responseJSON.message)
+                if(xhr.status == '401') {
+                    location.reload(); 
                 }
             }
         });

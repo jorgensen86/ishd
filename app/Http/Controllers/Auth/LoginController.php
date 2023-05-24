@@ -59,11 +59,11 @@ class LoginController extends Controller
 
     protected function authenticated()
     {
-        // if ((auth()->user()->administrator)) {
-        //     return redirect()->route('dashboard');
-        // } elseif (!auth()->user()->administrator) {
-        //     return redirect()->route('home');
-        // }
+        if ((auth()->user()->administrator)) {
+            return redirect()->route('dashboard');
+        } elseif (!auth()->user()->administrator) {
+            return redirect()->route('home');
+        }
     }
 
     /**

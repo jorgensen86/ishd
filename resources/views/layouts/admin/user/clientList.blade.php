@@ -24,12 +24,10 @@
 
 @push('scripts')
 <script type="module">
-    import datatablesConfig from "{{ Vite::asset('resources/js/config/datatables.js') }}" 
-    
     $(function () {
         const table = $('#dataTableBuilder').DataTable(
             $.extend(
-                datatablesConfig,
+                $.DTABLE_CONFIG,
                 {
                     ajax: "{{ route('client.index') }}",
                     columns: [
@@ -78,7 +76,6 @@
                 }
             })
         })
-
     });
 </script>
 @endpush

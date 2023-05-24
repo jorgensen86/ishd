@@ -30,3 +30,9 @@ a {
 .custom-control-input:checked~.custom-control-label::before {
     border-color: #28a745;
     background-color: #28a745; }
+
+/* Modals */
+.modal-backdrop {
+    z-index: 1020; }
+.modal .modal-dialog {
+    top: 20% }
