@@ -15,11 +15,6 @@ use Yajra\DataTables\Html\Builder;
 
 class UserController extends Controller
 {
-
-    public function __construct()
-    {
-        // $this->middleware(['permission:view users']);
-    }
     /**
      * Display a listing of the resource.
      *
@@ -31,15 +26,15 @@ class UserController extends Controller
         if (request()->ajax()) {
             return Datatables::eloquent(User::where('administrator', 1))
                 ->editColumn('active', function ($data) {
-                    return $data->active ? '<i class="text-success fas fa-check"></i>' : '<i class="text-danger fas fa-ban"></i>';
+                    return $data->active ? '<i class="text-success fas fa-check"></i>' : '<i class="text-danger fas fa-xmark"></i>';
                 })
                 ->addColumn('action', function ($data) {
                     return 
-                    '<button data-modal="user-modal" data-url="' . route('user.edit', $data) . '" class="btn btn-outline-info btn-flat btn-sm btn-open-modal">
+                    '<button data-target="#userModal" data-url="' . route('user.edit', $data) . '" class="btn btn-outline-info btn-flat btn-sm btnOpenModal">
                             <i class="fas fa-edit"></i>
                         </button>
-                    <button data-modal="delete-modal" data-url="' . route('user.destroy', $data) . '" class="btn btn-danger btn-flat btn-sm btn-delete-modal">
-                            <i class="fas fa-trash"></i>
+                    <button data-target="#deleteModal" data-url="' . route('user.destroy', $data) . '" class="btn btn-outline-danger btn-flat btn-sm btnDeleteModal">
+                            <i class="fas fa-ban"></i>
                     </button>';
                 })
                 ->rawColumns(['action', 'active'])
@@ -71,6 +66,7 @@ class UserController extends Controller
     {
         if (request()->ajax()) {
             return view('layouts.admin.user.userForm')
+                ->with('title', __('user.create_user'))
                 ->with('action', route('user.store'))
                 ->with('method', 'post')
                 ->with('user', new User());
@@ -85,6 +81,8 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        $json = [];
+        
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'username' => 'required|unique:users',
@@ -93,9 +91,10 @@ class UserController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(array(
+            $json = array(
+                'title' => __('el.text_danger'),
                 'errors' => $validator->getMessageBag()->toArray()
-            ), 200);
+            );
         } else {
             $user = User::create([
                 'administrator' => 1,
@@ -105,7 +104,14 @@ class UserController extends Controller
                 'active' => $request->active ?? 0,
                 'password' => Hash::make($request->password)
             ]);
+
+            $json = array(
+                'title' => __('el.text_success'),
+                'success' =>  __('user.text_success'),
+            );
         }
+
+        return response()->json($json, 200);
     }
 
 
@@ -119,6 +125,7 @@ class UserController extends Controller
     {
         if (request()->ajax()) {
             return view('layouts.admin.user.userForm')
+                ->with('title', __('user.edit_user'))
                 ->with('action', route('user.update', $user))
                 ->with('method', 'put')
                 ->with('user', $user);
@@ -134,6 +141,8 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
+        $json = [];
+
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'username' => ['required', Rule::unique('users', 'username')->ignore($user->user_id, 'user_id')],
@@ -142,9 +151,11 @@ class UserController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(array(
+            $json = array(
+                'title' => __('el.text_danger'),
                 'errors' => $validator->getMessageBag()->toArray()
-            ), 200);
+            );
+            
         } else {
             $user->name = $request->name;
             $user->username = $request->username;
@@ -153,7 +164,14 @@ class UserController extends Controller
             if ($request->password) $user->password = Hash::make($request->password);
 
             $user->save();
+
+            $json = array(
+                'title' => __('el.text_success'),
+                'success' =>  __('user.text_success'),
+            );
         }
+
+        return response()->json($json, 200);
     }
 
     /**
@@ -167,12 +185,18 @@ class UserController extends Controller
         $json = [];
 
         if($user->user_id === auth()->user()->user_id) {
-            $json['errors'] = __('user.error_delete');
+            $json = array(
+                'title' => __('el.text_danger'),
+                'errors' => __('user.error_delete')
+            );
         }
         
         if(!$json) {
             User::find($user->user_id)->delete();
-            $json['success'] = __('user.text_success');
+            $json = array(
+                'title' => __('el.text_success'),
+                'success' =>  __('user.text_success'),
+            );
         }
         return response()->json($json, 200);
     }

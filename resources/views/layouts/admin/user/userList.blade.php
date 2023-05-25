@@ -7,8 +7,8 @@
             <div class="card">
                 <div class="card-header">
                     <div class="card-tools">
-                        <button data-url="{{ route('user.create') }}" data-modal="user-modal"
-                            class="btn btn-sm btn-info btn-open-modal">{{ __('el.button_add') }}</button>
+                        <button data-url="{{ route('user.create') }}" data-target="#userModal"
+                            class="btn btn-sm btn-info btnOpenModal">{{ __('el.button_add') }}</button>
                     </div>
                 </div>
                 <div class="card-body table-responsive p-3">
@@ -17,8 +17,8 @@
             </div>
 
         </div>
-        <x-admin.form-modal id="user-modal" size="md" :title="__('user.edit_user')"></x-admin.form-modal>
-        <x-admin.delete-modal id="delete-modal" size="sm" :title="__('user.delete')"></x-admin.delete-modal>
+        <x-admin.form-modal id="userModal" size="md" :title="__('user.edit_user')"></x-admin.form-modal>
+        <x-admin.delete-modal id="deleteModal" size="sm" :title="__('user.delete')"></x-admin.delete-modal>
     </section>
 @endsection
 
@@ -41,43 +41,6 @@
                 }
             )
         );
-
-        $(document).on('click', '#buttonSave', function () {
-            $('form input').removeClass('is-invalid')
-            $.ajax({
-                type: $('#user-modal form').attr('method'),
-                data: $('#user-modal form').serialize(),
-                url: $('#user-modal form').attr('action'),
-                beforeSend: () => {
-                    $('#user-modal button').prop('disabled', true)
-                },
-                complete: () => {
-                    $('#user-modal button').prop('disabled', false)
-                },
-                success: (json) => {
-                    if (json.errors) {
-                        let errors = '';
-                        Object.keys(json.errors).forEach(function (key) {
-                            $('input[name="' + key + '"]').addClass('is-invalid')
-                            errors += json.errors[key] + "<br>";
-                        });
-
-                        $(document).Toasts('create', {
-                            class: 'bg-danger',
-                            title: 'Προσοχή',
-                            body: errors,
-                            autohide: true,
-                            delay: 4000,
-                        })
-
-                    } else {
-                        $('#user-modal').modal('hide');
-                        table.ajax.reload(null, false);
-                    }
-                }
-            })
-        })
-
     });
 </script>
 @endpush

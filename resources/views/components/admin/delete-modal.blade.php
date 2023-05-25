@@ -1,21 +1,21 @@
 <div class="modal fade" {{ $attributes }}>
     <div class="modal-dialog modal-{{ $size }}">
         <div class="modal-content">
-            <div class="modal-header bg-info">
-                <h6 class="modal-title">{{ $title }}</h6>
-            </div>
+            <div class="modal-header justify-content-center">
+			    <i class="far fa-circle-xmark text-danger"></i>						
+			</div>
             <div class="modal-body">
-                <p class="text-danger">{{ __('el.confirm_delete') }}</p>
                 <form action="post" id="deleteForm" action="">
                     @csrf
                     @method('delete')
+                    <p class="text-center">{{ __('el.confirm_delete_text') }}</p>
                 </form>
             </div>
-            <div class="modal-footer justify-content-between">
-                <button type="button" class="btn btn-sm btn-default"
-                    data-dismiss="modal">{{ __('el.button_cancel') }}</button>
-                <button type="submit" class="btn btn-sm btn-danger"
-                    form="deleteForm">{{ __('el.button_delete') }}</button>
+            <div class="modal-footer justify-content-around">
+                <button type="button" class="btn btn-sm btn-outline-danger px-3"
+                    data-dismiss="modal"><i class="far fa-xmark"></i> {{ __('el.text_no') }}</button>
+                <button type="submit" class="btn btn-sm btn-outline-success px-3"
+                    form="deleteForm"><i class="far fa-check"></i> {{ __('el.text_yes') }}</button>
             </div>
         </div>
     </div>

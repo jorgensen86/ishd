@@ -1,7 +1,7 @@
-function displayToast(bg, msg) {
+function displayToast(bg, title, msg) {
     $(document).Toasts('create', {
         class: bg,
-        title: 'Προσοχή',
+        title: title,
         body: msg,
         autohide: true,
         delay: 3000,
@@ -10,26 +10,55 @@ function displayToast(bg, msg) {
 
 $(function() {
     // Open Modal
-    $(document).on('click', '.btn-open-modal', function () {
-        const selector = '#' + $(this).data('modal');
-        
-        $(selector).find('.modal-body').empty()
+    $(document).on('click', '.btnOpenModal', function () {
+        $($(this).data('target') + ' .modal-content').empty();
         $.ajax({
             type: 'get',
             dataType: 'html',
             url: $(this).data('url'),
             success: (html) => {
-                $(selector).find('.modal-body').append(html)
-                $(selector).modal('show')
+                $($(this).data('target') + ' .modal-content').append(html)
+                $($(this).data('target')).modal('show')
             }
         })
-    }).on('click', '.btn-delete-modal', function () {
-        const selector = '#' + $(this).data('modal');
-        $(selector + ' #deleteForm').prop('action', $(this).data('url'));
-        $(selector).modal('show')
+    }).on('click', '.btnDeleteModal', function () {
+        $($(this).data('target') + ' #deleteForm').prop('action', $(this).data('url'));
+        $($(this).data('target')).modal('show')
     })
 
     // Add/Edit Modal Form 
+    $(document).on('click', '#btnSave', function () {
+        const $form = $($(this).data('form'));
+        $form.find('input').removeClass('is-invalid')
+        
+        $.ajax({
+            type: $form.attr('method'),
+            data: $form.serialize(),
+            url: $form.attr('action'),
+            beforeSend: () => {
+                $('#user-modal button').prop('disabled', true)
+            },
+            complete: () => {
+                $('#user-modal button').prop('disabled', false)
+            },
+            success: (json) => {
+                if (json.errors) {
+                    let errors = '';
+                    Object.keys(json.errors).forEach(function (key) {
+                        $('input[name="' + key + '"]').addClass('is-invalid')
+                        errors += json.errors[key] + "<br>";
+                    });
+
+                    displayToast('bg-danger', json.title, errors);
+
+                } else {
+                    $form.closest('.modal').modal('hide');
+                    displayToast('bg-success', json.title, json.success);
+                    $('table').DataTable().ajax.reload(null, false);
+                }
+            }
+        })
+    })
 
     // Delete Modal Form
     $(document).on('submit', '#deleteForm', function (e) {
@@ -46,12 +75,12 @@ $(function() {
             },
             success: (json) => {
                 if(json.errors) {
-                    displayToast('bg-danger', json.errors);
+                    displayToast('bg-danger', json.title, json.errors);
                 } 
 
                 if(json.success) {
-                    $('#delete-modal').modal('hide');
-                    displayToast('bg-success', json.success);
+                    $('#deleteModal').modal('hide');
+                    displayToast('bg-success', json.title, json.success);
                     $('table').DataTable().ajax.reload(null, false);
                 }
             },

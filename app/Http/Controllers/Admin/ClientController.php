@@ -15,40 +15,40 @@ use Yajra\DataTables\Html\Column;
 
 class ClientController extends Controller
 {
-    public function index(Builder $builder) { 
+    public function index(Builder $builder)
+    {
 
         if (request()->ajax()) {
             return DataTables::eloquent(User::with('invoices')->where('users.administrator', 0))
-            ->addColumn('invoices', function (User $user) {
-                return $user->invoices->map(function($invoice) {
-                    return "<span class='badge badge-danger'>{$invoice->invoice_number}</span>";
+                ->addColumn('invoices', function (User $user) {
+                    return $user->invoices->map(function ($invoice) {
+                        return "<span class='badge badge-danger'>{$invoice->invoice_number}</span>";
+                    })
+                        ->implode(' ');
                 })
-                ->implode(' ');
-            })
-            ->addColumn('domain', function (User $user) {
-                return collect($user->invoices)->map(function($invoice) {
-                    return $invoice->domain ? "<a href='http://{$invoice->domain}' target='_blank'>{$invoice->domain}</a>" : null;
+                ->addColumn('domain', function (User $user) {
+                    return collect($user->invoices)->map(function ($invoice) {
+                        return $invoice->domain ? "<a href='http://{$invoice->domain}' target='_blank'>{$invoice->domain}</a>" : null;
+                    })
+                        ->reject(function ($invoice) {
+                            return empty($invoice);
+                        })
+                        ->implode(', ');
                 })
-                ->reject(function ($invoice) {
-                    return empty($invoice);
-                })
-                ->implode(', ');
-            })
-            ->addColumn('action', function ($data) {
-                return '
-                    <button data-modal="client-modal" data-url="' . route('client.edit', $data) . '" class="btn btn-outline-info btn-flat btn-sm btn-open-modal">
+                ->addColumn('action', function ($data) {
+                    return '
+                    <button data-target="#clientModal" data-url="' . route('client.edit', $data) . '" class="btn btn-outline-info btn-flat btn-sm btnOpenModal">
                         <i class="fas fa-edit"></i>
                     </button>
-                    <button data-modal="delete-modal" data-url="' . route('client.destroy', $data) . '" class="btn btn-danger btn-flat btn-sm btn-delete-modal">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                ';
-            })
-            ->editColumn('active', function ($data) {
-                return $data->active ? '<i class="text-success fas fa-check"></i>' : '<i class="text-danger fas fa-ban"></i>';
-            })
-            ->rawColumns(['domain', 'active', 'invoices', 'action'])
-            ->toJson();
+                    <button data-target="#deleteModal" data-url="' . route('client.destroy', $data) . '" class="btn btn-outline-danger btn-flat btn-sm btnDeleteModal">
+                        <i class="fas fa-ban"></i>
+                    </button>';
+                })
+                ->editColumn('active', function ($data) {
+                    return $data->active ? '<i class="text-success fas fa-check"></i>' : '<i class="text-danger fas fa-xmark"></i>';
+                })
+                ->rawColumns(['domain', 'active', 'invoices', 'action'])
+                ->toJson();
         }
 
         $table = $builder->columns([
@@ -61,9 +61,9 @@ class ClientController extends Controller
         ]);
 
         return view('layouts.admin.user.clientList')
-                ->with('class' ,'client-page')
-                ->with('title' , __('client.title'))
-                ->with('table', $table);
+            ->with('class', 'client-page')
+            ->with('title', __('client.title'))
+            ->with('table', $table);
     }
 
     /**
@@ -75,6 +75,7 @@ class ClientController extends Controller
     {
         if (request()->ajax()) {
             return view('layouts.admin.user.clientForm')
+                ->with('title', __('client.create_client'))
                 ->with('action', route('client.store'))
                 ->with('method', 'post')
                 ->with('user', new User());
@@ -89,6 +90,8 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
+        $json = [];
+
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'username' => 'required|unique:users',
@@ -97,11 +100,12 @@ class ClientController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(array(
+            $json = array(
+                'title' => __('el.text_danger'),
                 'errors' => $validator->getMessageBag()->toArray()
-            ), 200);
+            );
         } else {
-            User::create([
+            $client = User::create([
                 'administrator' => 0,
                 'email' => $request->email,
                 'name' => $request->name,
@@ -109,7 +113,20 @@ class ClientController extends Controller
                 'active' => $request->active ?? 0,
                 'password' => Hash::make($request->password)
             ]);
+
+            if ($request->invoice) {
+                foreach ($request->invoice as $invoice) {
+                    Invoice::find($invoice)->user()->associate($client)->save();
+                }
+            }
+            
+            $json = array(
+                'title' => __('el.text_success'),
+                'success' =>  __('client.text_success'),
+            );
         }
+
+        return response()->json($json, 200);
     }
 
     /**
@@ -122,6 +139,7 @@ class ClientController extends Controller
     {
         if (request()->ajax()) {
             return view('layouts.admin.user.clientForm')
+                ->with('title', __('client.edit_client'))
                 ->with('action', route('client.update', $client))
                 ->with('method', 'put')
                 ->with('user', $client)
@@ -138,6 +156,8 @@ class ClientController extends Controller
      */
     public function update(Request $request, User $client)
     {
+        $json = [];
+
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'username' => ['required', Rule::unique('users', 'username')->ignore($client->user_id, 'user_id')],
@@ -146,11 +166,11 @@ class ClientController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(array(
+            $json = array(
+                'title' => __('el.text_danger'),
                 'errors' => $validator->getMessageBag()->toArray()
-            ), 200);
+            );
         } else {
-            
             $client->name = $request->name;
             $client->username = $request->username;
             $client->email = $request->email;
@@ -160,29 +180,41 @@ class ClientController extends Controller
             $client->save();
 
             Invoice::where('user_id', $client->user_id)->update(['user_id' => null]);
-            
-            if($request->invoice) {
+
+            if ($request->invoice) {
                 foreach ($request->invoice as $invoice) {
                     Invoice::find($invoice)->user()->associate($client)->save();
                 }
             }
+
+             $json = array(
+                'title' => __('el.text_success'),
+                'success' =>  __('client.text_success'),
+            );
         }
+
+        return response()->json($json, 200);
     }
 
     public function destroy(User $client)
     {
         $json = [];
 
-        if($client->invoices()->count()) {
-            $json['errors'] = __('client.error_invoice');
+        if ($client->invoices()->count()) {
+            $json = array(
+                'title' => __('el.text_danger'),
+                'errors' => __('client.error_invoice')
+            );
         }
 
-        if(!$json) {
+        if (!$json) {
             User::find($client->user_id)->delete();
-            $json['success'] = __('client.text_success');
+            $json = array(
+                'title' => __('el.text_success'),
+                'success' =>  __('client.text_success'),
+            );
         }
 
         return response()->json($json, 200);
     }
-    
 }

@@ -2,6 +2,7 @@ const DTABLE_CONFIG = {
     processing: true,
     serverSide: true,
     pageLength: 10,
+    searchDelay: 1000,
     lengthMenu: [10, 25, 50],
     dom: 'lfrtip',
     language: {

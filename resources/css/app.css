@@ -1,38 +1,73 @@
 /* Global */
 body {
-    font-size: 0.9rem; }
+    font-size: 0.9rem;
+}
 
 a {
-    color: #006adb; }
+    color: #006adb;
+}
 
 /* Headings */
 .content-header h1 {
-    font-size: 1.4rem; }
+    font-size: 1.4rem;
+}
 
 /* Buttons */
-.btn-group-sm>.btn, .btn-sm {
-    font-size: 0.8rem; }
+.btn-group-sm>.btn,
+.btn-sm {
+    font-size: 0.8rem;
+}
 
 /* Sidebar */
 [class*=sidebar-dark-] {
-    background-color: #00274e; }
+    background-color: #00274e;
+}
 
-.sidebar-dark-primary .nav-sidebar>.nav-item>.nav-link.active, .sidebar-light-primary .nav-sidebar>.nav-item>.nav-link.active {
-    background-color: #3a71ff; }
+.sidebar-dark-primary .nav-sidebar>.nav-item>.nav-link.active,
+.sidebar-light-primary .nav-sidebar>.nav-item>.nav-link.active {
+    background-color: #3a71ff;
+}
 
-[class*=sidebar-dark-] .nav-treeview>.nav-item>.nav-link.active, [class*=sidebar-dark-] .nav-treeview>.nav-item>.nav-link.active:focus, [class*=sidebar-dark-] .nav-treeview>.nav-item>.nav-link.active:hover {
+[class*=sidebar-dark-] .nav-treeview>.nav-item>.nav-link.active,
+[class*=sidebar-dark-] .nav-treeview>.nav-item>.nav-link.active:focus,
+[class*=sidebar-dark-] .nav-treeview>.nav-item>.nav-link.active:hover {
     background-color: rgb(255 255 255);
-    color: rgb(0 62 147); }
+    color: rgb(0 62 147);
+}
 
 /* Forms */
 .custom-control-label {
-    cursor: pointer; }
+    cursor: pointer;
+}
+
 .custom-control-input:checked~.custom-control-label::before {
     border-color: #28a745;
-    background-color: #28a745; }
+    background-color: #28a745;
+}
 
 /* Modals */
 .modal-backdrop {
-    z-index: 1020; }
+    z-index: 1020;
+}
+
 .modal .modal-dialog {
-    top: 20% }
+    top: 20%
+}
+
+#deleteModal .modal-title {
+    font-size: 26px;
+    color: #939393;
+}
+
+#deleteModal .modal-header i {
+    font-size: 60px;
+}
+
+#deleteModal .modal-header, #deleteModal .modal-footer {
+    border: none;
+}
+
+#deleteModal .modal-body p {
+    color: #a92727;
+    font-weight: 500;
+}
