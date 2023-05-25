@@ -71,7 +71,7 @@ class LoginController extends Controller
      */
     public function showLoginForm()
     {
-        return view('layouts.admin.common.login', ['class' => 'login-page']);
+        return view('layouts.admin.common.login', ['class' => 'loginPage']);
     }
     
 }

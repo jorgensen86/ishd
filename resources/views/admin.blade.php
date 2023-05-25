@@ -14,26 +14,23 @@
     @vite(['resources/sass/app.scss', 'resources/css/app.css'])
 </head>
 
-<body class="hold-transition sidebar-mini {{ $class ?? null }}">
+<body class="{{ auth()->check() ? 'sidebar-mini' : null }} {{ $class ?? null }}">
+    @auth
     <div class="wrapper">
         <!-- Navbar Componnent -->
-        @auth
         <x-admin.navbar></x-admin-navbar>
 
         <!-- Sidebar Componnent -->
         <x-admin.sidebar></x-admin.sidebar>
-        @endauth
 
         <div class="content-wrapper">
             @yield('content')
         </div>
         
-        @auth
         <!-- Footer Componnent -->
         <x-admin.footer></x-admin.footer>
-        @endauth
-
     </div>
+    @endauth
     @vite(['resources/js/app.js', 'resources/js/admin.js'])
     @stack('scripts')
 </body>

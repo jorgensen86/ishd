@@ -71,3 +71,17 @@ a {
     color: #a92727;
     font-weight: 500;
 }
+
+.loginPage {
+    background-color: #e9e9e9;
+}
+
+.login-box {
+    height: 100%;
+    width: 100%
+}
+
+.login-box .card {
+    min-width: 400px;
+}
+
