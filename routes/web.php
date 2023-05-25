@@ -25,13 +25,11 @@ Route::middleware(['auth','client'])->group(function() {
 });
 
 Route::middleware(['auth','admin'])->group(function() {
-    Route::get('/', function () {
-        return redirect('/dashboard');
-    });
+    Route::get('/', function () { return redirect('/dashboard'); });
     Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
 
     Route::get('/invoice', [App\Http\Controllers\Admin\InvoiceController::class, 'index'])->name('invoice.index');
-    Route::get('/setting', [App\Http\Controllers\Admin\SettingController::class, 'index'])->name('setting');
+    Route::get('/setting', App\Http\Controllers\Admin\SettingController::class)->name('setting');
     Route::post('/setting', [App\Http\Controllers\Admin\SettingController::class, 'store'])->name('setting');
     
     Route::resource('user/user',  App\Http\Controllers\Admin\UserController::class)->except(['show']);

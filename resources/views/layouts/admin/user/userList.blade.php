@@ -28,7 +28,8 @@
         var table = $('#dataTableBuilder').DataTable(
             $.extend(
                 $.DTABLE_CONFIG,
-                {
+                {   
+                    pageLength:"{{ $results_per_page }}",
                     ajax: "{{ route('user.index') }}",
                     columns: [
                         { data: 'name' },

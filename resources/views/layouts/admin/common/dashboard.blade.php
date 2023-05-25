@@ -1,6 +1,7 @@
 @extends('admin')
 
 @section('content')
-
-<h2>Dashboard</h2>
+    <x-admin.page-header :heading="__('sidebar.dashboard')"></x-admin.page-header>
+    <section class="content">
+    </section>
 @endsection

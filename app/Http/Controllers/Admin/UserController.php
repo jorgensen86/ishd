@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Settings\ConfigSettings;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -20,7 +21,7 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Builder $builder)
+    public function index(Builder $builder, ConfigSettings $configSettings)
     {
         
         if (request()->ajax()) {
@@ -52,6 +53,7 @@ class UserController extends Controller
 
 
         return view('layouts.admin.user.userList')
+            ->with('results_per_page', $configSettings->results_per_page)
             ->with('class' ,'user-page')
             ->with('title' , __('user.title_user'))
             ->with('table', $table);
