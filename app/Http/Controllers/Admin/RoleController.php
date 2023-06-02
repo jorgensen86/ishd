@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Settings\ConfigSettings;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -182,13 +183,13 @@ class RoleController extends Controller
     public function destroy(Role $role)
     {
         $json = [];
-
-        // if($user->user_id === auth()->user()->user_id) {
-        //     $json = array(
-        //         'title' => __('el.text_danger'),
-        //         'errors' => __('user.error_delete')
-        //     );
-        // }
+        
+        if(User::role($role->name)->count()) {
+            $json = array(
+                'title' => __('el.text_danger'),
+                'errors' => __('user.error_delete')
+            );
+        }
         
         if(!$json) {
             Role::find($role->id)->delete();
