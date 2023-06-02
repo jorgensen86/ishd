@@ -65,7 +65,7 @@
         <li class="nav-item {{ request()->is('setting/*') ? 'menu-open' : null }}">
           <a href="{{ route('user.index') }}" class="nav-link {{ request()->is('setting/*') ? 'active' : null }}">
             <i class="nav-icon fas fa-wrench"></i>
-            <p>Settings</p>
+            <p>{{ __('sidebar.setting') }}</p>
             <i class="fas fa-angle-left right"></i>
           </a>
           <ul class="nav nav-treeview">
@@ -75,7 +75,18 @@
                 <p>Settings</p>
               </a>
             </li>
-            
+            <li class="nav-item">
+              <a href="{{ route('role.index') }}" class="nav-link {{ request()->is('setting/role') ? 'active' : null }}">
+                <i class="fas fa-angle-right nav-icon"></i>
+                <p>{{ __('sidebar.role') }}</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{ route('permission.index') }}" class="nav-link {{ request()->is('setting/permission') ? 'active' : null }}">
+                <i class="fas fa-angle-right nav-icon"></i>
+                <p>{{ __('sidebar.permission') }}</p>
+              </a>
+            </li>
           </ul>
         </li>
         <!-- settings-menu -->
