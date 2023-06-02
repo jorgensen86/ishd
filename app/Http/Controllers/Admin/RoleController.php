@@ -4,16 +4,22 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Settings\ConfigSettings;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Facades\DataTables;
 use Yajra\DataTables\Html\Builder;
 use Yajra\DataTables\Html\Column;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class RoleController extends Controller
 {
 
-    const LAYOUT_PATH = 'layouts.admin.setting.';
+    const LAYOUT_PATH = 'layouts.admin.setting.role';
+    const LANG_PATH = 'admin/setting/role.';
+    const PAGE_CLASS = 'userPage';
+
     /**
      * Display a listing of the resource.
      *
@@ -24,36 +30,45 @@ class RoleController extends Controller
 
         if (request()->ajax()) {
             return DataTables::eloquent(Role::query())
-                ->editColumn('active', function ($data) {
-                    return $data->active ? '<i class="text-success fas fa-check"></i>' : '<i class="text-danger fas fa-xmark"></i>';
+                ->editColumn('created_at', function ($data) {
+                    return Carbon::parse($data->created_at)->format('d/m/Y');
+                })
+                ->editColumn('updated_at', function ($data) {
+                    return Carbon::parse($data->updated_at)->format('d/m/Y');
                 })
                 ->addColumn('action', function ($data) {
-                    return 
-                    '<button data-target="#userModal" data-url="' . route('user.edit', $data) . '" class="btn btn-outline-info btn-flat btn-sm btnOpenModal">
+                    return
+                        '<button data-target="#roleModal" data-url="' . route('role.edit', $data) . '" class="btn btn-outline-info btn-flat btn-sm btnOpenModal">
                             <i class="fas fa-edit"></i>
                         </button>
-                    <button data-target="#deleteModal" data-url="' . route('user.destroy', $data) . '" class="btn btn-outline-danger btn-flat btn-sm btnDeleteModal">
+                    <button data-target="#deleteModal" data-url="' . route('role.destroy', $data) . '" class="btn btn-outline-danger btn-flat btn-sm btnDeleteModal">
                             <i class="fas fa-ban"></i>
                     </button>';
                 })
-                ->rawColumns(['action', 'active'])
-                ->addIndexColumn()
+                ->rawColumns(['action'])
+                ->addIndexColumn('id')
                 ->make(true);
         }
 
-        $builder->columns([]);
 
-        return view(self::LAYOUT_PATH . 'roleList')
-        ->with('results_per_page', $configSettings->results_per_page)
-        ->with('class' ,'user-page')
-        ->with('title' , __('user.title_user'))
-        ->with('table',  $builder->columns([
-            Column::make(['title' => __('user.fullname')]),
-            Column::make(['title' => __('user.email')]),
-            Column::make(['title' => __('user.username')]),
-            Column::make(['title' => __('user.active')]),
-            Column::make(),
-        ]));
+        return view(self::LAYOUT_PATH . 'List')
+            ->with('results_per_page', $configSettings->results_per_page)
+            ->with('class', self::PAGE_CLASS)
+            ->with('title', __(self::LANG_PATH . 'title'))
+            ->with('table',  $builder->columns([
+                Column::make()->title(__(self::LANG_PATH . 'id')),
+                Column::make()->title(__(self::LANG_PATH . 'name')),
+                Column::make()->title(__(self::LANG_PATH . 'created')),
+                Column::make()->title(__(self::LANG_PATH . 'updated')),
+                Column::make()
+            ]))
+            ->with('columns', [
+                ['data' => 'id'],
+                ['data' => 'name'],
+                ['data' => 'created_at'],
+                ['data' => 'updated_at'],
+                ['data' => 'action', 'className' => 'text-right', 'orderable' => false],
+            ]);
     }
 
     /**
@@ -63,7 +78,13 @@ class RoleController extends Controller
      */
     public function create()
     {
-        //
+        if (request()->ajax()) {
+            return view(self::LAYOUT_PATH . 'Form')
+                ->with('title', __(self::LANG_PATH . 'create'))
+                ->with('action', route('role.store'))
+                ->with('method', 'post')
+                ->with('role', new Role());
+        }
     }
 
     /**
@@ -74,19 +95,31 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $json = [];
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|unique:roles',
+        ]);
+
+        if ($validator->fails()) {
+            $json = array(
+                'title' => __('el.text_danger'),
+                'errors' => $validator->getMessageBag()->toArray()
+            );
+        } else {
+            Role::create([
+                'name' => $request->name
+            ]);
+
+            $json = array(
+                'title' => __('el.text_success'),
+                'success' =>  __('user.text_success'),
+            );
+        }
+
+        return response()->json($json, 200);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -94,9 +127,16 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Role $role)
     {
-        //
+        if (request()->ajax()) {
+
+            return view(self::LAYOUT_PATH . 'Form')
+                ->with('title', __(self::LANG_PATH . 'edit'))
+                ->with('action', route('role.update', $role))
+                ->with('method', 'put')
+                ->with('role', $role);
+        }
     }
 
     /**
@@ -106,9 +146,31 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Role $role)
     {
-        //
+        $json = [];
+
+        $validator = Validator::make($request->all(), [
+            'name' => ['required', Rule::unique('roles', 'name')->ignore($role->id, 'id')],
+        ]);
+
+        if ($validator->fails()) {
+            $json = array(
+                'title' => __('el.text_danger'),
+                'errors' => $validator->getMessageBag()->toArray()
+            );
+            
+        } else {
+            $role->name = $request->name;
+            $role->touch();
+
+            $json = array(
+                'title' => __('el.text_success'),
+                'success' =>  __('user.text_success'),
+            );
+        }
+
+        return response()->json($json, 200);
     }
 
     /**
@@ -117,8 +179,25 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Role $role)
     {
-        //
+        $json = [];
+
+        // if($user->user_id === auth()->user()->user_id) {
+        //     $json = array(
+        //         'title' => __('el.text_danger'),
+        //         'errors' => __('user.error_delete')
+        //     );
+        // }
+        
+        if(!$json) {
+            Role::find($role->id)->delete();
+            $json = array(
+                'title' => __('el.text_success'),
+                'success' =>  __('user.text_success'),
+            );
+        }
+        
+        return response()->json($json, 200);
     }
 }
