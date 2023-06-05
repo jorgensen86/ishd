@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Facades\DataTables;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Html\Builder;
@@ -16,6 +17,18 @@ use Yajra\DataTables\Html\Builder;
 
 class UserController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    function __construct()
+    {
+        // $this->middleware('permission:view_users', ['only' => ['index']]);
+        // $this->middleware('permission:edit_users', ['only' => ['edit','update', 'create', 'store']]);
+        // $this->middleware('permission:delete_users', ['only' => ['destroy']]);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -87,6 +100,7 @@ class UserController extends Controller
         
         $validator = Validator::make($request->all(), [
             'name' => 'required',
+            'role' => 'required',
             'username' => 'required|unique:users',
             'email' => 'required|unique:users',
             'password' => 'required|min:8'
@@ -130,7 +144,8 @@ class UserController extends Controller
                 ->with('title', __('user.edit_user'))
                 ->with('action', route('user.update', $user))
                 ->with('method', 'put')
-                ->with('user', $user);
+                ->with('user', $user)
+                ->with('roles', Role::all());
         }
     }
 
@@ -147,6 +162,7 @@ class UserController extends Controller
 
         $validator = Validator::make($request->all(), [
             'name' => 'required',
+            'role' => 'required',
             'username' => ['required', Rule::unique('users', 'username')->ignore($user->user_id, 'user_id')],
             'email' => ['required', 'email',  Rule::unique('users', 'email')->ignore($user->user_id, 'user_id')],
             'password' => $request->password ? 'min:8' : ''
@@ -166,6 +182,8 @@ class UserController extends Controller
             if ($request->password) $user->password = Hash::make($request->password);
 
             $user->save();
+            
+            $user->syncRoles($request->role);
 
             $json = array(
                 'title' => __('el.text_success'),

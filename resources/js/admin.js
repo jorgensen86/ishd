@@ -19,6 +19,9 @@ $(function() {
             success: (html) => {
                 $($(this).data('target') + ' .modal-content').append(html)
                 $($(this).data('target')).modal('show')
+            },
+            error: (xhr) => {
+                alert(xhr.status + ' - ' + xhr.statusText)
             }
         })
     }).on('click', '.btnDeleteModal', function () {

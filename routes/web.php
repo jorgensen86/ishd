@@ -25,6 +25,7 @@ Route::middleware(['auth','client'])->group(function() {
 });
 
 Route::middleware(['auth','admin'])->group(function() {
+
     Route::get('/', function () { return redirect('/dashboard'); });
     Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
 
