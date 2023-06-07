@@ -34,9 +34,10 @@ Route::middleware(['auth','admin'])->group(function() {
     Route::post('/setting', [App\Http\Controllers\Admin\SettingController::class, 'store'])->name('setting');
     Route::resource('setting/permission',  App\Http\Controllers\Admin\PermissionController::class)->except(['show']);
     Route::resource('setting/role',  App\Http\Controllers\Admin\RoleController::class)->except(['show']);
+    Route::resource('setting/queue',  App\Http\Controllers\Admin\QueueController::class)->except(['show']);
     
     Route::resource('user/user',  App\Http\Controllers\Admin\UserController::class)->except(['show']);
     Route::resource('user/client',  App\Http\Controllers\Admin\ClientController::class)->except(['show']);
-    // Route::resource('ticket/ticket',  App\Http\Controllers\Admin\TicketController::class)->except(['show']);
+    Route::resource('ticket/ticket',  App\Http\Controllers\Admin\TicketController::class);
 });
 

@@ -24,7 +24,7 @@ class ClientController extends Controller
                     return $user->invoices->map(function ($invoice) {
                         return "<span class='badge badge-danger'>{$invoice->invoice_number}</span>";
                     })
-                        ->implode(' ');
+                    ->implode(' ');
                 })
                 ->addColumn('domain', function (User $user) {
                     return collect($user->invoices)->map(function ($invoice) {

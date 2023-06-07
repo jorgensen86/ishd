@@ -3,29 +3,28 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\Queue;
 use App\Settings\ConfigSettings;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Yajra\DataTables\Facades\DataTables;
 use Yajra\DataTables\Html\Builder;
 use Yajra\DataTables\Html\Column;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 
-class RoleController extends Controller
+class QueueController extends Controller
 {
-
-    const LAYOUT_PATH = 'layouts.admin.setting.role';
-    const LANG_PATH = 'admin/setting/role.';
-    const PAGE_CLASS = 'rolePage';
+    const LAYOUT_PATH = 'layouts.admin.setting.queue';
+    const LANG_PATH = 'admin/setting/queue.';
+    const PAGE_CLASS = 'queuePage';
     const COLUMNS = [
         ['data' => 'id'],
         ['data' => 'name'],
-        ['data' => 'created_at'],
-        ['data' => 'updated_at'],
-        ['data' => 'action', 'className' => 'text-right', 'orderable' => false],
+        ['data' => 'active', 'className' => 'text-center', 'orderable' => false, 'searchable' => false],
+        ['data' => 'created_at', 'className' => 'text-right', 'searchable' => false],
+        ['data' => 'updated_at','searchable' => false],
+        ['data' => 'action', 'className' => 'text-right', 'orderable' => false, 'searchable' => false],
     ];
 
     /**
@@ -35,9 +34,8 @@ class RoleController extends Controller
      */
     public function index(Builder $builder, ConfigSettings $configSettings)
     {
-
         if (request()->ajax()) {
-            return DataTables::eloquent(Role::query())
+            return DataTables::eloquent(Queue::query())
                 ->editColumn('created_at', function ($data) {
                     return Carbon::parse($data->created_at)->format('d/m/Y');
                 })
@@ -46,30 +44,34 @@ class RoleController extends Controller
                 })
                 ->addColumn('action', function ($data) {
                     return
-                        '<button data-target="#roleModal" data-url="' . route('role.edit', $data) . '" class="btn btn-outline-info btn-flat btn-sm btnOpenModal">
+                        '<button data-target="#queueModal" data-url="' . route('queue.edit', $data) . '" class="btn btn-outline-info btn-flat btn-sm btnOpenModal">
                             <i class="fas fa-edit"></i>
                         </button>
-                    <button data-target="#deleteModal" data-url="' . route('role.destroy', $data) . '" class="btn btn-outline-danger btn-flat btn-sm btnDeleteModal">
+                    <button data-target="#deleteModal" data-url="' . route('queue.destroy', $data) . '" class="btn btn-outline-danger btn-flat btn-sm btnDeleteModal">
                             <i class="fas fa-ban"></i>
                     </button>';
                 })
-                ->rawColumns(['action'])
+                ->editColumn('active', function ($data) {
+                    return $data->active ? '<i class="text-success fas fa-check"></i>' : '<i class="text-danger fas fa-xmark"></i>';
+                })
+                ->rawColumns(['action', 'active'])
                 ->addIndexColumn('id')
                 ->make(true);
         }
 
         return view(self::LAYOUT_PATH . 'List')
-            ->with('results_per_page', $configSettings->results_per_page)
-            ->with('class', self::PAGE_CLASS)
-            ->with('title', __(self::LANG_PATH . 'title'))
-            ->with('table',  $builder->columns([
-                Column::make()->title(__(self::LANG_PATH . 'id')),
-                Column::make()->title(__(self::LANG_PATH . 'name')),
-                Column::make()->title(__(self::LANG_PATH . 'created')),
-                Column::make()->title(__(self::LANG_PATH . 'updated')),
-                Column::make()
-            ]))
-            ->with('columns', self::COLUMNS);
+        ->with('results_per_page', $configSettings->results_per_page)
+        ->with('class', self::PAGE_CLASS)
+        ->with('title', __(self::LANG_PATH . 'title'))
+        ->with('table',  $builder->columns([
+            Column::make()->title(__(self::LANG_PATH . 'id')),
+            Column::make()->title(__(self::LANG_PATH . 'name')),
+            Column::make()->title(__(self::LANG_PATH . 'active')),
+            Column::make()->title(__(self::LANG_PATH . 'created')),
+            Column::make()->title(__(self::LANG_PATH . 'updated')),
+            Column::make()
+        ]))
+        ->with('columns', self::COLUMNS);
     }
 
     /**
@@ -82,9 +84,9 @@ class RoleController extends Controller
         if (request()->ajax()) {
             return view(self::LAYOUT_PATH . 'Form')
                 ->with('title', __(self::LANG_PATH . 'create'))
-                ->with('action', route('role.store'))
+                ->with('action', route('queue.store'))
                 ->with('method', 'post')
-                ->with('role', new Role());
+                ->with('queue', new Queue());
         }
     }
 
@@ -99,7 +101,7 @@ class RoleController extends Controller
         $json = [];
 
         $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:roles',
+            'name' => 'required|unique:queues',
         ]);
 
         if ($validator->fails()) {
@@ -108,34 +110,34 @@ class RoleController extends Controller
                 'errors' => $validator->getMessageBag()->toArray()
             );
         } else {
-            Role::create([
-                'name' => $request->name
+            Queue::create([
+                'name' => $request->name,
+                'active' => $request->active ?? 0
             ]);
 
             $json = array(
                 'title' => __('el.text_success'),
-                'success' =>  __('user.text_success'),
+                'success' => __(self::LANG_PATH . 'text_success'),
             );
         }
 
         return response()->json($json, 200);
     }
 
-
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Queue  $queue
      * @return \Illuminate\Http\Response
      */
-    public function edit(Role $role)
+    public function edit(Queue $queue)
     {
         if (request()->ajax()) {
             return view(self::LAYOUT_PATH . 'Form')
                 ->with('title', __(self::LANG_PATH . 'edit'))
-                ->with('action', route('role.update', $role))
+                ->with('action', route('queue.update', $queue))
                 ->with('method', 'put')
-                ->with('role', $role);
+                ->with('queue', $queue);
         }
     }
 
@@ -143,15 +145,15 @@ class RoleController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Models\Queue  $queue
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Role $role)
+    public function update(Request $request, Queue $queue)
     {
         $json = [];
 
         $validator = Validator::make($request->all(), [
-            'name' => ['required', Rule::unique('roles', 'name')->ignore($role->id, 'id')],
+            'name' => ['required', Rule::unique('queues', 'name')->ignore($queue->id, 'id')],
         ]);
 
         if ($validator->fails()) {
@@ -161,12 +163,13 @@ class RoleController extends Controller
             );
             
         } else {
-            $role->name = $request->name;
-            $role->touch();
+            $queue->name = $request->name;
+            $queue->active = $request->active ?? 0;
+            $queue->touch();
 
             $json = array(
                 'title' => __('el.text_success'),
-                'success' =>  __('user.text_success'),
+                'success' => __(self::LANG_PATH . 'text_success'),
             );
         }
 
@@ -176,28 +179,11 @@ class RoleController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\Queue  $queue
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Role $role)
+    public function destroy(Queue $queue)
     {
-        $json = [];
-        
-        if(User::role($role->name)->count()) {
-            $json = array(
-                'title' => __('el.text_danger'),
-                'errors' => __('user.error_delete')
-            );
-        }
-        
-        if(!$json) {
-            Role::find($role->id)->delete();
-            $json = array(
-                'title' => __('el.text_success'),
-                'success' =>  __('user.text_success'),
-            );
-        }
-        
-        return response()->json($json, 200);
+        //
     }
 }

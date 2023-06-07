@@ -31,6 +31,30 @@
         </li>
         <!-- /.dashboard-menu -->
 
+        <!-- tickets-menu -->
+         <li class="nav-item {{ request()->is('ticket/*') ? 'menu-open' : null }}">
+          <a href="#" class="nav-link {{ request()->is('ticket/*') ? 'active' : null }}">
+            <i class="nav-icon fas fa-tags"></i>
+            <p>{{ __('sidebar.ticket') }}</p>
+            <i class="fas fa-angle-left right"></i>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="{{ route('ticket.index') }}" class="nav-link {{ request()->is('ticket/ticket') ? 'active' : null }}">
+                <i class="fas fa-angle-right nav-icon"></i>
+                <p>{{ __('sidebar.ticket_list') }}</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{ route('client.index') }}" class="nav-link {{ request()->is('user/client') ? 'active' : null }}">
+                <i class="fas fa-angle-right nav-icon"></i>
+                <p>{{ __('sidebar.client_list') }}</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+         <!-- ./ tickets-menu -->        
+
          <!-- users-menu -->
         <li class="nav-item {{ request()->is('user/*') ? 'menu-open' : null }}">
           <a href="#" class="nav-link {{ request()->is('user/*') ? 'active' : null }}">
@@ -51,12 +75,6 @@
                 <p>{{ __('sidebar.client_list') }}</p>
               </a>
             </li>
-            <li class="nav-item">
-              <a href="{{ route('permission.index') }}" class="nav-link {{ request()->is('user/permission') ? 'active' : null }}">
-                <i class="fas fa-angle-right nav-icon"></i>
-                <p>{{ __('sidebar.permission_list') }}</p>
-              </a>
-            </li>
           </ul>
         </li>
          <!-- ./ users-menu -->
@@ -73,6 +91,12 @@
               <a href="{{ route('setting') }}" class="nav-link {{ request()->is('user/user') ? 'active' : null }}">
                 <i class="fas fa-angle-right nav-icon"></i>
                 <p>Settings</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{ route('queue.index') }}" class="nav-link {{ request()->is('setting/queue') ? 'active' : null }}">
+                <i class="fas fa-angle-right nav-icon"></i>
+                <p>{{ __('sidebar.queue') }}</p>
               </a>
             </li>
             <li class="nav-item">
