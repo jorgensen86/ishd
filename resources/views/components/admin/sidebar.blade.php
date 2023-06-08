@@ -46,9 +46,9 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="{{ route('client.index') }}" class="nav-link {{ request()->is('user/client') ? 'active' : null }}">
+              <a href="{{ route('ticket.create') }}" class="nav-link {{ request()->is('ticket/ticket/create') ? 'active' : null }}">
                 <i class="fas fa-angle-right nav-icon"></i>
-                <p>{{ __('sidebar.client_list') }}</p>
+                <p>{{ __('sidebar.ticket_new') }}</p>
               </a>
             </li>
           </ul>

@@ -2,13 +2,13 @@
 
 namespace App\DataTables;
 
+use App\Http\Controllers\Admin\TicketController;
 use App\Models\Ticket;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
-use App\Constants\TicketConstants;
 use Illuminate\Support\Facades\Lang;
 
 class TicketDataTable extends DataTable
@@ -67,13 +67,13 @@ class TicketDataTable extends DataTable
      * @return array
      */
     public function getColumns(): array
-    {
+    {        
         return [
             Column::make('id'),
-            Column::make('invoice_number')->title(Lang::get(sprintf(TicketConstants::LANG_PATH, 'invoice'))),
-            Column::make('user.name')->title(Lang::get(sprintf(TicketConstants::LANG_PATH, 'from'))),
-            Column::make('subject')->title(Lang::get(sprintf(TicketConstants::LANG_PATH, 'subject'))),
-            Column::make('created_at')->title(Lang::get(sprintf(TicketConstants::LANG_PATH, 'created')))->className('text-right'),
+            Column::make('invoice_number')->title(Lang::get(TicketController::LANG_PATH . 'invoice')),
+            Column::make('user.name')->title(Lang::get(TicketController::LANG_PATH . 'from')),
+            Column::make('subject')->title(Lang::get(TicketController::LANG_PATH . 'subject')),
+            Column::make('created_at')->title(Lang::get(TicketController::LANG_PATH . 'created'))->className('text-right'),
             Column::make('action')->title('')->searchable(false)->orderable(false)->className('text-right'),
         ];
     }

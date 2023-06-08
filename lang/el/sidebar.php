@@ -6,6 +6,7 @@ return [
     'dashboard'         => 'Dasboard',
     'ticket'            => 'Αιτήματα',
     'ticket_list'       => 'Λίστα Αιτημάτων',
+    'ticket_new'        => 'Νέο Αίτημα',
     'user'              => 'Χρήστες',
     'user_list'         => 'Λίστα Χρηστών',
     'client_list'       => 'Λίστα Πελατών',

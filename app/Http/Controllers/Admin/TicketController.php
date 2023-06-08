@@ -38,7 +38,8 @@ class TicketController extends Controller
      */
     public function create()
     {
-        //
+        return view(self::LAYOUT_PATH . 'Form')
+            ->with('title', __(self::LANG_PATH . 'create'));
     }
 
     /**
@@ -49,7 +50,7 @@ class TicketController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd($request->all());
     }
 
     /**
@@ -61,8 +62,8 @@ class TicketController extends Controller
     public function show(Ticket $ticket)
     {
         return view(self::LAYOUT_PATH . 'View')
-        ->with('title', __(self::LANG_PATH . 'view'))
-        ->with('ticket', $ticket);
+            ->with('title', __(self::LANG_PATH . 'view'))
+            ->with('ticket', $ticket);
     }
 
     /**
@@ -73,7 +74,6 @@ class TicketController extends Controller
      */
     public function edit(Ticket $ticket)
     {
-    
     }
 
     /**

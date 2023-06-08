@@ -12,6 +12,7 @@
     
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/css/app.css'])
+    @stack('styles')
 </head>
 
 <body class="{{ auth()->check() ? 'sidebar-mini' : null }} {{ $class ?? null }}">

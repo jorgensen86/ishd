@@ -33,6 +33,7 @@ select2();
 import { DTABLE_CONFIG } from  './config/datatables'
 $.DTABLE_CONFIG = DTABLE_CONFIG;
 
+import 'dropzone';
 import 'laravel-datatables-vite';
 
 
