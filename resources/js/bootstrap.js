@@ -1,35 +1,18 @@
-import 'bootstrap';
-
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
  * to our Laravel back-end. This library automatically handles sending the
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
-// import axios from 'axios';
-// window.axios = axios;
 
 import $ from 'jquery'
 window.jQuery = window.$ = $
 
-// import './plugins/CardRefresh'
-// import CardWidget from './plugins/CardWidget'
-// import ControlSidebar from './plugins/ControlSidebar'
-// import DirectChat from './plugins/DirectChat'
-// import Dropdown from './plugins/Dropdown'
-// import ExpandableTable from './plugins/ExpandableTable'
-// import Fullscreen from './plugins/Fullscreen'
-// import IFrame from './plugins/IFrame'
-import './plugins/Layout'
-import './plugins/PushMenu'
-// import SidebarSearch from './plugins/SidebarSearch'
-import NavbarSearch from './plugins/NavbarSearch'
-import  './plugins/Toasts'
-// import TodoList from './plugins/TodoList'
-import  './plugins/Treeview'
+import 'bootstrap';
+
 import select2 from 'select2';
 select2();
-// window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+
 import { DTABLE_CONFIG } from  './config/datatables'
 $.DTABLE_CONFIG = DTABLE_CONFIG;
 

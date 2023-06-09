@@ -9,6 +9,7 @@
         "@popperjs/core": "^2.11.6",
         "axios": "^1.1.2",
         "bootstrap": "^4.6.2",
+        "bootstrap5-autocomplete": "^1.1.13",
         "dropzone": "^5.9.3",
         "jquery": "^3.6.4",
         "laravel-datatables-vite": "^0.5.2",

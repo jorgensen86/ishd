@@ -4,6 +4,7 @@ namespace App\DataTables;
 
 use App\Http\Controllers\Admin\TicketController;
 use App\Models\Ticket;
+use App\Settings\ConfigSettings;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -21,15 +22,23 @@ class TicketDataTable extends DataTable
      */
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {   
+        if(request()->is_closed) {
+
+            $query->where('is_closed' ,1);
+        }
+        // dump(request()->all());
         return (new EloquentDataTable($query))
             ->addColumn('action', function ($data) {
                 return
                     '<a href="' . route('ticket.show', $data) . '" class="btn btn-outline-info btn-flat btn-sm">
-                        <i class="fas fa-edit"></i>
+                        <i class="fas fa-eye"></i>
                     </a>
                     <button data-target="#deleteModal" data-url="' . route('queue.destroy', $data) . '" class="btn btn-outline-danger btn-flat btn-sm btnDeleteModal">
                             <i class="fas fa-ban"></i>
                     </button>';
+            })
+            ->setRowClass(function ($data) {
+                return !$data->is_opened ? 'font-weight-bold' : null;
             })
             ->setRowId('id');
     }
@@ -53,12 +62,15 @@ class TicketDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->setTableId('ticketTable')
-                    ->columns($this->getColumns())
-                    ->minifiedAjax()
-                    //->dom('Bfrtip')
-                    ->orderBy(4,'asc')
-                    ->buttons([]);
+        ->ajax([
+            'data' => 'function(d) { d.is_closed = $("#test").is(\':checked\') ? 1 : 0 }',
+        ])
+        ->parameters(array_merge(config('datatables.parameters'), $this->parameters()))
+        ->setTableId('ticketTable')
+        ->columns($this->getColumns())
+        //->dom('Bfrtip')
+        ->orderBy(4,'asc')
+        ->buttons([]);
     }
 
     /**
@@ -76,5 +88,10 @@ class TicketDataTable extends DataTable
             Column::make('created_at')->title(Lang::get(TicketController::LANG_PATH . 'created'))->className('text-right'),
             Column::make('action')->title('')->searchable(false)->orderable(false)->className('text-right'),
         ];
+    }
+
+    public function parameters() {
+        return [
+            'pageLength' => app(ConfigSettings::class)->results_per_page];
     }
 }

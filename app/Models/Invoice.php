@@ -16,6 +16,10 @@ class Invoice extends Model
         'user_id',
     ];
 
+    protected $with = [
+        'user'
+    ];
+
     public function user() {
         return $this->belongsTo(User::class, 'user_id', 'user_id');
     }

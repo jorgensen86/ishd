@@ -15,6 +15,10 @@ class Ticket extends Model
         'date_added'
     ];
 
+    protected $fillable = [
+        'is_opened',
+    ];
+
     protected $with = [
         'user'
     ];

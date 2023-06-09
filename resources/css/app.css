@@ -72,6 +72,23 @@ a {
     font-weight: 500;
 }
 
+/* Datatables */
+.page-link {
+    color: #00274e;
+}
+
+.page-item.active .page-link {
+    background-color: #00274e;
+    border-color: #00274e;
+}
+
+
+/*  Cards */ 
+.card-info.card-outline {
+    border-top-color: #00274e;
+}
+
+/*  Login Page */
 .loginPage {
     background-color: #e9e9e9;
 }
@@ -83,9 +100,4 @@ a {
 
 .login-box .card {
     min-width: 400px;
-}
-
-
-.ck-editor__editable_inline {
-    min-height: 500px;
 }

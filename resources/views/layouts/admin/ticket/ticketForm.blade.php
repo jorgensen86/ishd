@@ -11,8 +11,17 @@
                         <form action="{{ route('ticket.store') }}" method="post">
                             @csrf
                             <div class="form-group">
-                                <label></label>
-                                <input type="text" placeholder="fdsfds" name="test" id="test" class="form-control form-control-border">
+                                <label>{{ __('admin/ticket.sender') }}</label>
+                                <input type="text" name="author" id="inputAuthor" class="form-control" readonly="readonly" value="{{ auth()->user()->name }}">
+                                <input type="hidden" name="author_id" value="{{ auth()->user()->user_id }}">
+                            </div>
+                            <div class="form-group">
+                                <label>{{ __('admin/ticket.recipient') }}</label>
+                                <select data-allow-clear="true" data-placeholder="{{ __('el.text_select') }}" name="invoice_id" id="invoices"></select>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputSubject">{{ __('admin/ticket.subject') }}</label>
+                                <input type="text" name="subject" id="inputSubject" value="" placeholder="{{ __('admin/ticket.subject') }}" class="form-control">
                             </div>
                             <div class="form-group">
                                 <label>dsadsa</label>
@@ -38,14 +47,39 @@
 </section>
 @endsection
 @push('scripts')
-
-
-
-<script  type="module">
+<script type="module">
      Dropzone.options.imageUpload = {
             maxFilesize: 1,
             url: "http://dasdada.gr",
             acceptedFiles: ".jpeg,.jpg,.png,.gif"
         };
+</script>
+<script type="module">
+    $('#invoices').select2({
+        width: '100%',
+        theme: "classic",
+        minimumInputLength: 3,
+        allowClear: true,
+        ajax: {
+            url: "{{ route('invoice.index') }}",
+            dataType: "json",
+            delay: 600,
+            data: (params) => {
+                return { 
+                    filter_invoice : params.term,
+                };
+            },
+            processResults: function(json) {
+                return {
+                    results: $.map(json, function (item) {
+                        return {
+                            text: `${item.invoice_number}  ${item.user.name}`,
+                            id: item.invoice_id
+                        }
+                    })
+                };
+            },
+        },
+    });
 </script>
 @endpush

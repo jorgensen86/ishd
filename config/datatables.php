@@ -124,4 +124,14 @@ return [
      * Callbacks needs to start by those terms, or they will be cast to string.
      */
     'callback' => ['$', '$.', 'function'],
+
+    'parameters' => [
+        'dom' => 'rt<"row pt-6"<"col-sm-6"i><"col-sm-6"p>>',
+        'pageLength' => 20,
+        'language.search' => 'Αναζήτηση',
+        'language.info' => "Εμφάνιση σελίδας _PAGE_ από _PAGES_ (Συνολικά από _TOTAL_ εγγραφές)",
+        'language.paginate.next' => '<i class=\'fas fa-angle-right\'></i>',
+        'language.paginate.previous' => '<i class=\'fas fa-angle-left\'></i>',
+        
+    ]
 ];
