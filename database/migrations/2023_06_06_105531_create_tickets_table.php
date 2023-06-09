@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('tickets', function (Blueprint $table) {
-            $table->id();
+            $table->id()->from(1000000);
             $table->foreignId('author_id')->constrained('users', 'user_id');
             $table->foreignId('invoice_id')->nullable()->constrained('invoices', 'invoice_id');
             $table->unsignedInteger('invoice_number');

@@ -25,7 +25,7 @@ class TicketFactory extends Factory
             'invoice_id' => $this->faker->randomElement($invoice)['invoice_id'],
             'invoice_number' => $this->faker->randomElement($invoice)['invoice_number'],
             'subject' => fake()->sentence(),
-            'body' => fake()->paragraph(),
+            'body' => fake()->paragraphs(5, true),
         ];
     }
 }

@@ -27,55 +27,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div id="b">
-                                    <i class="fas fa-envelope bg-blue"></i>
-                                    <div class="timeline-item">
-                                        <span class="time"><i class="fas fa-clock"></i> {{ $ticket->date_added }}</span>
-                                        <h3 class="timeline-header"><a href="#">{{ $ticket->user->name }}</a> sent you an email</h3>
-                                        <div class="timeline-body">{{ $ticket->body }}</div>
-                                        <div class="timeline-footer">
-                                            <a class="btn btn-primary btn-sm">Read more</a>
-                                            <a class="btn btn-danger btn-sm">Delete</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="c">
-                                    <i class="fas fa-envelope bg-blue"></i>
-                                    <div class="timeline-item">
-                                        <span class="time"><i class="fas fa-clock"></i> {{ $ticket->date_added }}</span>
-                                        <h3 class="timeline-header"><a href="#">{{ $ticket->user->name }}</a> sent you an email</h3>
-                                        <div class="timeline-body">{{ $ticket->body }}</div>
-                                        <div class="timeline-footer">
-                                            <a class="btn btn-primary btn-sm">Read more</a>
-                                            <a class="btn btn-danger btn-sm">Delete</a>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div id="d">
-                                    <i class="fas fa-envelope bg-blue"></i>
-                                    <div class="timeline-item">
-                                        <span class="time"><i class="fas fa-clock"></i> {{ $ticket->date_added }}</span>
-                                        <h3 class="timeline-header"><a href="#">{{ $ticket->user->name }}</a> sent you an email</h3>
-                                        <div class="timeline-body">{{ $ticket->body }}</div>
-                                        <div class="timeline-footer">
-                                            <a class="btn btn-primary btn-sm">Read more</a>
-                                            <a class="btn btn-danger btn-sm">Delete</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="e">
-                                    <i class="fas fa-envelope bg-blue"></i>
-                                    <div class="timeline-item">
-                                        <span class="time"><i class="fas fa-clock"></i> {{ $ticket->date_added }}</span>
-                                        <h3 class="timeline-header"><a href="#">{{ $ticket->user->name }}</a> sent you an email</h3>
-                                        <div class="timeline-body">{{ $ticket->body }}</div>
-                                        <div class="timeline-footer">
-                                            <a class="btn btn-primary btn-sm">Read more</a>
-                                            <a class="btn btn-danger btn-sm">Delete</a>
-                                        </div>
-                                    </div>
-                                </div>
                                 <div>
                                     <i class="fas fa-clock bg-gray"></i>
                                 </div>
