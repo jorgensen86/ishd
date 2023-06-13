@@ -64,6 +64,7 @@ class TicketController extends Controller
      */
     public function show(Ticket $ticket)
     {
+        
         if(!$ticket->is_opened) {
             $ticket->update(['is_opened' => 1 ]);
         }

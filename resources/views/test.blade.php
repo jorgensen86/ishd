@@ -37,5 +37,8 @@
         $("#test").on('change', function(){
             $('table').DataTable().draw();
     });
+//     $('#ticketTable').on( 'click', 'tbody tr', function () {
+//   window.location.href = $(this).data('link');
+// });
     </script>
 @endpush

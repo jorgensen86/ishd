@@ -26,6 +26,9 @@ class DatabaseSeeder extends Seeder
 
         // \App\Models\User::factory(10)->create();
 
-        // \App\Models\Ticket::factory(50)->create();
+        \App\Models\Ticket::factory(50)->hasReplies(5, function (array $attributes, \App\Models\Ticket $ticket) {
+            return ['ticket_id' => $ticket->id];
+        })->create();
+        
     }
 }

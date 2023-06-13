@@ -30,14 +30,19 @@ Route::middleware(['auth','admin'])->group(function() {
     Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
 
     Route::get('/invoice', [App\Http\Controllers\Admin\InvoiceController::class, 'index'])->name('invoice.index');
-    Route::get('/setting', App\Http\Controllers\Admin\SettingController::class)->name('setting');
-    Route::post('/setting', [App\Http\Controllers\Admin\SettingController::class, 'store'])->name('setting');
-    Route::resource('setting/permission',  App\Http\Controllers\Admin\PermissionController::class)->except(['show']);
-    Route::resource('setting/role',  App\Http\Controllers\Admin\RoleController::class)->except(['show']);
-    Route::resource('setting/queue',  App\Http\Controllers\Admin\QueueController::class)->except(['show']);
     
-    Route::resource('user/user',  App\Http\Controllers\Admin\UserController::class)->except(['show']);
-    Route::resource('user/client',  App\Http\Controllers\Admin\ClientController::class)->except(['show']);
+    Route::prefix('setting')->group(function() {
+        Route::get('setting',  [App\Http\Controllers\Admin\SettingController::class, 'index'])->name('setting.index');
+        Route::post('setting',  [App\Http\Controllers\Admin\SettingController::class, 'store'])->name('setting.save');
+        Route::resource('permission',  App\Http\Controllers\Admin\PermissionController::class)->except(['show']);
+        Route::resource('role',  App\Http\Controllers\Admin\RoleController::class)->except(['show']);
+        Route::resource('queue',  App\Http\Controllers\Admin\QueueController::class)->except(['show']);
+    });
+    
+    Route::prefix('user')->group(function() {
+        Route::resource('user',  App\Http\Controllers\Admin\UserController::class)->except(['show']);
+        Route::resource('client',  App\Http\Controllers\Admin\ClientController::class)->except(['show']);
+    });
     Route::resource('ticket/ticket',  App\Http\Controllers\Admin\TicketController::class);
 });
 

@@ -68,6 +68,7 @@ class TicketDataTable extends DataTable
         ->parameters(array_merge(config('datatables.parameters'), $this->parameters()))
         ->setTableId('ticketTable')
         ->columns($this->getColumns())
+
         //->dom('Bfrtip')
         ->orderBy(4,'asc')
         ->buttons([]);
@@ -92,6 +93,7 @@ class TicketDataTable extends DataTable
 
     public function parameters() {
         return [
-            'pageLength' => app(ConfigSettings::class)->results_per_page];
+            'pageLength' => app(ConfigSettings::class)->results_per_page,
+        ];
     }
 }

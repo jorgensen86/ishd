@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -20,7 +19,8 @@ class Ticket extends Model
     ];
 
     protected $with = [
-        'user'
+        'user',
+        'replies'
     ];
 
     protected $casts = [
@@ -30,6 +30,10 @@ class Ticket extends Model
 
     public function user() {
         return $this->hasOne(User::class, 'user_id', 'author_id');
+    }
+
+    public function replies() {
+        return $this->hasMany(Reply::class, 'ticket_id', 'id');
     }
 
     protected function dateAdded(): Attribute
