@@ -35,25 +35,13 @@
                 </div>
             </div>
             <div class="col-md-4">
-                <form action="" method="post" name="file" files="true" enctype="multipart/form-data" class="dropzone" id="image-upload">
-                    @csrf
-                    <div>
-                    <h3 class="text-center">Upload Multiple Images</h3>
-                </div>    
-                </form>
+                <x-admin.dropzone :action="route('invoice.index')"></x-admin.dropzone>
             </div>
         </div>
     </div>
 </section>
 @endsection
 @push('scripts')
-<script type="module">
-     Dropzone.options.imageUpload = {
-            maxFilesize: 1,
-            url: "http://dasdada.gr",
-            acceptedFiles: ".jpeg,.jpg,.png,.gif"
-        };
-</script>
 <script type="module">
     $('#invoices').select2({
         width: '100%',
