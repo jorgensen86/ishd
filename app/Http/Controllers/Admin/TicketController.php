@@ -21,8 +21,6 @@ class TicketController extends Controller
      */
     public function index(TicketDataTable $dataTable)
     {
-        $exitCode  = Artisan::call('inspire');
-        dd($exitCode);
         return $dataTable->render('test', ['title' => __(self::LANG_PATH . 'title')]);
     }
 
