@@ -1,5 +1,4 @@
 <?php
-
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -30,6 +29,12 @@ Route::middleware(['auth','admin'])->group(function() {
     Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
 
     Route::get('/invoice', [App\Http\Controllers\Admin\InvoiceController::class, 'index'])->name('invoice.index');
+
+    Route::get('reply', [App\Http\Controllers\Admin\ReplyController::class, 'create'])->name('reply.create');
+    Route::post('reply/store', [App\Http\Controllers\Admin\ReplyController::class, 'store'])->name('reply.store');
+
+    Route::get('notification/ticket/{ticket}', [App\Http\Controllers\Admin\NotificationController::class, 'ticket'])->name('notification.ticket');
+    Route::get('notification/reply/{reply}', [App\Http\Controllers\Admin\NotificationController::class, 'reply'])->name('notification.reply');
     
     Route::prefix('setting')->group(function() {
         Route::get('setting',  [App\Http\Controllers\Admin\SettingController::class, 'index'])->name('setting.index');
@@ -43,6 +48,10 @@ Route::middleware(['auth','admin'])->group(function() {
         Route::resource('user',  App\Http\Controllers\Admin\UserController::class)->except(['show']);
         Route::resource('client',  App\Http\Controllers\Admin\ClientController::class)->except(['show']);
     });
-    Route::resource('ticket/ticket',  App\Http\Controllers\Admin\TicketController::class);
+
+    Route::prefix('ticket')->group(function () {
+        Route::resource('ticket',  App\Http\Controllers\Admin\TicketController::class);
+    });
+
 });
 

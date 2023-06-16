@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <div class="card">
             <div class="card-body">
-                <div class="row mb-2">
+                <div class="row">
                     <div class="col-sm-6">
                         <h1 class="m-0">{{ $heading }}</h1>
                     </div>

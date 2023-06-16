@@ -84,7 +84,7 @@ class TicketDataTable extends DataTable
         return [
             Column::make('id'),
             Column::make('invoice_number')->title(Lang::get(TicketController::LANG_PATH . 'invoice')),
-            Column::make('user.name')->title(Lang::get(TicketController::LANG_PATH . 'from')),
+            Column::make('user.name')->title(Lang::get(TicketController::LANG_PATH . 'sender')),
             Column::make('subject')->title(Lang::get(TicketController::LANG_PATH . 'subject')),
             Column::make('created_at')->title(Lang::get(TicketController::LANG_PATH . 'created'))->className('text-right'),
             Column::make('action')->title('')->searchable(false)->orderable(false)->className('text-right'),
@@ -94,6 +94,7 @@ class TicketDataTable extends DataTable
     public function parameters() {
         return [
             'pageLength' => app(ConfigSettings::class)->results_per_page,
+            'stateSave' => true
         ];
     }
 }

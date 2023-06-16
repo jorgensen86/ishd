@@ -20,7 +20,8 @@ class Ticket extends Model
 
     protected $with = [
         'user',
-        'replies'
+        'invoice',
+        'replies',
     ];
 
     protected $casts = [
@@ -28,12 +29,20 @@ class Ticket extends Model
         'updated_at' => 'datetime:d-m-Y H:m',
     ];
 
+    public function invoice() {
+        return $this->hasOne(Invoice::class, 'invoice_id', 'invoice_id');
+    }
+
     public function user() {
         return $this->hasOne(User::class, 'user_id', 'author_id');
     }
 
     public function replies() {
         return $this->hasMany(Reply::class, 'ticket_id', 'id');
+    }
+
+    public function notifications() {
+        return $this->morphMany(Notification::class, 'model');
     }
 
     protected function dateAdded(): Attribute

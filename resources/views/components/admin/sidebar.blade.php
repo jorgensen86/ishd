@@ -35,8 +35,7 @@
          <li class="nav-item {{ request()->is('ticket/*') ? 'menu-open' : null }}">
           <a href="#" class="nav-link {{ request()->is('ticket/*') ? 'active' : null }}">
             <i class="nav-icon fas fa-tags"></i>
-            <p>{{ __('sidebar.ticket') }}</p>
-            <i class="fas fa-angle-left right"></i>
+            <p>{{ __('sidebar.ticket') }} <i class="fas fa-angle-left right"></i></p>
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
@@ -59,8 +58,7 @@
         <li class="nav-item {{ request()->is('user/*') ? 'menu-open' : null }}">
           <a href="#" class="nav-link {{ request()->is('user/*') ? 'active' : null }}">
             <i class="nav-icon fas fa-user-alt"></i>
-            <p>{{ __('sidebar.user') }}</p>
-            <i class="fas fa-angle-left right"></i>
+            <p>{{ __('sidebar.user') }} <i class="fas fa-angle-left right"></i></p>
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
@@ -83,8 +81,7 @@
         <li class="nav-item {{ request()->is('setting/*') ? 'menu-open' : null }}">
           <a href="{{ route('user.index') }}" class="nav-link {{ request()->is('setting/*') ? 'active' : null }}">
             <i class="nav-icon fas fa-wrench"></i>
-            <p>{{ __('sidebar.setting') }}</p>
-            <i class="fas fa-angle-left right"></i>
+            <p>{{ __('sidebar.setting') }} <i class="fas fa-angle-left right"></i></p>
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">

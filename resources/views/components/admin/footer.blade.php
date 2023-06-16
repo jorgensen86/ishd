@@ -5,3 +5,5 @@
       <b>Version</b> 1.0
     </div>
   </footer>
+
+  <aside class="control-sidebar control-sidebar-light"></aside>
