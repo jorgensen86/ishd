@@ -73,6 +73,14 @@ a {
 }
 
 /* Datatables */
+.dataTables_processing > div {
+    display: none;
+}
+
+.dataTables_processing i {
+  font-size: 40px;
+}
+
 .page-link {
     color: #00274e;
 }

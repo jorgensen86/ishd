@@ -57,7 +57,7 @@ $(function() {
                 } else {
                     $form.closest('.modal').modal('hide');
                     displayToast('bg-success', json.title, json.success);
-                    $('table').DataTable().ajax.reload(null, false);
+                    $('.dataTable').DataTable().ajax.reload(null, false);
                 }
             }
         })
@@ -84,7 +84,7 @@ $(function() {
                 if(json.success) {
                     $('#deleteModal').modal('hide');
                     displayToast('bg-success', json.title, json.success);
-                    $('table').DataTable().ajax.reload(null, false);
+                    $('.dataTable').DataTable().ajax.reload(null, false);
                 }
             },
             error: (xhr) => {

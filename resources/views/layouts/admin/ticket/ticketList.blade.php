@@ -1,46 +1,54 @@
 @extends('admin')
 
 @section('content')
-<x-admin.page-header :heading="$title"></x-admin.page-header>
-<section class="content">
-    <div class="container-fluid">
-        <div class="card">
-            <div class="card-header">
-                <div class="card-tools">
-                    <button data-url="{{ route('ticket.create') }}" data-target="#ticketModal"
-                        class="btn btn-sm btn-info btnOpenModal">{{ __('el.button_add') }}</button>
+    <x-admin.page-header :heading="$title"></x-admin.page-header>
+    <section class="content">
+        <div class="container-fluid">
+            <nav class="navbar navbar-expand navbar-orange navbar-dark">
+                <ul class="navbar-nav">
+                    @foreach ($queues as $queue)         
+                        <li class="nav-item d-none d-sm-inline-block">
+                            <a href="{{ route('ticket.index', $queue->id) }}" class="nav-link{{ request()->route('queue_id') == $queue->id ? ' active' : null }}">{{ $queue->name }}</a>
+                        </li>
+                    @endforeach
+                </ul>
+            </nav>
+            <div class="card">
+                <div class="card-header">
+                    <input type="checkbox" name="is_closed" id="test" value="1">
+                    <div class="float-right dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Dropdown button
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <form action="" class="p-2">
+                                <div class="form-group">
+                                    <input type="text" class="form-control">
+                                </div>
+                                <select name="" id="">
+                                    <option value=""></option>
+                                </select>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="card-body">
+                    {{ $dataTable->table() }}
                 </div>
             </div>
-            <div class="card-body table-responsive p-3">
-                {{ $table->table() }}
-            </div>
         </div>
-
-    </div>
-    <x-admin.form-modal id="ticketModal" size="md" :title="__('client.edit_title')"></x-admin.form-modal>
-    <x-admin.delete-modal id="deleteModal" size="sm" :title="__('ticket.delete_title')"></x-admin.delete-modal>
-</section>
+    </section>
 @endsection
-
 @push('scripts')
-<script type="module">
-    $(function () {
-        const table = $('#dataTableBuilder').DataTable(
-            $.extend(
-                $.DTABLE_CONFIG,
-                {
-                    stateSave: true,
-                    stateSaveCallback: function (settings, data) {
-                        localStorage.setItem('DataTables_' + settings.sInstance, JSON.stringify(data))
-                    },
-                    stateLoadCallback: function (settings) {
-                        return JSON.parse(localStorage.getItem('DataTables_' + settings.sInstance))
-                    },
-                    ajax: "{{ route('ticket.index') }}",
-                    columns: @json($columns),
-                }
-            )
-        );
+    {{ $dataTable->scripts(attributes: ['type' => 'module']) }}
+    <script type="module">
+        $("#test").on('change', function(){
+            $('table').DataTable().draw();
     });
-</script>
+//     $('#ticketTable').on( 'click', 'tbody tr', function () {
+//   window.location.href = $(this).data('link');
+// });
+    </script>
 @endpush

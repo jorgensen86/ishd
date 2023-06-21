@@ -13,4 +13,12 @@ class Queue extends Model
         'name',
         'active'
     ];
+
+    protected $with = [
+        'subject',
+    ];
+
+    public function subject() {
+        return $this->hasOne(Subject::class, 'id', 'subject_id');
+    }
 }

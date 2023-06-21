@@ -42,6 +42,7 @@ Route::middleware(['auth','admin'])->group(function() {
         Route::resource('permission',  App\Http\Controllers\Admin\PermissionController::class)->except(['show']);
         Route::resource('role',  App\Http\Controllers\Admin\RoleController::class)->except(['show']);
         Route::resource('queue',  App\Http\Controllers\Admin\QueueController::class)->except(['show']);
+        Route::resource('subject',  App\Http\Controllers\Admin\SubjectController::class)->except(['show']);
     });
     
     Route::prefix('user')->group(function() {
@@ -51,6 +52,7 @@ Route::middleware(['auth','admin'])->group(function() {
 
     Route::prefix('ticket')->group(function () {
         Route::resource('ticket',  App\Http\Controllers\Admin\TicketController::class);
+        Route::get('ticket/queue/{queue_id}',  [App\Http\Controllers\Admin\TicketController::class, 'index'])->name('ticket.index');
     });
 
 });

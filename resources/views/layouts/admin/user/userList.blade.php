@@ -30,6 +30,7 @@
                 $.DTABLE_CONFIG,
                 {   
                     pageLength:"{{ $results_per_page }}",
+                    order: [[0, 'desc']],
                     ajax: "{{ route('user.index') }}",
                     columns: [
                         { data: 'name' },

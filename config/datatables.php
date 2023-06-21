@@ -129,9 +129,11 @@ return [
         'dom' => 'rt<"row pt-6"<"col-sm-6"i><"col-sm-6"p>>',
         'pageLength' => 20,
         'language.search' => 'Αναζήτηση',
-        'language.info' => "Εμφάνιση σελίδας _PAGE_ από _PAGES_ (Συνολικά από _TOTAL_ εγγραφές)",
+        'language.info' => 'Εμφάνιση σελίδας _PAGE_ από _PAGES_ (Συνολικά από _TOTAL_ εγγραφές)',
+        'language.infoEmpty' => 'Εμφάνιση 0 από 0 εγγραφές',
+        'language.zeroRecords' => 'Δεν υπάρχουν εγγραφές',
         'language.paginate.next' => '<i class=\'fas fa-angle-right\'></i>',
         'language.paginate.previous' => '<i class=\'fas fa-angle-left\'></i>',
-        
+        'language.processing' => '<i class=\'fa fa-refresh fa-spin\'></i>',
     ]
 ];

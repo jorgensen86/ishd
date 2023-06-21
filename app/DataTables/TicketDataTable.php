@@ -22,11 +22,14 @@ class TicketDataTable extends DataTable
      */
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {   
+        if(request()->route('queue_id')) {
+            $query->where('queue_id' , request()->route('queue_id'));
+        }
+        
         if(request()->is_closed) {
-
             $query->where('is_closed' ,1);
         }
-        // dump(request()->all());
+
         return (new EloquentDataTable($query))
             ->addColumn('action', function ($data) {
                 return
@@ -68,8 +71,6 @@ class TicketDataTable extends DataTable
         ->parameters(array_merge(config('datatables.parameters'), $this->parameters()))
         ->setTableId('ticketTable')
         ->columns($this->getColumns())
-
-        //->dom('Bfrtip')
         ->orderBy(4,'asc')
         ->buttons([]);
     }

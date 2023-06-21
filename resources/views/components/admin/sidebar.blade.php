@@ -14,7 +14,7 @@
         <img src="{{ asset('image/admin/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="User Image">
       </div>
       <div class="info">
-        <a href="#" class="d-block">{{ Auth::user()->email }}</a>
+        <a href="#" class="d-block">{{ Auth::user()->name }}</a>
       </div>
     </div>
 
@@ -39,7 +39,7 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="{{ route('ticket.index') }}" class="nav-link {{ request()->is('ticket/ticket') ? 'active' : null }}">
+              <a href="{{ route('ticket.index', 1) }}" class="nav-link {{ request()->is('ticket/ticket') ? 'active' : null }}">
                 <i class="fas fa-angle-right nav-icon"></i>
                 <p>{{ __('sidebar.ticket_list') }}</p>
               </a>
@@ -85,15 +85,21 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="{{ route('setting.index') }}" class="nav-link {{ request()->is('user/user') ? 'active' : null }}">
+              <a href="{{ route('setting.index') }}" class="nav-link {{ request()->is('setting/setting') ? 'active' : null }}">
                 <i class="fas fa-angle-right nav-icon"></i>
-                <p>Settings</p>
+                <p>{{ __('sidebar.setting') }}</p>
               </a>
             </li>
             <li class="nav-item">
               <a href="{{ route('queue.index') }}" class="nav-link {{ request()->is('setting/queue') ? 'active' : null }}">
                 <i class="fas fa-angle-right nav-icon"></i>
                 <p>{{ __('sidebar.queue') }}</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{ route('subject.index') }}" class="nav-link {{ request()->is('setting/subject') ? 'active' : null }}">
+                <i class="fas fa-angle-right nav-icon"></i>
+                <p>{{ __('sidebar.subject') }}</p>
               </a>
             </li>
             <li class="nav-item">

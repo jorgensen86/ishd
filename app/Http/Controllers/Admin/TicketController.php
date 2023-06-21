@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\DataTables\TicketDataTable;
 use App\Http\Controllers\Controller;
+use App\Models\Queue;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Artisan;
 
 class TicketController extends Controller
 {
@@ -19,9 +19,17 @@ class TicketController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        // $this->middleware('permission:view_queue_' . request()->route('queue_id') );
+    }
+
     public function index(TicketDataTable $dataTable)
     {
-        return $dataTable->render('test', ['title' => __(self::LANG_PATH . 'title')]);
+        return $dataTable->render(self::LAYOUT_PATH . 'List', [
+            'title' => __(self::LANG_PATH . 'title'),
+            'queues' => Queue::all()
+        ]);
     }
 
     /**
@@ -32,7 +40,8 @@ class TicketController extends Controller
     public function create()
     {
         return view(self::LAYOUT_PATH . 'Form')
-            ->with('title', __(self::LANG_PATH . 'create'));
+            ->with('title', __(self::LANG_PATH . 'create'))
+            ->with('queues', Queue::where('active', 1)->get());
     }
 
     /**

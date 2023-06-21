@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id()->from(1000000);
             $table->foreignId('author_id')->constrained('users', 'user_id');
             $table->foreignId('invoice_id')->nullable()->constrained('invoices', 'invoice_id');
+            $table->foreignId('queue_id')->nullable()->constrained('queues');
             $table->unsignedInteger('invoice_number');
             $table->string('subject');
             $table->longText('body');
