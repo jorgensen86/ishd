@@ -27,8 +27,18 @@
                                                 </h3>
                                                 <div id="ticketBody"
                                                     class="collapse{{ !$ticket->replies->count() ? ' show' : null }}">
-                                                    <div class="timeline-body">{{ $ticket->body }}</div>
+                                                    <div class="timeline-body">
+                                                        <div>
+                                                            {{ $ticket->body }}
+                                                        </div>
+                                                        {{-- <div class="timeline-image">
+                                                            @foreach ($medias as $media)
+                                                                {{ $media }}
+                                                            @endforeach
+                                                        </div> --}}
+                                                    </div>
                                                     <div class="timeline-footer text-right">
+                                                        <button data-target="#notificationModal" data-url="{{ route('notification.ticket', $ticket) }}" class="btn btn-success btn-sm btnOpenModal">Επισυνάψεις ({{ $medias->count() }})</button>
                                                         <button data-target="#notificationModal" data-url="{{ route('notification.ticket', $ticket) }}" class="btn btn-success btn-sm btnOpenModal">Σημειώσεις ({{ $ticket->notifications->count() }})</button>
                                                     </div>
                                                 </div>

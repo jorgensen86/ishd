@@ -7,14 +7,18 @@ use Illuminate\View\Component;
 class Dropzone extends Component
 {
     public $action;
+    public $formId;
+
+
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($action)
+    public function __construct($action, $formId)
     {
         $this->action = $action;
+        $this->formId = $formId;
     }
 
     /**

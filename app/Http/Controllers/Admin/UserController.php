@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\DataTables\UserDataTable;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Settings\ConfigSettings;
@@ -17,6 +18,9 @@ use Yajra\DataTables\Html\Builder;
 
 class UserController extends Controller
 {
+    const LAYOUT_PATH = 'layouts.admin.user.user';
+    const LANG_PATH = 'admin/user/user.';
+
     /**
      * Display a listing of the resource.
      *
@@ -34,42 +38,12 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Builder $builder, ConfigSettings $configSettings)
-    {
-        
-        if (request()->ajax()) {
-            return Datatables::eloquent(User::where('administrator', 1))
-                ->editColumn('active', function ($data) {
-                    return $data->active ? '<i class="text-success fas fa-check"></i>' : '<i class="text-danger fas fa-xmark"></i>';
-                })
-                ->addColumn('action', function ($data) {
-                    return 
-                    '<button data-target="#userModal" data-url="' . route('user.edit', $data) . '" class="btn btn-outline-info btn-flat btn-sm btnOpenModal">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                    <button data-target="#deleteModal" data-url="' . route('user.destroy', $data) . '" class="btn btn-outline-danger btn-flat btn-sm btnDeleteModal">
-                            <i class="fas fa-ban"></i>
-                    </button>';
-                })
-                ->rawColumns(['action', 'active'])
-                ->addIndexColumn()
-                ->make(true);
-        }
-
-        $table = $builder->columns([
-            Column::make(['title' => __('user.fullname')]),
-            Column::make(['title' => __('user.email')]),
-            Column::make(['title' => __('user.username')]),
-            Column::make(['title' => __('user.active')]),
-            Column::make(),
+    public function index(UserDataTable $userDataTable)
+    {        
+        return $userDataTable->render(self::LAYOUT_PATH . 'List', [
+            'title' => __(self::LANG_PATH . 'title'),
         ]);
 
-
-        return view('layouts.admin.user.userList')
-            ->with('results_per_page', $configSettings->results_per_page)
-            ->with('class' ,'user-page')
-            ->with('title' , __('user.title_user'))
-            ->with('table', $table);
     }
 
     /**

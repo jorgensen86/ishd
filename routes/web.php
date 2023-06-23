@@ -1,4 +1,5 @@
 <?php
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -26,7 +27,10 @@ Route::middleware(['auth','client'])->group(function() {
 Route::middleware(['auth','admin'])->group(function() {
 
     Route::get('/', function () { return redirect('/dashboard'); });
+
     Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
+
+    Route::post('uploadMedia', App\Http\Controllers\Admin\UploadMediaController::class)->name('upload');
 
     Route::get('/invoice', [App\Http\Controllers\Admin\InvoiceController::class, 'index'])->name('invoice.index');
 

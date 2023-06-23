@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\DataTables\TicketDataTable;
 use App\Http\Controllers\Controller;
+use App\Models\Invoice;
 use App\Models\Queue;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
@@ -39,6 +40,7 @@ class TicketController extends Controller
      */
     public function create()
     {
+     
         return view(self::LAYOUT_PATH . 'Form')
             ->with('title', __(self::LANG_PATH . 'create'))
             ->with('queues', Queue::where('active', 1)->get());
@@ -52,16 +54,22 @@ class TicketController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
-        // $ticket->author_id = $request->author_id;
-        // $ticket->invoice_id = $request->invoice_id;
-        // $invoice = Invoice::find($request->invoice_id);
-        // $ticket->invoice_number = $invoice->invoice_number;
-        // $ticket->subject = $request->subject;
-        // $ticket->body = $request->body;
-        // $ticket->save();
 
-        return redirect('/ticket/ticket')->with('success', 'Profile updated!');
+        $ticket = new Ticket();
+        $ticket->author_id = $request->author_id;
+        $ticket->invoice_id = $request->invoice_id;
+        $ticket->queue_id = $request->queue_id;
+        $invoice = Invoice::find($request->invoice_id);
+        $ticket->invoice_number = $invoice->invoice_number;
+        $ticket->subject = $request->subject;
+        $ticket->body = $request->body;
+        $ticket->save();
+
+        foreach ($request->media as $key => $media) {
+            $ticket->addMedia(storage_path('app/' .$media))->withResponsiveImages()->toMediaCollection();
+        }
+
+        // return redirect('/ticket/ticket')->with('success', 'Profile updated!');
     }
 
     /**
@@ -85,7 +93,8 @@ class TicketController extends Controller
         
         return view(self::LAYOUT_PATH . 'View')
             ->with('title', __(self::LANG_PATH . 'view'))
-            ->with('ticket', $ticket);
+            ->with('ticket', $ticket)
+            ->with('medias', $ticket->getMedia());
     }
 
     /**

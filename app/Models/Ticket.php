@@ -5,10 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Ticket extends Model
+class Ticket extends Model implements HasMedia
 {
-    use HasFactory;
+    use HasFactory, InteractsWithMedia;
 
     protected $appends = [
         'date_added'
@@ -28,6 +30,8 @@ class Ticket extends Model
         'created_at' => 'datetime:d-m-Y H:m',
         'updated_at' => 'datetime:d-m-Y H:m',
     ];
+
+    protected $guarded = [];
 
     public function invoice() {
         return $this->hasOne(Invoice::class, 'invoice_id', 'invoice_id');

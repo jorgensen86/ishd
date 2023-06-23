@@ -12,7 +12,7 @@
                     </div>
                 </div>
                 <div class="card-body table-responsive p-3">
-                    {{ $table->table() }}
+                    {{ $dataTable->table() }}
                 </div>
             </div>
 
@@ -23,26 +23,5 @@
 @endsection
 
 @push('scripts')
-<script type="module">    
-    $(function () {
-        var table = $('#dataTableBuilder').DataTable(
-            $.extend(
-                $.DTABLE_CONFIG,
-                {   
-                    pageLength:"{{ $results_per_page }}",
-                    order: [[0, 'desc']],
-                    ajax: "{{ route('user.index') }}",
-                    columns: [
-                        { data: 'name' },
-                        { data: 'email' },
-                        { data: 'username' },
-                        { data: 'active', className: 'text-center', orderable: false, searchable: false},
-                        { data: 'action', className: 'text-right', orderable: false, searchable: false},
-
-                    ]
-                }
-            )
-        );
-    });
-</script>
+{{ $dataTable->scripts(attributes: ['type' => 'module']) }}
 @endpush
