@@ -1,5 +1,4 @@
 @extends('admin')
-
 @section('content')
     <x-admin.page-header :heading="$title"></x-admin.page-header>
     <section class="content">
@@ -12,18 +11,13 @@
                                 @csrf
                                 <input type="hidden" name="author_id" value="{{ auth()->user()->user_id }}">
                                 <input type="hidden" name="author" value="{{ auth()->user()->name }}">
-                                <x-admin.form.select label="{{ __('admin/ticket.sender') }}" inputName="queue_id"
+                                <x-admin.form.select selected="" label="{{ __('admin/ticket.sender') }}" inputName="queue_id"
                                     :options="$queues"></x-admin.form.select>
-                                {{-- <x-admin.form.select label="{{ __('admin/ticket.recipient') }}" inputName="invoice_id" :options="[]"></x-admin.form.select> --}}
-                                <div class="form-group">
-                                    <label>{{ __('admin/ticket.recipient') }}</label>
-                                    <select data-allow-clear="true" data-placeholder="{{ __('el.text_select') }}"
-                                        name="invoice_id" id="invoices"></select>
-                                </div>
+                                <x-admin.form.select2 label="{{ __('admin/ticket.sender') }}" name="invoice_number" :id="'invoiceNumber'" inputName="queue_id" options=""></x-admin.form.select>
                                 <x-admin.form.text inputName="subject" labelFor="inputSubject"
                                     placeholder="{{ __('admin/ticket.subject') }}" :value="''"></x-admin.form.text>
                                 <div class="form-group">
-                                    <label>dsadsa</label>
+                                    <label>{{ __('admin/ticket.message') }}</label>
                                     <x-admin.ckeditor :id="'bodyEditor'" :name="'body'"></x-admin.ckeditor>
                                 </div>
                             </div>
@@ -42,33 +36,38 @@
         </div>
     </section>
 @endsection
+@push('styles')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css" integrity="sha512-ELV+xyi8IhEApPS/pSj66+Jiw+sOT1Mqkzlh8ExXihe4zfqbWkxPRi8wptXIO9g73FSlhmquFlUOuMSoXz5IRw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+@endpush
 @push('scripts')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js" integrity="sha512-57oZ/vW8ANMjR/KQ6Be9v/+/h6bq9/l3f0Oc7vn6qMqyhvPd1cvKBRWWpzu0QoneImqr2SkmO4MSqU+RpHom3Q==" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
+
     <script type="module">
-    $('#invoices').select2({
-        width: '100%',
-        theme: "classic",
-        minimumInputLength: 3,
-        allowClear: true,
-        ajax: {
-            url: "{{ route('invoice.index') }}",
+ var path = "{{ route('invoice.index') }}";
+ $('input[name=\'invoice_number\']').autocomplete({
+        source: function( request, response ) {
+          $.ajax({
+            url: path,
+            type: 'GET',
             dataType: "json",
-            delay: 600,
-            data: (params) => {
-                return { 
-                    filter_invoice : params.term,
-                };
+            data: {
+                filter_invoice: request.term
             },
-            processResults: function(json) {
-                return {
-                    results: $.map(json, function (item) {
-                        return {
-                            text: `${item.invoice_number}  ${item.user.name}`,
-                            id: item.invoice_id
-                        }
-                    })
-                };
-            },
+            success: function( json ) {
+                response($.map(json, function(item) {
+					return {
+						label: item['invoice_number'] + ` - (${item.domain})`,
+						value: item['invoice_id']
+					}
+				}));
+                }
+          });
         },
-    });
+        select: function(event, item) {
+            event.preventDefault();
+            $('input[name=\'invoice_number\']').val(item.item['label']);
+        }
+      });
+
 </script>
 @endpush

@@ -30,6 +30,15 @@ class TicketDataTable extends DataTable
             $query->where('is_closed' ,1);
         }
 
+        if(request()->invoice) {
+            $query->where('invoice_number', request()->invoice);
+        }
+
+        if(request()->subject) {
+            $query->where('subject', 'LIKE', request()->subject . '%');
+        }
+        
+
         return (new EloquentDataTable($query))
             ->addColumn('action', function ($data) {
                 return
@@ -66,7 +75,12 @@ class TicketDataTable extends DataTable
     {
         return $this->builder()
         ->ajax([
-            'data' => 'function(d) { d.is_closed = $("#test").is(\':checked\') ? 1 : 0 }',
+            'data' => 'function(params) { 
+                params.is_closed = $("#test").is(\':checked\') ? 1 : 0
+                params.invoice = $("#invoice").val() 
+                params.subject = $("#subject").val() 
+                
+            }',
         ])
         ->parameters(array_merge(config('datatables.parameters'), $this->parameters()))
         ->setTableId('ticketTable')

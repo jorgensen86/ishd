@@ -41,7 +41,7 @@ class QueueController extends Controller
                 ->with('title', __(self::LANG_PATH . 'create'))
                 ->with('action', route('queue.store'))
                 ->with('method', 'post')
-                ->with('queue', new Queue());
+                ->with('data', new Queue());
         }
     }
 
@@ -92,8 +92,7 @@ class QueueController extends Controller
                 ->with('title', __(self::LANG_PATH . 'edit'))
                 ->with('action', route('queue.update', $queue))
                 ->with('method', 'put')
-                ->with('data', $queue)
-                ->with('subjects', Subject::all());
+                ->with('data', $queue);
         }
     }
 

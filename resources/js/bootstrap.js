@@ -10,8 +10,8 @@ window.jQuery = window.$ = $
 
 import 'bootstrap';
 
-import select2 from 'select2';
-select2();
+// import select2 from 'select2';
+// select2();
 
 import { DTABLE_CONFIG } from  './config/datatables'
 $.DTABLE_CONFIG = DTABLE_CONFIG;

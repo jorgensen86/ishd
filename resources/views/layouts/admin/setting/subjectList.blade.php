@@ -11,7 +11,7 @@
                             class="btn btn-sm btn-info btnOpenModal">{{ __('el.button_add') }}</button>
                     </div>
                 </div>
-                <div class="card-body">
+                <div class="card-body table-responsive">
                     {{ $dataTable->table() }}
                 </div>
             </div>

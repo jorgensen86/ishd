@@ -5,6 +5,7 @@
     <form action="{{ $action }}" method="{{ $method }}" id="subjectForm" autocomplete="false">
         @csrf
         <x-admin.form.text inputName="name" labelFor="inputName" placeholder="{{ __('admin/setting/subject.name') }}" :value="$data->name"></x-admin.form.text>
+        <x-admin.form.select label="{{ __('admin/setting/subject.queue') }}" :selected="$data->queue_id" inputName="queue_id" :options="$queues"></x-admin.form.select>
         <x-admin.form.checkbox :active="$data->active"></x-admin.form.checkbox>
     </form>
 </div>

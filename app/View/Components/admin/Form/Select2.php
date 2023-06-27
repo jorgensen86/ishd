@@ -4,24 +4,22 @@ namespace App\View\Components\Admin\Form;
 
 use Illuminate\View\Component;
 
-class Select extends Component
+class Select2 extends Component
 {
-    public $label;
-    public $inputName;
+    public $id;
     public $options;
-    public $selected;
+    public $name;
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($label, $inputName, $options, $selected)
+    public function __construct($id, $options, $name)
     {
-        $this->label = $label;
-        $this->inputName = $inputName;
+        $this->id = $id;
         $this->options = $options;
-        $this->selected = $selected;
+        $this->name = $name;
     }
 
     /**
@@ -31,6 +29,6 @@ class Select extends Component
      */
     public function render()
     {
-        return view('components.admin.form.select');
+        return view('components.admin.form.select2');
     }
 }

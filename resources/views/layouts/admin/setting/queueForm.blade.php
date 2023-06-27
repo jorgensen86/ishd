@@ -5,12 +5,7 @@
     <form action="{{ $action }}" method="{{ $method }}" id="queueForm" autocomplete="false">
         @csrf
         <x-admin.form.text inputName="name" labelFor="inputName" placeholder="{{ __('admin/setting/subject.name') }}" :value="$data->name"></x-admin.form.text>
-        <x-admin.form.checkbox :active="$data->active "></x-admin.form.checkbox>
-        <div>
-            @foreach ($subjects as $subject)
-                <p>{{ $subject->name }}</p>
-            @endforeach
-        </div>
+        <x-admin.form.checkbox :active="$data->active"></x-admin.form.checkbox>
     </form>
 </div>
 <div class="modal-footer justify-content-between">

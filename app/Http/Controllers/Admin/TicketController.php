@@ -54,7 +54,6 @@ class TicketController extends Controller
      */
     public function store(Request $request)
     {
-
         $ticket = new Ticket();
         $ticket->author_id = $request->author_id;
         $ticket->invoice_id = $request->invoice_id;
@@ -65,11 +64,11 @@ class TicketController extends Controller
         $ticket->body = $request->body;
         $ticket->save();
 
-        foreach ($request->media as $key => $media) {
-            $ticket->addMedia(storage_path('app/' .$media))->withResponsiveImages()->toMediaCollection();
-        }
+        // foreach ($request->media as $key => $media) {
+        //     $ticket->addMedia(storage_path('app/' .$media))->withResponsiveImages()->toMediaCollection();
+        // }
 
-        // return redirect('/ticket/ticket')->with('success', 'Profile updated!');
+        return redirect('/ticket/ticket')->with('success', 'Profile updated!');
     }
 
     /**

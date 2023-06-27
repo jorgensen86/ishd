@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\DataTables\SubjectDataTable;
 use App\Http\Controllers\Controller;
+use App\Models\Queue;
 use App\Models\Subject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -13,7 +14,7 @@ class SubjectController extends Controller
 {
     const LAYOUT_PATH = 'layouts.admin.setting.subject';
     const LANG_PATH = 'admin/setting/subject.';
-    const PAGE_CLASS = 'ticketPage';
+    const PAGE_CLASS = 'subjectPage';
 
     /**
      * Display a listing of the resource.
@@ -40,6 +41,7 @@ class SubjectController extends Controller
                 ->with('title', __(self::LANG_PATH . 'create'))
                 ->with('action', route('subject.store'))
                 ->with('method', 'post')
+                ->with('queues', Queue::where('active', 1)->get())
                 ->with('data', new Subject());
         }
     }
@@ -56,6 +58,9 @@ class SubjectController extends Controller
 
         $validator = Validator::make($request->all(), [
             'name' => 'required|unique:subjects',
+            'queue_id' => 'required',
+        ], [
+            'queue_id.required' => __(self::LANG_PATH . 'error_queue')
         ]);
 
         if ($validator->fails()) {
@@ -67,6 +72,7 @@ class SubjectController extends Controller
 
             Subject::create([
                 'name' => $request->name,
+                'queue_id' => $request->queue_id,
                 'active' => $request->active ?? 0
             ]);
 
@@ -92,6 +98,7 @@ class SubjectController extends Controller
                 ->with('title', __(self::LANG_PATH . 'edit'))
                 ->with('action', route('subject.update', $subject))
                 ->with('method', 'put')
+                ->with('queues', Queue::where('active', 1)->get())
                 ->with('data', $subject);
         }
     }
@@ -109,6 +116,9 @@ class SubjectController extends Controller
 
         $validator = Validator::make($request->all(), [
             'name' => ['required', Rule::unique('roles', 'name')->ignore($subject->id, 'id')],
+            'queue_id' => 'required'
+        ], [
+            'queue_id.required' => __(self::LANG_PATH . 'error_queue')
         ]);
 
         if ($validator->fails()) {
@@ -119,6 +129,7 @@ class SubjectController extends Controller
             
         } else {
             $subject->name = $request->name;
+            $subject->queue_id = $request->queue_id;
             $subject->active = $request->active ?? 0;
             $subject->touch();
 

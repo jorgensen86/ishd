@@ -4,10 +4,7 @@
 <div class="modal-body">
     <form action="{{ $action }}" method="{{ $method }}" id="permissionForm" autocomplete="false">
         @csrf
-        <div class="form-group">
-            <label for="inputName">{{ __('admin/setting/permission.name') }}</label>
-            <input type="text" class="form-control form-control-border border-width-2" id="inputName" name="name" value="{{ $permission->name }}" placeholder="{{ __('admin/setting/permission.name') }}">
-        </div>
+        <x-admin.form.text inputName="name" labelFor="inputName" placeholder="{{ __('admin/setting/subject.name') }}" :value="$data->name"></x-admin.form.text>
     </form>
 </div>
 <div class="modal-footer justify-content-between">

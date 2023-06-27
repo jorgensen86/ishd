@@ -2,15 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\DataTables\RoleDataTable;
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Settings\ConfigSettings;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
-use Yajra\DataTables\Facades\DataTables;
-use Yajra\DataTables\Html\Builder;
-use Yajra\DataTables\Html\Column;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
@@ -20,58 +16,18 @@ class RoleController extends Controller
     const LAYOUT_PATH = 'layouts.admin.setting.role';
     const LANG_PATH = 'admin/setting/role.';
     const PAGE_CLASS = 'rolePage';
-    const COLUMNS = [
-        ['data' => 'id'],
-        ['data' => 'name'],
-        ['data' => 'created_at'],
-        ['data' => 'updated_at'],
-        ['data' => 'action', 'className' => 'text-right', 'orderable' => false],
-    ];
 
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Builder $builder, ConfigSettings $configSettings)
+    public function index(RoleDataTable $roleDataTable)
     {
-
-        if (request()->ajax()) {
-            return DataTables::eloquent(Role::query())
-                ->editColumn('created_at', function ($data) {
-                    return Carbon::parse($data->created_at)->format('d/m/Y');
-                })
-                ->editColumn('updated_at', function ($data) {
-                    return Carbon::parse($data->updated_at)->format('d/m/Y');
-                })
-                ->addColumn('action', function ($data) {
-                    return
-                        '<button data-target="#roleModal" data-url="' . route('role.edit', $data) . '" class="btn btn-outline-info btn-flat btn-sm btnOpenModal">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                    <button data-target="#deleteModal" data-url="' . route('role.destroy', $data) . '" class="btn btn-outline-danger btn-flat btn-sm btnDeleteModal">
-                            <i class="fas fa-ban"></i>
-                    </button>';
-                })
-                ->rawColumns(['action'])
-                ->addIndexColumn('id')
-                ->make(true);
-        }
-
-        return view(self::LAYOUT_PATH . 'List')
-            ->with('results_per_page', $configSettings->results_per_page)
-            ->with('class', self::PAGE_CLASS)
-            ->with('title', __(self::LANG_PATH . 'title'))
-            ->with('table',  $builder->columns([
-                Column::make()->title(__(self::LANG_PATH . 'id')),
-                Column::make()->title(__(self::LANG_PATH . 'name')),
-                Column::make()->title(__(self::LANG_PATH . 'created')),
-                Column::make()->title(__(self::LANG_PATH . 'updated')),
-                Column::make()
-            ]))
-            ->with('columns', self::COLUMNS);
+        return $roleDataTable->render(self::LAYOUT_PATH . 'List', [
+            'title' => __(self::LANG_PATH . 'title'),
+        ]);
     }
-
     /**
      * Show the form for creating a new resource.
      *

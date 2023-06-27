@@ -29,7 +29,7 @@
                                                     class="collapse{{ !$ticket->replies->count() ? ' show' : null }}">
                                                     <div class="timeline-body">
                                                         <div>
-                                                            {{ $ticket->body }}
+                                                            {!! $ticket->body !!}
                                                         </div>
                                                         {{-- <div class="timeline-image">
                                                             @foreach ($medias as $media)

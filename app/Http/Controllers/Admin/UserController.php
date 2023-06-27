@@ -5,15 +5,12 @@ namespace App\Http\Controllers\Admin;
 use App\DataTables\UserDataTable;
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Settings\ConfigSettings;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Spatie\Permission\Models\Role;
-use Yajra\DataTables\Facades\DataTables;
-use Yajra\DataTables\Html\Column;
-use Yajra\DataTables\Html\Builder;
+
 
 
 class UserController extends Controller
@@ -58,7 +55,8 @@ class UserController extends Controller
                 ->with('title', __('user.create_user'))
                 ->with('action', route('user.store'))
                 ->with('method', 'post')
-                ->with('user', new User());
+                ->with('user', new User())
+                ->with('roles', Role::all());
         }
     }
 
