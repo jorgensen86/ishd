@@ -36,38 +36,3 @@
         </div>
     </section>
 @endsection
-@push('styles')
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css" integrity="sha512-ELV+xyi8IhEApPS/pSj66+Jiw+sOT1Mqkzlh8ExXihe4zfqbWkxPRi8wptXIO9g73FSlhmquFlUOuMSoXz5IRw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-@endpush
-@push('scripts')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js" integrity="sha512-57oZ/vW8ANMjR/KQ6Be9v/+/h6bq9/l3f0Oc7vn6qMqyhvPd1cvKBRWWpzu0QoneImqr2SkmO4MSqU+RpHom3Q==" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
-
-    <script type="module">
- var path = "{{ route('invoice.index') }}";
- $('input[name=\'invoice_number\']').autocomplete({
-        source: function( request, response ) {
-          $.ajax({
-            url: path,
-            type: 'GET',
-            dataType: "json",
-            data: {
-                filter_invoice: request.term
-            },
-            success: function( json ) {
-                response($.map(json, function(item) {
-					return {
-						label: item['invoice_number'] + ` - (${item.domain})`,
-						value: item['invoice_id']
-					}
-				}));
-                }
-          });
-        },
-        select: function(event, item) {
-            event.preventDefault();
-            $('input[name=\'invoice_number\']').val(item.item['label']);
-        }
-      });
-
-</script>
-@endpush

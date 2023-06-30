@@ -58,7 +58,13 @@ $(function() {
                     $form.closest('.modal').modal('hide');
                     displayToast('bg-success', json.title, json.success);
                     $('.dataTable').DataTable().ajax.reload(null, false);
+                    if(json['id']) {
+                        $('#' + json['id']).text(json['count'])
+                    }
                 }
+            },
+            error: (xhr) => {
+                alert(xhr.status + ' - ' + xhr.responseJSON.message)
             }
         })
     })

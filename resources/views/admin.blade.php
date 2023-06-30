@@ -20,17 +20,17 @@
     @auth
     <div class="wrapper">
         <!-- Navbar Componnent -->
-        <x-admin.navbar></x-admin-navbar>
+        <x-admin.layout.navbar></x-admin.layout.navbar>
 
         <!-- Sidebar Componnent -->
-        <x-admin.sidebar></x-admin.sidebar>
+        <x-admin.layout.sidebar></x-admin.layout.sidebar>
 
         <div class="content-wrapper">
             @yield('content')
         </div>
         
         <!-- Footer Componnent -->
-        <x-admin.footer></x-admin.footer>
+        <x-admin.layout.footer></x-admin.layout.footer>
     </div>
     @endauth
     @vite(['resources/js/app.js', 'resources/js/admin.js'])

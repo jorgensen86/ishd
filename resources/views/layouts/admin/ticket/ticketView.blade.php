@@ -23,7 +23,7 @@
                                                 <span class="time"><i class="fas fa-clock"></i>
                                                     {{ $ticket->date_added }}</span>
                                                 <h3 class="timeline-header">
-                                                    <a href="javascript:void()" data-toggle="collapse" data-target="#ticketBody">{{ $ticket->user->name }}</a> έστειλε ένα αίτημα
+                                                    <a href="javascript:void()" data-toggle="collapse" data-target="#ticketBody">{{ $ticket->user->name }}</a>
                                                 </h3>
                                                 <div id="ticketBody"
                                                     class="collapse{{ !$ticket->replies->count() ? ' show' : null }}">
@@ -38,8 +38,7 @@
                                                         </div> --}}
                                                     </div>
                                                     <div class="timeline-footer text-right">
-                                                        <button data-target="#notificationModal" data-url="{{ route('notification.ticket', $ticket) }}" class="btn btn-success btn-sm btnOpenModal">Επισυνάψεις ({{ $medias->count() }})</button>
-                                                        <button data-target="#notificationModal" data-url="{{ route('notification.ticket', $ticket) }}" class="btn btn-success btn-sm btnOpenModal">Σημειώσεις ({{ $ticket->notifications->count() }})</button>
+                                                        <button data-target="#notificationModal" data-url="{{ route('notification.index', ['ticket', $ticket]) }}" class="btn btn-success btn-sm btnOpenModal">Σημειώσεις (<span id="notifTicket{{ $ticket->id }}">{{ $ticket->notifications->count() }}</span>)</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -52,14 +51,12 @@
                                                         {{ $reply->date_added }}</span>
                                                     <h3 class="timeline-header"><a href="javascript:void()"
                                                             data-toggle="collapse"
-                                                            data-target="#replyBody{{ $reply->id }}">{{ $reply->user->name }}</a>
-                                                        απάντησε</h3>
+                                                            data-target="#replyBody{{ $reply->id }}">{{ $reply->user->name }}</a></h3>
                                                     <div id="replyBody{{ $reply->id }}"
                                                         class="collapse{{ $reply->id === $ticket->replies->last()->id ? ' show' : null }}">
                                                         <div class="timeline-body">{!! $reply->body !!}</div>
                                                         <div class="timeline-footer text-right">
-                                                            <button class="btn btn-secondary btn-sm btnOpenModal" data-target="#notificationModal" data-url="{{ route('notification.reply', $reply) }}">Σημειώσεις
-                                                                ({{ $reply->notifications->count() }})</button>
+                                                            <button data-target="#notificationModal" data-url="{{ route('notification.index', ['reply', $reply]) }}" class="btn btn-success btn-sm btnOpenModal">Σημειώσεις (<span id="notifReply{{ $reply->id }}">{{ $reply->notifications->count() }}</span>)</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -97,7 +94,7 @@
                                 <div class="card-body p-0">
                                     <button class="nav-link" data-widget="control-sidebar" data-controlsidebar-slide="true"
                                         href="#" role="button">
-                                        sadsa
+                                        
                                     </button>
                                 </div>
                             </div>
@@ -120,6 +117,6 @@
                 </div>
             </div>
         </div>
-        <x-admin.form-modal id="notificationModal" size="xl" :title="__('client.edit_title')"></x-admin.form-modal>
+        <x-admin.form-modal id="notificationModal" size="lg" :title="__('client.edit_title')"></x-admin.form-modal>
     </section>
 @endsection

@@ -35,6 +35,10 @@ a {
     color: rgb(0 62 147);
 }
 
+.bg-info {
+    background-color: #00274e!important;
+}
+
 /* Forms */
 .custom-control-label {
     cursor: pointer;
@@ -45,7 +49,16 @@ a {
     background-color: #28a745;
 }
 
+/* Tables */
+.table td {
+    padding: 0.5rem;
+}
+
 /* Modals */
+.modal {
+    height: auto;
+}
+
 .modal-backdrop {
     z-index: 1020;
 }
@@ -109,8 +122,29 @@ a {
     padding: 10px;
 }
 
+.timeline>div>.fa, .timeline>div>.fab, .timeline>div>.fad, .timeline>div>.fal, .timeline>div>.far, .timeline>div>.fas, .timeline>div>.ion, .timeline>div>.svg-inline--fa {
+    font-size: 13px;
+}
+
 .timeline>div>.timeline-item .timeline-body .timeline-image {
     display: flex;
+}
+.timeline.notifications::before {
+    display: none;
+}
+
+.timeline>.time-label>span {
+    font-weight: 400;
+    font-size: 12px;
+    padding: 3px 10px;
+}
+
+.timeline.notifications>div>.timeline-item {
+    margin: auto;
+}
+
+.timeline>div>.timeline-item>.timeline-header>a {
+    font-size: 14px;
 }
 
 /*  Login Page */

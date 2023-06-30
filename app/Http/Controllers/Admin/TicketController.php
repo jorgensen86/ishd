@@ -25,11 +25,14 @@ class TicketController extends Controller
         // $this->middleware('permission:view_queue_' . request()->route('queue_id') );
     }
 
-    public function index(TicketDataTable $dataTable)
+    public function index(TicketDataTable $dataTable, $queue_id = null)
     {
+        Queue::findOrFail($queue_id );
+
         return $dataTable->render(self::LAYOUT_PATH . 'List', [
             'title' => __(self::LANG_PATH . 'title'),
-            'queues' => Queue::all()
+            'queues' => Queue::all(),
+            'filter_invoice'=> request()->query('invoice')
         ]);
     }
 

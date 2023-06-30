@@ -60,6 +60,9 @@ class LoginController extends Controller
     protected function authenticated()
     {
         if ((auth()->user()->administrator)) {
+            if(session('url.intended')) {
+                return redirect(session()->get('url.intended'));
+            }
             return redirect()->route('dashboard');
         } elseif (!auth()->user()->administrator) {
             return redirect()->route('home');

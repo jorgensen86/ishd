@@ -37,8 +37,8 @@ Route::middleware(['auth','admin'])->group(function() {
     Route::get('reply', [App\Http\Controllers\Admin\ReplyController::class, 'create'])->name('reply.create');
     Route::post('reply/store', [App\Http\Controllers\Admin\ReplyController::class, 'store'])->name('reply.store');
 
-    Route::get('notification/ticket/{ticket}', [App\Http\Controllers\Admin\NotificationController::class, 'ticket'])->name('notification.ticket');
-    Route::get('notification/reply/{reply}', [App\Http\Controllers\Admin\NotificationController::class, 'reply'])->name('notification.reply');
+    Route::get('notification/{type}/{id}', [App\Http\Controllers\Admin\NotificationController::class, 'index'])->name('notification.index');
+    Route::post('notification/store', [App\Http\Controllers\Admin\NotificationController::class, 'store'])->name('notification.store');
     
     Route::prefix('setting')->group(function() {
         Route::get('setting',  [App\Http\Controllers\Admin\SettingController::class, 'index'])->name('setting.index');
@@ -56,7 +56,7 @@ Route::middleware(['auth','admin'])->group(function() {
 
     Route::prefix('ticket')->group(function () {
         Route::resource('ticket',  App\Http\Controllers\Admin\TicketController::class);
-        Route::get('ticket/queue/{queue_id}',  [App\Http\Controllers\Admin\TicketController::class, 'index'])->name('ticket.index');
+        Route::get('queue/{queue_id?}',  [App\Http\Controllers\Admin\TicketController::class, 'index'])->name('ticket.index');
     });
 
 });

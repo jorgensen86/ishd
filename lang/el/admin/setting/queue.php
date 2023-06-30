@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 return [
     'title'     => 'Ουρές Αιτημάτων',
     'create'    => 'Δημιουργία Ουράς',

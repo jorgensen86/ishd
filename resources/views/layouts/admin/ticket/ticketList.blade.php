@@ -20,7 +20,7 @@
                         <div class="col-md-2">
                             <div class="form-group">
                                 <label>{{ __('admin/ticket.invoice') }}</label>
-                                <input type="text" id="invoice" name="invoice" class="form-control form-control-sm" placeholder="{{ __('admin/ticket.invoice') }}">
+                                <input type="text" id="invoice" name="invoice" value="{{ $filter_invoice }}" class="form-control form-control-sm" placeholder="{{ __('admin/ticket.invoice') }}">
                             </div>
                         </div>
                         <div class="col-md-2">

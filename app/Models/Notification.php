@@ -15,11 +15,12 @@ class Notification extends Model
         'user'
     ];
 
+    protected $fillable = [
+        'author_id',
+        'body'
+    ];
+
     public function user() {
         return $this->hasOne(User::class, 'user_id', 'author_id');
     }
-
-    // public function notifications() {
-    //     return $this->morphMany(Notification::class, 'model');
-    // }
 }
