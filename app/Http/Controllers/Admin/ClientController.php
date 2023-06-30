@@ -52,7 +52,7 @@ class ClientController extends Controller
         }
 
         $table = $builder->columns([
-            Column::make(['title' => __('client.fullname')]),
+            Column::make(['title' => __('client.fullname')]), 
             Column::make(['title' => __('client.username')]),
             Column::make(['title' => __('client.invoice')]),
             Column::make(['title' => __('client.domain')]),
