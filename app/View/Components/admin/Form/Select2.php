@@ -7,19 +7,24 @@ use Illuminate\View\Component;
 class Select2 extends Component
 {
     public $id;
+    public $label;
     public $options;
     public $name;
+    public $multiple;
+    
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($id, $options, $name)
+    public function __construct($id, $label, $options, $name, $multiple)
     {
         $this->id = $id;
+        $this->label = $label;
         $this->options = $options;
         $this->name = $name;
+        $this->multiple = $multiple;
     }
 
     /**

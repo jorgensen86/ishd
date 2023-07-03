@@ -2,68 +2,27 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\DataTables\ClientDataTable;
 use App\Http\Controllers\Controller;
 use App\Models\Invoice;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
-use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
-use Yajra\DataTables\Html\Builder;
-use Yajra\DataTables\Html\Column;
 
 class ClientController extends Controller
 {
-    public function index(Builder $builder)
-    {
+    const LAYOUT_PATH = 'layouts.admin.user.client';
+    const LANG_PATH = 'admin/user/client.';
+    const PAGE_CLASS = 'clientPage';
 
-        if (request()->ajax()) {
-            return DataTables::eloquent(User::with('invoices')->where('users.administrator', 0))
-                ->addColumn('invoices', function (User $user) {
-                    return $user->invoices->map(function ($invoice) {
-                        return "<span class='badge badge-danger'>{$invoice->invoice_number}</span>";
-                    })
-                    ->implode(' ');
-                })
-                ->addColumn('domain', function (User $user) {
-                    return collect($user->invoices)->map(function ($invoice) {
-                        return $invoice->domain ? "<a href='http://{$invoice->domain}' target='_blank'>{$invoice->domain}</a>" : null;
-                    })
-                        ->reject(function ($invoice) {
-                            return empty($invoice);
-                        })
-                        ->implode(', ');
-                })
-                ->addColumn('action', function ($data) {
-                    return '
-                    <button data-target="#clientModal" data-url="' . route('client.edit', $data) . '" class="btn btn-outline-info btn-flat btn-sm btnOpenModal">
-                        <i class="fas fa-edit"></i>
-                    </button>
-                    <button data-target="#deleteModal" data-url="' . route('client.destroy', $data) . '" class="btn btn-outline-danger btn-flat btn-sm btnDeleteModal">
-                        <i class="fas fa-ban"></i>
-                    </button>';
-                })
-                ->editColumn('active', function ($data) {
-                    return $data->active ? '<i class="text-success fas fa-check"></i>' : '<i class="text-danger fas fa-xmark"></i>';
-                })
-                ->rawColumns(['domain', 'active', 'invoices', 'action'])
-                ->toJson();
-        }
-
-        $table = $builder->columns([
-            Column::make(['title' => __('client.fullname')]), 
-            Column::make(['title' => __('client.username')]),
-            Column::make(['title' => __('client.invoice')]),
-            Column::make(['title' => __('client.domain')]),
-            Column::make(['title' => __('client.active')]),
-            Column::make(),
+    public function index(ClientDataTable $userDataTable)
+    {        
+        return $userDataTable->render(self::LAYOUT_PATH . 'List', [
+            'title' => __(self::LANG_PATH . 'title'),
         ]);
 
-        return view('layouts.admin.user.clientList')
-            ->with('class', 'client-page')
-            ->with('title', __('client.title'))
-            ->with('table', $table);
     }
 
     /**
@@ -74,11 +33,11 @@ class ClientController extends Controller
     public function create()
     {
         if (request()->ajax()) {
-            return view('layouts.admin.user.clientForm')
-                ->with('title', __('client.create_client'))
+            return view(self::LAYOUT_PATH . 'Form')
+                ->with('title', __(self::LANG_PATH . 'create'))
                 ->with('action', route('client.store'))
                 ->with('method', 'post')
-                ->with('user', new User());
+                ->with('data', new User());
         }
     }
 
@@ -138,11 +97,11 @@ class ClientController extends Controller
     public function edit(User $client)
     {
         if (request()->ajax()) {
-            return view('layouts.admin.user.clientForm')
-                ->with('title', __('client.edit_client'))
+            return view(self::LAYOUT_PATH . 'Form')
+                ->with('title', __(self::LANG_PATH . 'edit'))
                 ->with('action', route('client.update', $client))
                 ->with('method', 'put')
-                ->with('user', $client)
+                ->with('data', $client)
                 ->with('invoices', $client->invoices);
         }
     }

@@ -17,6 +17,7 @@ class UserController extends Controller
 {
     const LAYOUT_PATH = 'layouts.admin.user.user';
     const LANG_PATH = 'admin/user/user.';
+    const PAGE_CLASS = 'userPage';
 
     /**
      * Display a listing of the resource.
@@ -52,10 +53,10 @@ class UserController extends Controller
     {
         if (request()->ajax()) {
             return view('layouts.admin.user.userForm')
-                ->with('title', __('user.create_user'))
+                ->with('title', __(self::LANG_PATH . 'create'))
                 ->with('action', route('user.store'))
                 ->with('method', 'post')
-                ->with('user', new User())
+                ->with('data', new User())
                 ->with('roles', Role::all());
         }
     }
@@ -113,10 +114,10 @@ class UserController extends Controller
     {
         if (request()->ajax()) {
             return view('layouts.admin.user.userForm')
-                ->with('title', __('user.edit_user'))
+                ->with('title', __(self::LANG_PATH . 'edit'))
                 ->with('action', route('user.update', $user))
                 ->with('method', 'put')
-                ->with('user', $user)
+                ->with('data', $user)
                 ->with('roles', Role::all());
         }
     }

@@ -26,7 +26,7 @@
                         <div class="col-md-2">
                             <div class="form-group">
                                 <label>{{ __('admin/ticket.sender') }}</label>
-                                <input type="text" name="sender" class="form-control form-control-sm" placeholder="{{ __('admin/ticket.sender') }}">
+                                <input type="text" name="sender" id="sender" class="form-control form-control-sm" placeholder="{{ __('admin/ticket.sender') }}">
                             </div>
                         </div>
                         <div class="col-md-2">

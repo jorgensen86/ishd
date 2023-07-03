@@ -37,7 +37,12 @@ class TicketDataTable extends DataTable
         if(request()->subject) {
             $query->where('subject', 'LIKE', request()->subject . '%');
         }
-        
+
+        if(request()->sender) {
+            $query->whereHas('user', function ($query) { 
+                $query->where('name', 'like', request()->sender. '%'); 
+            });
+        }
 
         return (new EloquentDataTable($query))
             ->addColumn('action', function ($data) {
@@ -76,9 +81,9 @@ class TicketDataTable extends DataTable
         return $this->builder()
         ->ajax([
             'data' => 'function(params) { 
-                params.is_closed = $("#test").is(\':checked\') ? 1 : 0
                 params.invoice = $("#invoice").val() 
                 params.subject = $("#subject").val() 
+                params.sender = $("#sender").val() 
                 
             }',
         ])
