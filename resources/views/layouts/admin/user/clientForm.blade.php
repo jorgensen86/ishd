@@ -14,15 +14,6 @@
             placeholder="{{ __('admin/user/client.password') }}" value=""></x-admin.form.input-group>
             <x-admin.form.select2 name="invoice[]" :multiple="true" id="invoices" label="{{ __('admin/user/client.invoice') }}" :options="$data->invoices"></x-admin.form.select2>
             <x-admin.form.checkbox :active="$data->active"></x-admin.form.checkbox>
-        {{-- <div class="form-group">
-            <select data-allow-clear="true" data-placeholder="{{ __('client.invoice') }}" name="invoice[]"
-                id="invoices" multiple>
-                @foreach ($data->invoices as $invoice)
-                    <option value="{{ $invoice->invoice_id }}" @selected(true)>
-                        {{ $invoice->invoice_number }} ({{ $invoice->domain }})</option>
-                @endforeach
-            </select>
-        </div> --}}
     </form>
 </div>
 <div class="modal-footer justify-content-between">
