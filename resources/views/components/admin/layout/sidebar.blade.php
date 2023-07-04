@@ -52,7 +52,30 @@
             </li>
           </ul>
         </li>
-         <!-- ./ tickets-menu -->        
+         <!-- ./ tickets-menu -->   
+
+         <!-- emails-menu -->
+         <li class="nav-item {{ request()->is('email/*') ? 'menu-open' : null }}">
+          <a href="#" class="nav-link {{ request()->is('email/*') ? 'active' : null }}">
+            <i class="nav-icon fas fa-envelope"></i>
+            <p>{{ __('sidebar.email') }} <i class="fas fa-angle-left right"></i></p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="{{ route('ticket.index', 1) }}" class="nav-link {{ request()->is('email/email') ? 'active' : null }}">
+                <i class="fas fa-angle-right nav-icon"></i>
+                <p>{{ __('sidebar.email_list') }}</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{ route('imap.index') }}" class="nav-link {{ request()->is('email/imap') ? 'active' : null }}">
+                <i class="fas fa-angle-right nav-icon"></i>
+                <p>{{ __('sidebar.email_accounts') }}</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+         <!-- ./ emails-menu -->        
 
          <!-- users-menu -->
         <li class="nav-item {{ request()->is('user/*') ? 'menu-open' : null }}">
