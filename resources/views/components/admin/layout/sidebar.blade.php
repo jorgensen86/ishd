@@ -39,7 +39,7 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="{{ route('ticket.index', 1) }}" class="nav-link {{ request()->is('ticket/ticket') ? 'active' : null }}">
+              <a href="{{ route('ticket.index', 1) }}" class="nav-link {{ request()->is('ticket/queue/*') ? 'active' : null }}">
                 <i class="fas fa-angle-right nav-icon"></i>
                 <p>{{ __('sidebar.ticket_list') }}</p>
               </a>
@@ -62,7 +62,7 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="{{ route('ticket.index', 1) }}" class="nav-link {{ request()->is('email/email') ? 'active' : null }}">
+              <a href="{{ route('email.index', 1) }}" class="nav-link {{ request()->is('email/queue*') ? 'active' : null }}">
                 <i class="fas fa-angle-right nav-icon"></i>
                 <p>{{ __('sidebar.email_list') }}</p>
               </a>

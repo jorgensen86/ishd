@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Email extends Model
 {
     use HasFactory;
+
+    protected $guarded = [];
+
+    public function queue() {
+        return $this->hasOne(Queue::class, 'id', 'queue_id');
+    }
 }

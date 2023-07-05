@@ -1,85 +1,7 @@
 <?php
-
-use App\Models\Imap;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
-use Webklex\IMAP\Facades\Client;
-use Webklex\PHPIMAP\ClientManager;
-
-Route::get('imap', function(){
-
-    $config['accounts']['default'] = array(
-        'host'          => 'icop.gr',
-        'port'          => '993',
-        'username'      => 'ganast@icop.gr',
-        'password'      => '@@14@@343po',
-    );
-    // $oClient = new Client();
-
-    $account = Imap::find(2);
-    $client = Client::make(array(
-        'host'          => $account->host,
-        'port'          => $account->port,
-        'username'      => $account->username,
-        'password'      => $account->password,
-        'encryption'    => $account->encryption,
-        'validate_cert' => $account->validate_cert,
-    ));
-// dd($client);
-    $client->connect();
-
-    // $client = Client::make([
-    //     'host'          => 'icop.gr',
-    //     'port'          => '993',
-    //     'username'      => 'ganast@icop.gr',
-    //     'password'      => '@@14@@343po',
-    // ]);
-    $aFolder = $client->getFolders();
-
-    //Loop through every Mailbox
-    /** @var \Webklex\IMAP\Folder $oFolder */
-    foreach($aFolder as $oFolder){
-        echo '<pre>'; 
-         print_r("-----------------------FOLDER -------------------"); 
-         echo '</pre>';
-        //Get all Messages of the current Mailbox $oFolder
-        /** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
-        $aMessage = $oFolder->messages()->all()->get();
-        
-        /** @var \Webklex\IMAP\Message $oMessage */
-        foreach($aMessage as $message){
-            // echo '<pre>'; 
-
-            echo '<pre>'; 
-             print_r($message->getAttachments()->count()); 
-             echo '</pre>';
-            //  print_r( $message->getUid()); 
-            //  echo '</pre>';
-            //  echo '<pre>'; 
-            //   print_r($message->getFrom()); 
-            //   echo '</pre>';
-              
-            // echo iconv_mime_decode($message->getSubject()).'<br />----------';
-            // echo '<pre>'; 
-            //  print_r( $message->hasHTMLBody() ? $message->getHTMLBodyWithEmbeddedBase64Images() : $message->getTextBody(false)); 
-            //  echo '</pre>';
-
-
-            // 'email_id' => $account->id,
-            // 'uid' => $message->getUid(),
-            // 'sender' => $message->getFrom()[0]->mail,
-            // 'subject' => $message->getSubject(),
-            // 'body' => $message->hasHTMLBody() ? $message->getHTMLBody() : $message->getTextBody(),
-            
-            //Move the current Message to 'INBOX.read'
-            // if($oMessage->moveToFolder('INBOX.read') == true){
-            //     echo 'Message has ben moved';
-            // }else{
-            //     echo 'Message could not be moved';
-            // }
-        }
-    }
-});
 
 /*
 |--------------------------------------------------------------------------
@@ -91,6 +13,18 @@ Route::get('imap', function(){
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/testEmail', function() {
+
+    $to_name = "takis";
+$to_email = "jorg.icop@gmail.com";
+$data = array("name"=>"Icop Email", "body" => "A test mail");
+Mail::send("test", $data, function($message) use ($to_name, $to_email) {
+$message->to($to_email, $to_name)
+->subject("Laravel Test Mail");
+$message->from("ganast@icop.gr","Test Mail");
+});
+
+});
 
 Auth::routes(['register' => false, 'reset' => false, 'confirm' => false]);
 
@@ -133,8 +67,10 @@ Route::middleware(['auth','admin'])->group(function() {
     });
 
     Route::prefix('email')->group(function () {
-        Route::resource('email',  App\Http\Controllers\Admin\TicketController::class);
+        Route::resource('email',  App\Http\Controllers\Admin\EmailController::class);
+        Route::get('queue/{queue_id?}',  [App\Http\Controllers\Admin\EmailController::class, 'index'])->name('email.index');;
         Route::resource('imap',  App\Http\Controllers\Admin\ImapController::class)->except(['show']);
+        Route::get('sync',  App\Http\Controllers\Admin\SyncEmailController::class);
     });
 
     Route::prefix('ticket')->group(function () {
