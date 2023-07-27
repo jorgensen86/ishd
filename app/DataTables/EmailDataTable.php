@@ -47,7 +47,7 @@ class EmailDataTable extends DataTable
         return (new EloquentDataTable($query))
             ->addColumn('action', function ($data) {
                 return
-                    '<a href="' . route('ticket.show', $data) . '" class="btn btn-outline-info btn-flat btn-sm">
+                    '<a href="' . route('email.show', $data) . '" class="btn btn-outline-info btn-flat btn-sm">
                         <i class="fas fa-eye"></i>
                     </a>
                     <button data-target="#deleteModal" data-url="' . route('queue.destroy', $data) . '" class="btn btn-outline-danger btn-flat btn-sm btnDeleteModal">

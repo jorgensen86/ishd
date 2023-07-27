@@ -8,16 +8,18 @@ class Ckeditor extends Component
 {
     public $name;
     public $id;
+    public $label;
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($name, $id)
+    public function __construct($name, $id, $label)
     {
         $this->name = $name;
         $this->id = $id;
+        $this->label = $label;
     }
 
     /**

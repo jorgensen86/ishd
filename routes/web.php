@@ -30,17 +30,31 @@ Auth::routes(['register' => false, 'reset' => false, 'confirm' => false]);
 
 Route::get('logout', [\App\Http\Controllers\Auth\LogoutController::class, 'index'])->name('logout');
 
-Route::middleware(['auth','client'])->group(function() {
-    Route::get('/home', function () {
-       echo "Homepage";
-    })->name('home');
+Route::get('/', function () {
+    if(Auth::user()) {
+        if(Auth::user()->administrator) {
+            return redirect('dashboard');
+        } else {
+            return redirect('client/dashboard');
+        }
+    } else {
+        return redirect('login');
+    }
+});
+
+
+Route::middleware(['auth','client'])->prefix('client')->group(function() {
+    Route::get('/dashboard', [App\Http\Controllers\Client\HomeController::class, 'index'])->name('client.dashboard');
+
+    Route::name('client.')->group(function () {
+        Route::resource('ticket',  App\Http\Controllers\Client\TicketController::class)->except(['edit', 'update']);
+    });
 });
 
 Route::middleware(['auth','admin'])->group(function() {
+    // Route::get('/', function () { return redirect('/dashboard'); });
 
-    Route::get('/', function () { return redirect('/dashboard'); });
-
-    Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', [App\Http\Controllers\Admin\HomeController::class, 'index'])->name('dashboard');
 
     Route::post('uploadMedia', App\Http\Controllers\Admin\UploadMediaController::class)->name('upload');
 
@@ -70,11 +84,12 @@ Route::middleware(['auth','admin'])->group(function() {
         Route::resource('email',  App\Http\Controllers\Admin\EmailController::class);
         Route::get('queue/{queue_id?}',  [App\Http\Controllers\Admin\EmailController::class, 'index'])->name('email.index');;
         Route::resource('imap',  App\Http\Controllers\Admin\ImapController::class)->except(['show']);
-        Route::get('sync',  App\Http\Controllers\Admin\SyncEmailController::class);
+        Route::get('sync',  [App\Http\Controllers\Admin\SyncEmailController::class, 'index']);
+        Route::get('checkConnection/{imap}',  [App\Http\Controllers\Admin\SyncEmailController::class, 'check'])->name('checkConnection');
     });
 
     Route::prefix('ticket')->group(function () {
-        Route::resource('ticket',  App\Http\Controllers\Admin\TicketController::class);
+        Route::resource('ticket',  App\Http\Controllers\Admin\TicketController::class)->except(['edit', 'update']);
         Route::get('queue/{queue_id?}',  [App\Http\Controllers\Admin\TicketController::class, 'index'])->name('ticket.index');
     });
 });

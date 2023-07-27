@@ -65,7 +65,7 @@ class LoginController extends Controller
             }
             return redirect()->route('dashboard');
         } elseif (!auth()->user()->administrator) {
-            return redirect()->route('home');
+            return redirect()->route('client.dashboard');
         }
     }
 

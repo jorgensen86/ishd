@@ -8,6 +8,11 @@
 @push('scripts')
     <script src="{{ asset('assets/plugins/ckeditor/js/ckeditor.js') }}"></script>
     <script>
-        ClassicEditor.create( document.querySelector('#{{ $id }}'));
+        ClassicEditor.create( document.querySelector('#{{ $id }}'), {
+            removePlugins: [ 'SourceEditing'],
+            toolbar: {
+                removeItems: [ 'sourceEditing']
+            }
+        });
     </script>
 @endpush

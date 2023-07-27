@@ -1,33 +1,31 @@
 @extends('admin')
 @section('content')
     <x-admin.page-header :heading="$title"></x-admin.page-header>
-    <section class="content">
+    <section class="content" id="ticketPage">
         <div class="container-fluid">
             <div class="card card-outline card-info">
                 <form action="{{ route('ticket.store') }}" method="post" id="ticketForm">
                     <div class="card-body">
                         <div class="row">
+                            {{-- Ticket Form --}}
                             <div class="col-md-8">
                                 @csrf
-                                <input type="hidden" name="author_id" value="{{ auth()->user()->user_id }}">
-                                <input type="hidden" name="author" value="{{ auth()->user()->name }}">
-                                <x-admin.form.select selected="" label="{{ __('admin/ticket.sender') }}" inputName="queue_id"
-                                    :options="$queues"></x-admin.form.select>
-                                <x-admin.form.select2 label="{{ __('admin/ticket.sender') }}" name="invoice_number" id="invoices" inputName="queue_id" options="" :multiple="false"></x-admin.form.select>
-                                <x-admin.form.text inputName="subject" labelFor="inputSubject"
-                                    placeholder="{{ __('admin/ticket.subject') }}" :value="''"></x-admin.form.text>
-                                <div class="form-group">
-                                    <label>{{ __('admin/ticket.message') }}</label>
-                                    <x-admin.ckeditor :id="'bodyEditor'" :name="'body'"></x-admin.ckeditor>
-                                </div>
+                                <x-admin.form.select selected="" label="{{ __('admin/ticket.sender') }}" name="queue_id" :options="$queues"></x-admin.form.select>
+                                <x-admin.form.select2 label="{{ __('admin/ticket.recipient') }}" name="invoice_id" id="invoices" options="" :multiple="false"></x-admin.form.select>
+                                <x-admin.form.text name="subject" id="inputSubject" placeholder="{{ __('admin/ticket.subject') }}" value=""></x-admin.form.text>
+                                <x-admin.ckeditor label="{{ __('admin/ticket.message') }}"  :id="'bodyEditor'" :name="'body'"></x-admin.ckeditor>
                             </div>
+                            {{--/ Ticket Form  --}}
+                            
+                            {{-- Dropzone --}}
                             <div class="col-md-4">
                                 <x-admin.dropzone :action="route('upload')" formId="ticketForm"></x-admin.dropzone>
                                 <div class="mt-2">
                                     <a href="{{ route('ticket.index', 1) }}" class="btn btn-sm btn-secondary">{{ __('el.button_cancel') }}</a>
-                                    <input type="submit" class="btn btn-sm btn-success float-right" value="{{ __('el.button_save') }}">
+                                    <input type="submit" class="btn btn-sm btn-success float-right" value="{{ __('el.button_send') }}">
                                 </div>
                             </div>
+                            {{--/ Dropzone --}}
                         </div>
                     </div>
                 </form>
@@ -47,6 +45,25 @@
 <script src="{{ asset('assets/plugins/select2/js/el.js') }}" defer></script>
 
 <script type="module">
+     $('#ticketForm').on('submit', function(e){
+        e.preventDefault();
+        $('.text-danger').remove()
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'post',
+            dataType: 'json',
+            data: $(this).serialize(),
+            success: function(json) {
+                if (json.errors) {
+                    let errors = '';
+                    Object.keys(json.errors).forEach(function (key) {
+                        $('[name="' + key + '"]').parent().before(`<div class="text-danger">${json.errors[key]}</div>`)
+                    });
+                }
+            }
+        })
+    })
+
     $('#invoices').select2({
         placeholder: "Αναζήτηση με crm ή domain",
         width: '100%',

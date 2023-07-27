@@ -101,5 +101,24 @@ $(function() {
             }
         });
     })
-    
+
+    $('#ticketForm').on('submit', function(e){
+        e.preventDefault();
+        $('.text-danger').remove()
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'post',
+            dataType: 'json',
+            data: $(this).serialize(),
+            success: function(json) {
+                if (json.errors) {
+                    Object.keys(json.errors).forEach(function (key) {
+                        $('[name="' + key + '"]').addClass('is-invalid')
+                        displayToast('bg-danger', json.title, json.errors[key]);
+                    });
+
+                }
+            }
+        })
+    })
 })

@@ -23,9 +23,12 @@ class ImapDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-             ->addColumn('action', function ($data) {
+            ->addColumn('action', function ($data) {
                 return
-                    '<button data-target="#imapModal" data-url="' . route('imap.edit', $data) . '" class="btn btn-outline-info btn-flat btn-sm btnOpenModal">
+                    '<button ata-toggle="tooltip" title="Check Connection" data-url="' . route('checkConnection', $data) . '" class="btn btn-outline-danger btn-flat btn-sm btnCheckConnection">
+                    <i class="fas fa-ban"></i>
+                    </button>
+                    <button data-target="#imapModal" data-url="' . route('imap.edit', $data) . '" class="btn btn-outline-info btn-flat btn-sm btnOpenModal">
                         <i class="fas fa-edit"></i>
                     </button>
                     <button data-target="#deleteModal" data-url="' . route('imap.destroy', $data) . '" class="btn btn-outline-danger btn-flat btn-sm btnDeleteModal">
@@ -66,7 +69,7 @@ class ImapDataTable extends DataTable
             ->parameters(array_merge(config('datatables.parameters'), $this->parameters()))
             ->minifiedAjax()
             ->dom('rtip')
-            ->orderBy(1,'asc');
+            ->orderBy(1, 'asc');
     }
 
     /**
@@ -92,7 +95,29 @@ class ImapDataTable extends DataTable
     {
         return [
             'pageLength' => app(ConfigSettings::class)->results_per_page,
-            'stateSave' => false
+            'stateSave' => false,
+            'drawCallback' => 'function() {
+                $(".btnCheckConnection").tooltip();
+                $(".btnCheckConnection").on("click", function() {
+                    $(this).tooltip("hide");
+                    $.ajax({
+                        url: $(this).attr("data-url"),
+                        dataType: "json",
+                        beforeSend: function() {
+                            $("#imapTable .btn").prop("disabled", true)
+                        },
+                        complete: function() {
+                            $("#imapTable .btn").prop("disabled", false)
+                        },
+                        success: function(json) {
+                            alert(json.message);
+                        },
+                        error: (xhr) => {
+                            alert(xhr.status + " - " + xhr.responseJSON.message)
+                        }
+                    })
+                });
+             }',
         ];
     }
 }

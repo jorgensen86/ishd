@@ -6,8 +6,8 @@ use Illuminate\View\Component;
 
 class Text extends Component
 {
-    public $labelFor;
-    public $inputName;
+    public $id;
+    public $name;
     public $value;
     public $placeholder;
 
@@ -16,10 +16,10 @@ class Text extends Component
      *
      * @return void
      */
-    public function __construct($labelFor, $inputName, $value, $placeholder)
+    public function __construct($id, $name, $value, $placeholder)
     {
-        $this->labelFor = $labelFor;
-        $this->inputName = $inputName;
+        $this->id = $id;
+        $this->name = $name;
         $this->value = $value;
         $this->placeholder = $placeholder;
     }

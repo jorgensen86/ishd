@@ -7,7 +7,7 @@ use Illuminate\View\Component;
 class Select extends Component
 {
     public $label;
-    public $inputName;
+    public $name;
     public $options;
     public $selected;
 
@@ -16,10 +16,10 @@ class Select extends Component
      *
      * @return void
      */
-    public function __construct($label, $inputName, $options, $selected)
+    public function __construct($label, $name, $options, $selected)
     {
         $this->label = $label;
-        $this->inputName = $inputName;
+        $this->name = $name;
         $this->options = $options;
         $this->selected = $selected;
     }

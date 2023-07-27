@@ -4,16 +4,15 @@ namespace App\Http\Controllers\Admin;
 
 use App\DataTables\TicketDataTable;
 use App\Http\Controllers\Controller;
-use App\Models\Invoice;
 use App\Models\Queue;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class TicketController extends Controller
 {
     const LAYOUT_PATH = 'layouts.admin.ticket.ticket';
     const LANG_PATH = 'admin/ticket.';
-    const PAGE_CLASS = 'ticketPage';
 
     /**
      * Display a listing of the resource.
@@ -43,7 +42,6 @@ class TicketController extends Controller
      */
     public function create()
     {
-     
         return view(self::LAYOUT_PATH . 'Form')
             ->with('title', __(self::LANG_PATH . 'create'))
             ->with('queues', Queue::where('active', 1)->get());
@@ -57,21 +55,44 @@ class TicketController extends Controller
      */
     public function store(Request $request)
     {
-        $ticket = new Ticket();
-        $ticket->author_id = $request->author_id;
-        $ticket->invoice_id = $request->invoice_id;
-        $ticket->queue_id = $request->queue_id;
-        $invoice = Invoice::find($request->invoice_id);
-        $ticket->invoice_number = $invoice->invoice_number;
-        $ticket->subject = $request->subject;
-        $ticket->body = $request->body;
-        $ticket->save();
 
-        // foreach ($request->media as $key => $media) {
-        //     $ticket->addMedia(storage_path('app/' .$media))->withResponsiveImages()->toMediaCollection();
-        // }
+        $json = [];
+        
+        $validator = Validator::make($request->all(), [
+            'queue_id' => 'required',
+            'invoice_id' => 'required',
+            'subject' => 'required|min:3',
+            'body' => 'required|min:3'
+        ]);
 
-        return redirect('/ticket/ticket')->with('success', 'Profile updated!');
+        if ($validator->fails()) {
+            $json = array(
+                'title' => __('el.text_danger'),
+                'errors' => $validator->getMessageBag()->toArray()
+            );
+        } else {
+            $ticket = new Ticket();
+            $ticket->ticket_id = ++(Ticket::get()->last())->ticket_id;
+            $ticket->author_id = auth()->user()->user_id;
+            $ticket->invoice_id = $request->invoice_id;
+            $ticket->queue_id = $request->queue_id;
+            $ticket->subject = $request->subject;
+            $ticket->body = $request->body;
+            $ticket->is_opened = 1;
+            $ticket->save();
+            
+            foreach ($request->media as $key => $media) {
+                if(isset($media['src'])) {
+                    $ticket->addMedia(storage_path('app/' .$media['src']))->withResponsiveImages()->toMediaCollection(strpos($media['type'], 'image') === 0 ? 'images' : 'downloads');
+                }
+            }
+
+            $json['success'] = true;
+            $json['redirect'] = route('ticket.index');
+        }
+
+        return response()->json($json, 200);
+
     }
 
     /**
@@ -83,42 +104,33 @@ class TicketController extends Controller
     public function show(Ticket $ticket)
     {
 
-        // $ticket = Ticket::find(3);
-        // $notification = new Notification();
-        // $notification->body="lola";
-        // $notification->author_id= auth()->user()->user_id;
-        // $ticket->notifications()->save($notification);
-
         if (!$ticket->is_opened) {
             $ticket->update(['is_opened' => 1]);
+        }
+
+        $downloads = [];
+        foreach ($ticket->getMedia('downloads') as $download) {
+            if($download->mime_type === 'application/pdf') {
+                $image = asset('image/admin/pdf.jpg');
+            } else if ($download->mime_type === 'application/msword' || $download->mime_type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+                $image = asset('image/admin/doc.png');
+            } else if ($download->mime_type === 'application/vnd.ms-excel' || $download->mime_type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
+                $image = asset('image/admin/xls.jpg');
+            } else if ($download->mime_type === 'text/csv') {
+                $image = asset('image/admin/csv.jpg');
+            }
+            $downloads[] = [
+                'link' => $download->getUrl(),
+                'src' => $image,
+                'name' => $download->file_name
+            ];
         }
         
         return view(self::LAYOUT_PATH . 'View')
             ->with('title', __(self::LANG_PATH . 'view'))
             ->with('ticket', $ticket)
-            ->with('medias', $ticket->getMedia());
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Ticket  $ticket
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Ticket $ticket)
-    {
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Ticket  $ticket
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Ticket $ticket)
-    {
-        //
+            ->with('images', $ticket->getMedia('images'))
+            ->with('downloads', $downloads);
     }
 
     /**

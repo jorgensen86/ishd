@@ -31,7 +31,9 @@ class TicketDataTable extends DataTable
         }
 
         if(request()->invoice) {
-            $query->where('invoice_number', request()->invoice);
+            $query->whereHas('invoice', function ($query) { 
+                $query->where('invoice_number', request()->invoice); 
+            });
         }
 
         if(request()->subject) {
@@ -102,8 +104,8 @@ class TicketDataTable extends DataTable
     public function getColumns(): array
     {        
         return [
-            Column::make('id'),
-            Column::make('invoice_number')->title(Lang::get(TicketController::LANG_PATH . 'invoice')),
+            Column::make('ticket_id')->title(Lang::get(TicketController::LANG_PATH . 'ticket_id')),
+            Column::make('invoice.invoice_number')->title(Lang::get(TicketController::LANG_PATH . 'invoice')),
             Column::make('user.name')->title(Lang::get(TicketController::LANG_PATH . 'sender')),
             Column::make('subject')->title(Lang::get(TicketController::LANG_PATH . 'subject')),
             Column::make('created_at')->title(Lang::get(TicketController::LANG_PATH . 'created'))->className('text-right'),

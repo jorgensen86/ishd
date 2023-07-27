@@ -59,7 +59,9 @@ class EmailController extends Controller
      */
     public function show(Email $email)
     {
-        //
+        return view(self::LAYOUT_PATH . 'View')
+            ->with('title', __(self::LANG_PATH . 'view'))
+            ->with('data', $email);
     }
 
     /**

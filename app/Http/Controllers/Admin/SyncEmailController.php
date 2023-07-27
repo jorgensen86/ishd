@@ -18,7 +18,7 @@ class SyncEmailController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function __invoke(Request $request)
+    public function index(Request $request)
     {
         foreach (Imap::where('active', 1)->get() as $key => $account) {
             $client = Client::make(array(
@@ -60,5 +60,37 @@ class SyncEmailController extends Controller
 die;
             // dump($client->connect());
         }
+    }
+
+    public function check(Imap $imap) {
+        $json = [];
+
+        if (request()->ajax()) {
+            $client = Client::make(array(
+                'host'          => $imap->host,
+                'port'          => $imap->port,
+                'username'      => $imap->username,
+                'password'      => $imap->password,
+                'encryption'    => $imap->encryption,
+                'validate_cert' => $imap->validate_cert,
+            ));
+    
+            try {
+                $client->connect();
+                
+                $json = array(
+                    'message' => __('el.success_connection')
+                );
+
+                $client->disconnect();
+
+            } catch (\Throwable $th) {
+                $json = array(
+                    'message' => $th->getMessage()
+                );
+            }
+        }
+
+        return response()->json($json, 200);
     }
 }

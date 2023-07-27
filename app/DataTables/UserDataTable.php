@@ -97,7 +97,7 @@ class UserDataTable extends DataTable
     public function parameters() {
         return [
             'pageLength' => app(ConfigSettings::class)->results_per_page,
-            'stateSave' => true
+            'stateSave' => true ,
         ];
     }
 }

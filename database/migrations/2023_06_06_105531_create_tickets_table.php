@@ -14,11 +14,11 @@ return new class extends Migration
     public function up()
     {
         Schema::create('tickets', function (Blueprint $table) {
-            $table->id()->from(1000000);
+            $table->id();
+            $table->unsignedBigInteger('ticket_id')->nullable()->index()->after('id');
             $table->foreignId('author_id')->constrained('users', 'user_id');
             $table->foreignId('invoice_id')->nullable()->constrained('invoices', 'invoice_id');
             $table->foreignId('queue_id')->nullable()->constrained('queues');
-            $table->unsignedInteger('invoice_number');
             $table->string('subject');
             $table->longText('body');
             $table->boolean('is_opened')->default(0);

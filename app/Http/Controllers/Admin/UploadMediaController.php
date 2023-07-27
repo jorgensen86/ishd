@@ -15,14 +15,24 @@ class UploadMediaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+    const FOLDER = 'temp/';
+
     public function __invoke(Request $request)
     {
         if ($request->ajax()) {
             if ($request->hasFile('file')) {
-                $path = Storage::putFileAs('temp', $request->file('file'),  $request->file('file')->getClientOriginalName());
-                return $path;
+                // while (Storage::disk('local')->exists(SELF::FOLDER . auth()->user()->user_id . '/' . $request->file('file')->getClientOriginalName())) {
+                    
+                // }
+                if(Storage::disk('local')->exists(SELF::FOLDER . auth()->user()->user_id . '/' . $request->file('file')->getClientOriginalName())) {
+                    $filename = time() . '_' . $request->file('file')->getClientOriginalName();
+                } else {
+                    $filename = $request->file('file')->getClientOriginalName();
+                }
+                
+                return Storage::putFileAs(SELF::FOLDER . auth()->user()->user_id, $request->file('file'),  $filename);
             }
-
         }
     }
 }

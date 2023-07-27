@@ -12,7 +12,7 @@
     <title>{{ $title ?? config('app.name', 'Laravel') }}</title>
     
     <!-- Scripts -->
-    @vite(['resources/sass/app.scss', 'resources/css/app.css'])
+    @vite(['resources/sass/app.scss', 'resources/css/client.css'])
     @stack('styles')
 </head>
 
@@ -20,10 +20,10 @@
     @auth
     <div class="wrapper">
         <!-- Navbar Componnent -->
-        <x-admin.layout.navbar></x-admin.layout.navbar>
+        <x-client.section.navbar></x-client.section.navbar>
 
         <!-- Sidebar Componnent -->
-        <x-admin.layout.sidebar></x-admin.layout.sidebar>
+        <x-client.section.sidebar></x-client.section.sidebar>
 
         <div class="content-wrapper">
             @yield('content')
