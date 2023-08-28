@@ -5,6 +5,8 @@ return [
     'disable'               => 'Μη ενεργός',
     'text_yes'              => 'Ναι',
     'text_no'               => 'Όχι',
+    'text_opened'           => 'Ανοιχτά',
+    'text_closed'           => 'Κλειστά',
     'text_select'           => 'Παρακαλώ Επιλέξτε',
     'text_upload'           => 'Ανέβασμα Αρχείων',
     'text_danger'           => 'Προσοχή',

@@ -3,12 +3,20 @@ body {
     font-size: 0.9em;
 }
 
+/* Headings */
+.content-header h1 {
+    font-size: 1.1rem;
+}
+
 /* Sidebar */
-.main-sidebar, .main-sidebar::before {
+.main-sidebar,
+.main-sidebar::before {
     width: 290px;
 }
 
-.sidebar-mini .main-sidebar .nav-link, .sidebar-mini-md .main-sidebar .nav-link, .sidebar-mini-xs .main-sidebar .nav-link {
+.sidebar-mini .main-sidebar .nav-link,
+.sidebar-mini-md .main-sidebar .nav-link,
+.sidebar-mini-xs .main-sidebar .nav-link {
     width: calc(290px - 0.5rem * 2);
 }
 
@@ -28,8 +36,25 @@ body {
     color: rgb(0 62 147);
 }
 
+/*  Cards */
+.card-title {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.card-info:not(.card-outline)>.card-header {
+    background-color: #00274e;
+}
+
+.card-info.card-outline {
+    border-top-color: #00274e;
+}
+
 @media (min-width: 768px) {
-    body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .content-wrapper, body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .main-footer, body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .main-header {
+
+    body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .content-wrapper,
+    body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .main-footer,
+    body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .main-header {
         margin-left: 290px;
     }
 }

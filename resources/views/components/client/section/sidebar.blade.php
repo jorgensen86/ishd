@@ -32,14 +32,20 @@
         <!-- /.dashboard-menu -->
 
         <!-- tickets-menu -->
-         <li class="nav-item {{ request()->is('client/ticket/*') ? 'menu-open' : null }}">
-          <a href="#" class="nav-link {{ request()->is('ticket/*') ? 'active' : null }}">
+         <li class="nav-item {{ request()->is('client/ticket*') ? 'menu-open' : null }}">
+          <a href="#" class="nav-link {{ request()->is('client/ticket*') ? 'active' : null }}">
             <i class="nav-icon fas fa-tags"></i>
             <p>{{ __('sidebar.ticket') }} <i class="fas fa-angle-left right"></i></p>
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="{{ route('client.ticket.create') }}" class="nav-link {{ request()->is('ticket/ticket/create') ? 'active' : null }}">
+              <a href="{{ route('client.ticket.index') }}" class="nav-link {{ request()->is('client/ticket') ? 'active' : null }}">
+                <i class="fas fa-angle-right nav-icon"></i>
+                <p>{{ __('sidebar.ticket_list') }}</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{ route('client.ticket.create') }}" class="nav-link {{ request()->is('client/ticket/create') ? 'active' : null }}">
                 <i class="fas fa-angle-right nav-icon"></i>
                 <p>{{ __('sidebar.ticket_new') }}</p>
               </a>

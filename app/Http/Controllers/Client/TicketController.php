@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Client;
 
+use App\DataTables\Client\TicketDataTable;
 use App\Http\Controllers\Controller;
 use App\Models\Invoice;
 use App\Models\Subject;
@@ -19,9 +20,12 @@ class TicketController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(TicketDataTable $dataTable, $closed = null)
     {
-        //
+        return $dataTable->render(self::LAYOUT_PATH . 'List', [
+            'title' => __(self::LANG_PATH . 'title'),
+            'filter_invoice'=> request()->query('invoice')
+        ]);
     }
 
     /**
@@ -107,7 +111,15 @@ class TicketController extends Controller
      */
     public function show(Ticket $ticket)
     {
-        //
+        if (auth()->user()->can('view', $ticket)) {
+            return view(self::LAYOUT_PATH . 'View')
+            ->with('title', __(self::LANG_PATH . 'view'))
+            ->with('ticket', $ticket);
+            // ->with('images', $ticket->getMedia('images'))
+            // ->with('downloads', $downloads);
+          } else {
+            abort(403);
+          }
     }
 
     /**

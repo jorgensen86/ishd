@@ -48,6 +48,7 @@ Route::middleware(['auth','client'])->prefix('client')->group(function() {
 
     Route::name('client.')->group(function () {
         Route::resource('ticket',  App\Http\Controllers\Client\TicketController::class)->except(['edit', 'update']);
+        // Route::get('ticket/status/{status?}',  [App\Http\Controllers\Admin\TicketController::class, 'index'])->name('ticket.index');
     });
 });
 
