@@ -4,7 +4,7 @@
 <div class="modal-body">
     <form action="{{ $action }}" method="{{ $method }}" id="permissionForm" autocomplete="false">
         @csrf
-        <x-admin.form.text inputName="name" labelFor="inputName" placeholder="{{ __('admin/setting/subject.name') }}" :value="$data->name"></x-admin.form.text>
+        <x-admin.form.text name="name" id="inputName" placeholder="{{ __('admin/setting/subject.name') }}" :value="$data->name"></x-admin.form.text>
     </form>
 </div>
 <div class="modal-footer justify-content-between">

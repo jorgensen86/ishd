@@ -4,7 +4,7 @@
 <div class="modal-body">
     <form action="{{ $action }}" method="{{ $method }}" id="queueForm" autocomplete="false">
         @csrf
-        <x-admin.form.text inputName="name" labelFor="inputName" placeholder="{{ __('admin/setting/subject.name') }}" :value="$data->name"></x-admin.form.text>
+        <x-admin.form.text name="name" id="inputName" placeholder="{{ __('admin/setting/subject.name') }}" :value="$data->name"></x-admin.form.text>
         <x-admin.form.checkbox :active="$data->active"></x-admin.form.checkbox>
     </form>
 </div>
