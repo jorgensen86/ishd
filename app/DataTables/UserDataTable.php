@@ -26,13 +26,15 @@ class UserDataTable extends DataTable
 
         return (new EloquentDataTable($query))
             ->addColumn('action', function ($data) {
-                return
-                    '<button data-target="#userModal" data-url="' . route('user.edit', $data) . '" class="btn btn-outline-secondary btn-flat btn-sm btnOpenModal">
-                        <i class="fas fa-edit"></i>
-                    </button>
-                    <button data-target="#deleteModal" data-url="' . route('user.destroy', $data) . '" class="btn btn-danger btn-flat btn-sm btnDeleteModal">
-                        <i class="fas fa-xmark"></i>
-                    </button>';
+                $html = '';
+                if (auth()->user()->hasPermissionTo('edit_users')) {
+                    $html .= '<button data-target="#userModal" data-url="' . route('user.edit', $data) . '" class="btn btn-outline-secondary btn-flat btn-sm btnOpenModal"><i class="fas fa-edit"></i></button>';
+                }
+
+                if (auth()->user()->hasPermissionTo('delete_users')) {
+                    $html .= '<button data-target="#deleteModal" data-url="' . route('user.destroy', $data) . '" class="btn btn-danger btn-flat btn-sm btnDeleteModal ml-1"><i class="fas fa-xmark"></i></button>';
+                }
+                return $html;
             })
             ->editColumn('active', function ($data) {
                 return $data->active ? '<i class="text-success fas fa-check"></i>' : '<i class="text-danger fas fa-xmark"></i>';
@@ -91,7 +93,8 @@ class UserDataTable extends DataTable
         ];
     }
 
-    public function parameters() {
+    public function parameters()
+    {
         return [
             'pageLength' => app(ConfigSettings::class)->results_per_page,
         ];

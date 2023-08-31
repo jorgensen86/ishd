@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 
@@ -26,9 +27,9 @@ class UserController extends Controller
      */
     function __construct()
     {
-        // $this->middleware('permission:view_users', ['only' => ['index']]);
-        // $this->middleware('permission:edit_users', ['only' => ['edit','update', 'create', 'store']]);
-        // $this->middleware('permission:delete_users', ['only' => ['destroy']]);
+        $this->middleware('permission:view_users', ['only' => ['index']]);
+        $this->middleware('permission:edit_users', ['only' => ['edit','update', 'create', 'store']]);
+        $this->middleware('permission:delete_users', ['only' => ['destroy']]);
     }
 
     /**
@@ -57,6 +58,7 @@ class UserController extends Controller
                 ->with('action', route('user.store'))
                 ->with('method', 'post')
                 ->with('data', new User())
+                ->with('permissions', Permission::all())
                 ->with('roles', Role::all());
         }
     }
@@ -118,6 +120,7 @@ class UserController extends Controller
                 ->with('action', route('user.update', $user))
                 ->with('method', 'put')
                 ->with('data', $user)
+                ->with('permissions', Permission::all())
                 ->with('roles', Role::all());
         }
     }
@@ -157,6 +160,14 @@ class UserController extends Controller
             $user->save();
             
             $user->syncRoles($request->role);
+
+            if($request->permissions) {            
+                foreach ($request->permissions as $permission) {
+                    $user->givePermissionTo($permission);
+                }
+            } else {
+                $user->syncPermissions();
+            }
 
             $json = array(
                 'title' => __('el.text_success'),

@@ -78,18 +78,21 @@
          <!-- ./ emails-menu -->        
 
          <!-- users-menu -->
+        @canany('view_users', 'view_clients')  
         <li class="nav-item {{ request()->is('user/*') ? 'menu-open' : null }}">
           <a href="#" class="nav-link {{ request()->is('user/*') ? 'active' : null }}">
             <i class="nav-icon fas fa-user-alt"></i>
             <p>{{ __('sidebar.user') }} <i class="fas fa-angle-left right"></i></p>
           </a>
           <ul class="nav nav-treeview">
-            <li class="nav-item">
-              <a href="{{ route('user.index') }}" class="nav-link {{ request()->is('user/user') ? 'active' : null }}">
-                <i class="fas fa-angle-right nav-icon"></i>
-                <p>{{ __('sidebar.user_list') }}</p>
-              </a>
-            </li>
+            @can('view_users')    
+              <li class="nav-item">
+                <a href="{{ route('user.index') }}" class="nav-link {{ request()->is('user/user') ? 'active' : null }}">
+                  <i class="fas fa-angle-right nav-icon"></i>
+                  <p>{{ __('sidebar.user_list') }}</p>
+                </a>
+              </li>
+            @endcan
             <li class="nav-item">
               <a href="{{ route('client.index') }}" class="nav-link {{ request()->is('user/client') ? 'active' : null }}">
                 <i class="fas fa-angle-right nav-icon"></i>
@@ -98,6 +101,7 @@
             </li>
           </ul>
         </li>
+        @endcanany
          <!-- ./ users-menu -->
 
         <!-- settings-menu -->

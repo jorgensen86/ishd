@@ -17,7 +17,7 @@
             </div>
 
         </div>
-        <x-admin.form-modal id="userModal" size="md" :title="__('user.edit_user')"></x-admin.form-modal>
+        <x-admin.form-modal id="userModal" size="xl" :title="__('user.edit_user')"></x-admin.form-modal>
         <x-admin.delete-modal id="deleteModal" size="sm" :title="__('user.delete')"></x-admin.delete-modal>
     </section>
 @endsection
