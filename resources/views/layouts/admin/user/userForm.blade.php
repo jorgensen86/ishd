@@ -1,4 +1,4 @@
-<div class="modal-body">w
+<div class="modal-body">
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
             <button class="nav-link active" id="home-tab" data-toggle="tab" data-target="#home" type="button"
