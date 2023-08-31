@@ -15,7 +15,6 @@ return new class extends Migration
     {
         Schema::create('tickets', function (Blueprint $table) {
             $table->id();
-            // $table->unsignedBigInteger('ticket_id')->nullable()->index()->after('id');
             $table->foreignId('author_id')->constrained('users', 'user_id');
             $table->foreignId('invoice_id')->nullable()->constrained('invoices', 'invoice_id');
             $table->foreignId('queue_id')->nullable()->constrained('queues');
