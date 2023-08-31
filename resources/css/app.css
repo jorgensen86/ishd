@@ -180,3 +180,7 @@ a {
 #ticketPage .select2-container--classic .select2-selection--single .select2-selection__rendered {
     line-height: 38px;
 }
+
+#replyForm {
+    display: none;
+}

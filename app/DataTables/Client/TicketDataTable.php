@@ -2,7 +2,7 @@
 
 namespace App\DataTables\Client;
 
-use App\Http\Controllers\Admin\TicketController;
+use App\Http\Controllers\Client\TicketController;
 use App\Models\Ticket;
 use App\Settings\ConfigSettings;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
@@ -30,34 +30,12 @@ class TicketDataTable extends DataTable
             $query->where('is_closed', 0);
         }
 
-        if(request()->invoice) {
-            $query->whereHas('invoice', function ($query) { 
-                $query->where('invoice_number', request()->invoice); 
-            });
-        }
-
-        if(request()->subject) {
-            $query->where('subject', 'LIKE', request()->subject . '%');
-        }
-
-        if(request()->sender) {
-            $query->whereHas('user', function ($query) { 
-                $query->where('name', 'like', request()->sender. '%'); 
-            });
-        }
-
         return (new EloquentDataTable($query))
             ->addColumn('action', function ($data) {
                 return
                     '<a href="' . route('client.ticket.show', $data) . '" class="btn btn-outline-info btn-flat btn-sm">
                         <i class="fas fa-eye"></i>
-                    </a>
-                    <button data-target="#deleteModal" data-url="' . route('queue.destroy', $data) . '" class="btn btn-outline-danger btn-flat btn-sm btnDeleteModal">
-                            <i class="fas fa-ban"></i>
-                    </button>';
-            })
-            ->setRowClass(function ($data) {
-                return !$data->is_opened ? 'font-weight-bold' : null;
+                    </a>';
             })
             ->setRowId('id');
     }
@@ -92,7 +70,7 @@ class TicketDataTable extends DataTable
         ->parameters(array_merge(config('datatables.parameters'), $this->parameters()))
         ->setTableId('ticketTable')
         ->columns($this->getColumns())
-        ->orderBy(4,'asc')
+        ->orderBy(4,'desc')
         ->buttons([]);
     }
 
@@ -105,7 +83,7 @@ class TicketDataTable extends DataTable
     {        
         return [
             Column::make('ticket_id')->title(Lang::get(TicketController::LANG_PATH . 'ticket_id')),
-            Column::make('invoice.invoice_number')->title(Lang::get(TicketController::LANG_PATH . 'invoice')),
+            Column::make('invoice.domain')->title(Lang::get(TicketController::LANG_PATH . 'domain')),
             Column::make('user.name')->title(Lang::get(TicketController::LANG_PATH . 'sender')),
             Column::make('subject')->title(Lang::get(TicketController::LANG_PATH . 'subject')),
             Column::make('created_at')->title(Lang::get(TicketController::LANG_PATH . 'created'))->className('text-right'),

@@ -1,5 +1,4 @@
 <div class="form-group">
-    <label>{{ $label }}</label>
     <textarea id="{{ $id }}" name="{{ $name }}" class="form-control"></textarea>
 </div>
 @push('styles')

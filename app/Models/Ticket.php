@@ -41,6 +41,10 @@ class Ticket extends Model implements HasMedia
         return $this->hasOne(User::class, 'user_id', 'author_id');
     }
 
+    public function queue() {
+        return $this->hasOne(Queue::class, 'id', 'queue_id');
+    }
+
     public function replies() {
         return $this->hasMany(Reply::class, 'ticket_id', 'id');
     }
@@ -48,6 +52,7 @@ class Ticket extends Model implements HasMedia
     public function notifications() {
         return $this->morphMany(Notification::class, 'model');
     }
+
 
     protected function dateAdded(): Attribute
     {

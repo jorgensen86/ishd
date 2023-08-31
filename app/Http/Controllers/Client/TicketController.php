@@ -88,13 +88,18 @@ class TicketController extends Controller
             $ticket->queue_id = $request->subject_id;
             $ticket->subject = $request->subject;
             $ticket->body = $request->body;
+
             $ticket->save();
             
-            foreach ($request->media as $key => $media) {
-                if(isset($media['src'])) {
-                    $ticket->addMedia(storage_path('app/' .$media['src']))->withResponsiveImages()->toMediaCollection(strpos($media['type'], 'image') === 0 ? 'images' : 'downloads');
+            if($request->media) {
+                foreach ($request->media as $key => $media) {
+                    if(isset($media['src'])) {
+                        $ticket->addMedia(storage_path('app/' .$media['src']))->withResponsiveImages()->toMediaCollection(strpos($media['type'], 'image') === 0 ? 'images' : 'downloads');
+                    }
                 }
             }
+            
+            session()->flash('success', __(self::LANG_PATH . 'success'));
 
             $json['success'] = true;
             $json['redirect'] = route('client.ticket.index');

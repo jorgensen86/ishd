@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Validator;
 class TicketController extends Controller
 {
     const LAYOUT_PATH = 'layouts.admin.ticket.ticket';
-    const LANG_PATH = 'admin/ticket.';
+    const LANG_PATH = 'ticket.';
 
     /**
      * Display a listing of the resource.
@@ -107,30 +107,24 @@ class TicketController extends Controller
         if (!$ticket->is_opened) {
             $ticket->update(['is_opened' => 1]);
         }
-
-        $downloads = [];
-        foreach ($ticket->getMedia('downloads') as $download) {
-            if($download->mime_type === 'application/pdf') {
-                $image = asset('image/admin/pdf.jpg');
-            } else if ($download->mime_type === 'application/msword' || $download->mime_type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
-                $image = asset('image/admin/doc.png');
-            } else if ($download->mime_type === 'application/vnd.ms-excel' || $download->mime_type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
-                $image = asset('image/admin/xls.jpg');
-            } else if ($download->mime_type === 'text/csv') {
-                $image = asset('image/admin/csv.jpg');
-            }
-            $downloads[] = [
-                'link' => $download->getUrl(),
-                'src' => $image,
-                'name' => $download->file_name
-            ];
-        }
         
         return view(self::LAYOUT_PATH . 'View')
             ->with('title', __(self::LANG_PATH . 'view'))
             ->with('ticket', $ticket)
-            ->with('images', $ticket->getMedia('images'))
-            ->with('downloads', $downloads);
+            ->with('queues', Queue::where('active',1)->get());
+    }
+
+     /**
+     * Update the specified resource.
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Ticket  $ticket
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request,Ticket $ticket)
+    {
+        $ticket->queue_id = $request->queue_id;
+        $ticket->touch();
     }
 
     /**

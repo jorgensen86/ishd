@@ -1,5 +1,4 @@
 <div class="dropzone" id="mediaUploader"></div>
-
 @push('scripts')
 <script type="module">
     Dropzone.options.mediaUploader = {
@@ -32,7 +31,6 @@
             file.previewElement.remove();
         },
         success: function (file, response) {
-            console.log(file);
             $('#{{ $formId }}').append(`<input id="${file.upload.uuid}" type="hidden" name="media[${file.upload.uuid}][src]" value="${response}" ><input type="hidden" name="media[${file.upload.uuid}][type]" value="${file.type}" >`)
         }
     }

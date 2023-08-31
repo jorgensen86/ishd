@@ -18,6 +18,7 @@ return [
    
     'button_add'            => 'Προσθήκη',
     'button_send'           => 'Αποστολή',
+    'button_reply'          => 'Απάντηση',
     'button_save'           => 'Αποθήκευση',
     'button_delete'         => 'Διαγραφή',
     'button_cancel'         => 'Ακύρωση',

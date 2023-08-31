@@ -61,7 +61,6 @@ Route::middleware(['auth','admin'])->group(function() {
 
     Route::get('/invoice', [App\Http\Controllers\Admin\InvoiceController::class, 'index'])->name('invoice.index');
 
-    Route::get('reply', [App\Http\Controllers\Admin\ReplyController::class, 'create'])->name('reply.create');
     Route::post('reply/store', [App\Http\Controllers\Admin\ReplyController::class, 'store'])->name('reply.store');
 
     Route::get('notification/{type}/{id}', [App\Http\Controllers\Admin\NotificationController::class, 'index'])->name('notification.index');
@@ -90,7 +89,7 @@ Route::middleware(['auth','admin'])->group(function() {
     });
 
     Route::prefix('ticket')->group(function () {
-        Route::resource('ticket',  App\Http\Controllers\Admin\TicketController::class)->except(['edit', 'update']);
+        Route::resource('ticket',  App\Http\Controllers\Admin\TicketController::class)->except(['edit']);
         Route::get('queue/{queue_id?}',  [App\Http\Controllers\Admin\TicketController::class, 'index'])->name('ticket.index');
     });
 });

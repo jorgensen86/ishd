@@ -10,10 +10,10 @@
                             {{-- Ticket Form --}}
                             <div class="col-md-8">
                                 @csrf
-                                <x-admin.form.select selected="" label="{{ __('admin/ticket.sender') }}" name="queue_id" :options="$queues"></x-admin.form.select>
-                                <x-admin.form.select2 label="{{ __('admin/ticket.recipient') }}" name="invoice_id" id="invoices" options="" :multiple="false"></x-admin.form.select>
-                                <x-admin.form.text name="subject" id="inputSubject" placeholder="{{ __('admin/ticket.subject') }}" value=""></x-admin.form.text>
-                                <x-admin.ckeditor label="{{ __('admin/ticket.message') }}"  :id="'bodyEditor'" :name="'body'"></x-admin.ckeditor>
+                                <x-admin.form.select selected="" label="{{ __('ticket.sender') }}" name="queue_id" :options="$queues"></x-admin.form.select>
+                                <x-admin.form.select2 label="{{ __('ticket.recipient') }}" name="invoice_id" id="invoices" options="" :multiple="false"></x-admin.form.select>
+                                <x-admin.form.text name="subject" id="inputSubject" placeholder="{{ __('ticket.subject') }}" value=""></x-admin.form.text>
+                                <x-admin.ckeditor label="{{ __('ticket.message') }}"  :id="'bodyEditor'" :name="'body'"></x-admin.ckeditor>
                             </div>
                             {{--/ Ticket Form  --}}
                             

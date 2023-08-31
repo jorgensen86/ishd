@@ -27,11 +27,11 @@ class UserDataTable extends DataTable
         return (new EloquentDataTable($query))
             ->addColumn('action', function ($data) {
                 return
-                    '<button data-target="#userModal" data-url="' . route('user.edit', $data) . '" class="btn btn-outline-info btn-flat btn-sm btnOpenModal">
+                    '<button data-target="#userModal" data-url="' . route('user.edit', $data) . '" class="btn btn-outline-secondary btn-flat btn-sm btnOpenModal">
                         <i class="fas fa-edit"></i>
                     </button>
                     <button data-target="#deleteModal" data-url="' . route('user.destroy', $data) . '" class="btn btn-danger btn-flat btn-sm btnDeleteModal">
-                        <i class="fas fa-trash"></i>
+                        <i class="fas fa-xmark"></i>
                     </button>';
             })
             ->editColumn('active', function ($data) {
@@ -66,9 +66,6 @@ class UserDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-            ->ajax([
-                'data' => 'function(d) { d.is_closed = $("#test").is(\':checked\') ? 1 : 0 }',
-            ])
             ->parameters(array_merge(config('datatables.parameters'), $this->parameters()))
             ->setTableId('ticketTable')
             ->columns($this->getColumns())
@@ -97,7 +94,6 @@ class UserDataTable extends DataTable
     public function parameters() {
         return [
             'pageLength' => app(ConfigSettings::class)->results_per_page,
-            'stateSave' => true ,
         ];
     }
 }

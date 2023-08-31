@@ -5,45 +5,48 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Reply;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ReplyController extends Controller
 {
-
     const LAYOUT_PATH = 'layouts.admin.ticket.reply';
-    const PAGE_CLASS = 'replyPage';
+    const LANG_PATH = 'ticket.';
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        if (request()->ajax()) {
-            return view(self::LAYOUT_PATH . 'Form')
-                ->with('title', 'Απάντηση')
-                ->with('action', route('queue.store'))
-                ->with('method', 'post')
-                ->with('reply', new Reply());
-        }
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
+        $json = [];
         
-        $reply = new Reply();
-        $reply->create([
-            'ticket_id' => $request->ticket_id,
-            'author_id' => $request->author_id,
-            'body' => $request->body,
+        $validator = Validator::make($request->all(), [
+            'body' => 'required|min:3'
         ]);
 
-        return redirect()->back();
+        if ($validator->fails()) {
+            $json = array(
+                'title' => __('el.text_danger'),
+                'errors' => $validator->getMessageBag()->toArray()
+            );
+        } else {
+            $reply = new Reply();
+            $reply->ticket_id = $request->ticket_id;
+            $reply->author_id = $request->author_id;
+            $reply->body = $request->body;
+            $reply->save();
+            
+            if($request->media) {
+                foreach ($request->media as $media) {
+                    if(isset($media['src'])) {
+                        $reply->addMedia(storage_path('app/' .$media['src']))->withResponsiveImages()->toMediaCollection(strpos($media['type'], 'image') === 0 ? 'images' : 'downloads');
+                    }
+                }
+            }
+
+            session()->flash('success', __(self::LANG_PATH . 'reply'));
+
+            $json['success'] = true;
+            $json['redirect'] = request()->server('HTTP_REFERER');
+        }
+
+        return response()->json($json, 200);
+
     }
 }

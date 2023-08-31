@@ -12,7 +12,7 @@
     <title>{{ $title ?? config('app.name', 'Laravel') }}</title>
     
     <!-- Scripts -->
-    @vite(['resources/sass/app.scss', 'resources/css/client.css'])
+    @vite(['resources/sass/app.scss', 'resources/css/app.css'])
     @stack('styles')
 </head>
 
@@ -33,7 +33,7 @@
         <x-admin.layout.footer></x-admin.layout.footer>
     </div>
     @endauth
-    @vite(['resources/js/app.js', 'resources/js/admin.js'])
+    @vite(['resources/js/app.js', 'resources/js/client.js'])
     <script src="{{ asset('assets/js/adminlte.min.js') }}" defer></script>
     @stack('scripts')
 </body>

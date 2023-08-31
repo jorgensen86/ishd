@@ -1,5 +1,7 @@
 <div class="form-group">
-    <label>{{ $label }}</label>
+    @if ($label)
+        <label>{{ $label }}</label>
+    @endif
     <textarea id="{{ $id }}" name="{{ $name }}" class="form-control"></textarea>
 </div>
 @push('styles')
@@ -8,6 +10,6 @@
 @push('scripts')
     <script src="{{ asset('assets/plugins/ckeditor/js/ckeditor.js') }}"></script>
     <script>
-        ClassicEditor.create( document.querySelector('#{{ $id }}'));
+        ClassicEditor.create(document.querySelector('#{{ $id }}'));
     </script>
 @endpush

@@ -19,20 +19,20 @@
                     <div class="row">
                         <div class="col-md-2">
                             <div class="form-group">
-                                <label>{{ __('admin/ticket.invoice') }}</label>
-                                <input type="text" id="invoice" name="invoice" value="{{ $filter_invoice }}" class="form-control form-control-sm" placeholder="{{ __('admin/ticket.invoice') }}">
+                                <label>{{ __('ticket.invoice') }}</label>
+                                <input type="text" id="invoice" name="invoice" value="{{ $filter_invoice }}" class="form-control form-control-sm" placeholder="{{ __('ticket.invoice') }}">
                             </div>
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
-                                <label>{{ __('admin/ticket.sender') }}</label>
-                                <input type="text" name="sender" id="sender" class="form-control form-control-sm" placeholder="{{ __('admin/ticket.sender') }}">
+                                <label>{{ __('ticket.sender') }}</label>
+                                <input type="text" name="sender" id="sender" class="form-control form-control-sm" placeholder="{{ __('ticket.sender') }}">
                             </div>
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
-                                <label>{{ __('admin/ticket.subject') }}</label>
-                                <input type="text" name="subject" id="subject" class="form-control form-control-sm" placeholder="{{ __('admin/ticket.subject') }}">
+                                <label>{{ __('ticket.subject') }}</label>
+                                <input type="text" name="subject" id="subject" class="form-control form-control-sm" placeholder="{{ __('ticket.subject') }}">
                             </div>
                         </div>
                     </div>
