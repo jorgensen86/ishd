@@ -1,4 +1,4 @@
-<div class="modal-body">
+<div class="modal-body">w
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
             <button class="nav-link active" id="home-tab" data-toggle="tab" data-target="#home" type="button"
@@ -24,7 +24,7 @@
                 <x-form.select label="{{ __('admin/user/user.role') }}" :selected="$data->roles->count() ? $data->roles->first()->id : 0" name="role"
                     :options="$roles"></x-form.select>
                 <x-form.checkbox :active="$data->active"></x-form.checkbox>
-            </div>
+            </div> 
             <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                 <div class="row">
                     @foreach ($permissions as $permission)
