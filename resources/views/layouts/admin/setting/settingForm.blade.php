@@ -4,247 +4,49 @@
     <x-admin.page-header :heading="$title"></x-admin.page-header>
     <section class="content">
         <div class="container-fluid">
-            <div id="accordion">
+            <form action="{{ route('setting.save') }}" method="post" enctype="multipart/form-data">
+                @csrf
                 <div class="card">
-                  <div class="card-header" id="generalSettings">
-                    <h5 class="mb-0">
-                      <button class="btn btn-link" data-toggle="collapse" data-target="#general" aria-expanded="true" aria-controls="general">
-                        Γενικές Ρυθμίσεις
-                      </button>
-                    </h5>
-                  </div>
-              
-                  <div id="general" class="collapse show" aria-labelledby="generalSettings" data-parent="#accordion">
-                    <div class="card-body">
-                      <form action="{{ route('setting.save') }}" method="post" enctype="multipart/form-data">
-                        @csrf
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label>Τίτλος Σελίδας</label>
-                                    <input type="text" name="site_name" id="inputPerPage" value="{{ $site_name }}" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label>Αποτελέσματα ανά σελίδα</label>
-                                    <input type="text" name="results_per_page" id="inputPerPage" value="{{ $results_per_page }}" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label">Κατάσταση Συντήρησης</label>
-                                    <div>
-                                        <div class="form-check-inline">
-                                            <label class="form-check-label">
-                                              <input type="radio" class="form-check-input" name="maintenance" value="1" {{ $maintenance ? 'checked' : null }}>Ναι 
-                                            </label>
-                                          </div>
-                                          <div class="form-check-inline">
-                                            <label class="form-check-label">
-                                              <input type="radio" class="form-check-input" name="maintenance" value="0" {{ !$maintenance ? 'checked' : null }}>Όχι
-                                            </label>
-                                          </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label>Text Disabled</label>
-                                    <input type="text" class="form-control" placeholder="Enter ..." disabled="">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="float-right">
-                            <input type="submit" value="ddd">
-                        </div>
-                      </form>
+                    <div class="card-header">
+                        <input type="submit">
                     </div>
-                  </div>
-                </div>
-                <div class="card">
-                  <div class="card-header" id="ticketSettings">
-                    <h5 class="mb-0">
-                      <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#tickets" aria-expanded="false" aria-controls="tickets">
-                        Αιτήτματα
-                      </button>
-                    </h5>
-                  </div>
-                  <div id="tickets" class="collapse" aria-labelledby="ticketSettings" data-parent="#accordion">
                     <div class="card-body">
-                        <form action="">
-                            <label for="inputMaintenance" class="control-label">Κατάσταση Συντήρησης</label>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="radio1">
-                                <label class="form-check-label">Radio</label>
-                                <input class="form-check-input" type="radio" name="radio1">
-                                <label class="form-check-label">Radio</label>
+                        <div class="row">
+                            <div class="col-5 col-sm-3">
+                                <div class="nav flex-column nav-tabs h-100" id="vert-tabs-tab" role="tablist"
+                                    aria-orientation="vertical">
+                                    <a class="nav-link active" id="general-tab" data-toggle="pill" href="#general"
+                                        role="tab" aria-controls="general"
+                                        aria-selected="true">{{ __('setting.tab_general') }}</a>
+                                    <a class="nav-link" id="ticket-tab" data-toggle="pill" href="#ticket" role="tab"
+                                        aria-controls="ticket" aria-selected="true">{{ __('setting.tab_ticket') }}</a>
+                                    <a class="nav-link" id="file-tab" data-toggle="pill" href="#file" role="tab"
+                                        aria-controls="file" aria-selected="true">{{ __('setting.tab_file') }}</a>
+                                </div>
                             </div>
-                        </form>
+                            <div class="col-7 col-sm-9">
+                                <div class="tab-content p-2" id="vert-tabs-tabContent">
+                                    <div class="tab-pane text-left fade active show" id="general" role="tabpanel"
+                                        aria-labelledby="general-tab">
+                                        <x-admin.form.text name="site_name" id="inputSiteName" :placeholder="__('setting.app_name')"
+                                            :value="$data->site_name"></x-admin.form.text>
+                                        <x-admin.form.text name="results_per_page" id="inputResults"
+                                            placeholder="Τίτλος Σελίδας" :value="$data->results_per_page"></x-admin.form.text>
+                                    </div>
+                                    <div class="tab-pane fade" id="ticket" role="tabpanel" aria-labelledby="ticket-tab">
+                                    </div>
+                                    <div class="tab-pane fade" id="file" role="tabpanel" aria-labelledby="file-tab">
+                                        <x-admin.form.text name="accepted_files" id="inputAcceptedFiles"
+                                            :placeholder="__('setting.accepted_files')" :value="$data->accepted_files ?? null"></x-admin.form.text>
+                                        <x-admin.form.text name="max_filesize" id="inputMaxFilesize"
+                                            :placeholder="__('setting.max_filesize')" :value="$data->max_filesize ?? null"></x-admin.form.text>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                  </div>
                 </div>
-                <div class="card">
-                  <div class="card-header" id="uploadSettings">
-                    <h5 class="mb-0">
-                      <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#uploads" aria-expanded="false" aria-controls="uploads">
-                        Διαχείριση Αρχείων
-                      </button>
-                    </h5>
-                  </div>
-                  <div id="uploads" class="collapse" aria-labelledby="uploadSettings" data-parent="#accordion">
-                    <div class="card-body">
-                      Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                    </div>
-                  </div>
-                </div>
-              </div>
-            <div class="card card-warning">
-                <div class="card-header">
-                    <h3 class="card-title">General Elements</h3>
-                </div>
-
-                <div class="card-body">
-                    <form>
-                        @method('post')
-                        @csrf
-                        <div class="row">
-                            <div class="col-sm-6">
-
-                                <div class="form-group">
-                                    <label>Text</label>
-                                    <input type="text" name="dasd" class="form-control" placeholder="Enter ...">
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label>Text Disabled</label>
-                                    <input type="text" class="form-control" placeholder="Enter ..." disabled="">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-
-                                <div class="form-group">
-                                    <label>Textarea</label>
-                                    <textarea class="form-control" rows="3" placeholder="Enter ..."></textarea>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label>Textarea Disabled</label>
-                                    <textarea class="form-control" rows="3" placeholder="Enter ..." disabled=""></textarea>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-form-label" for="inputSuccess"><i class="fas fa-check"></i> Input with
-                                success</label>
-                            <input type="text" class="form-control is-valid" id="inputSuccess" placeholder="Enter ...">
-                        </div>
-                        <div class="form-group">
-                            <label class="col-form-label" for="inputWarning"><i class="far fa-bell"></i> Input with
-                                warning</label>
-                            <input type="text" class="form-control is-warning" id="inputWarning" placeholder="Enter ...">
-                        </div>
-                        <div class="form-group">
-                            <label class="col-form-label" for="inputError"><i class="far fa-times-circle"></i> Input with
-                                error</label>
-                            <input type="text" class="form-control is-invalid" id="inputError" placeholder="Enter ...">
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-
-                                <div class="form-group">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox">
-                                        <label class="form-check-label">Checkbox</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" checked="">
-                                        <label class="form-check-label">Checkbox checked</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" disabled="">
-                                        <label class="form-check-label">Checkbox disabled</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-
-                                <div class="form-group">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="radio1">
-                                        <label class="form-check-label">Radio</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="radio1" checked="">
-                                        <label class="form-check-label">Radio checked</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" disabled="">
-                                        <label class="form-check-label">Radio disabled</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-
-                                <div class="form-group">
-                                    <label>Select</label>
-                                    <select class="form-control">
-                                        <option>option 1</option>
-                                        <option>option 2</option>
-                                        <option>option 3</option>
-                                        <option>option 4</option>
-                                        <option>option 5</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label>Select Disabled</label>
-                                    <select name="lalal" class="form-control" disabled="">
-                                        <option>option 1</option>
-                                        <option>option 2</option>
-                                        <option>option 3</option>
-                                        <option>option 4</option>
-                                        <option>option 5</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-
-                                <div class="form-group">
-                                    <label>Select Multiple</label>
-                                    <select multiple="" name="aaa" class="form-control">
-                                        <option>option 1</option>
-                                        <option>option 2</option>
-                                        <option>option 3</option>
-                                        <option>option 4</option>
-                                        <option>option 5</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label>Select Multiple Disabled</label>
-                                    <select multiple="" class="form-control" disabled="">
-                                        <option>option 1</option>
-                                        <option>option 2</option>
-                                        <option>option 3</option>
-                                        <option>option 4</option>
-                                        <option>option 5</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <input type="submit" value="dasd">
-                    </form>
-                </div>
-
-            </div>
+            </form>
         </div>
     </section>
 @endsection

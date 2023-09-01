@@ -22,12 +22,16 @@ class TicketDataTable extends DataTable
      */
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {   
-        if(request()->route('queue_id')) {
-            $query->where('queue_id' , request()->route('queue_id'));
+        if(request()->has('queue_id')) {
+            $query->where('queue_id' , request()->input('queue_id'));
         }
         
         if(request()->is_closed) {
             $query->where('is_closed' ,1);
+        }
+
+        if(request()->ticket_id) {
+            $query->where('ticket_id', request()->ticket_id );
         }
 
         if(request()->invoice) {
@@ -49,11 +53,10 @@ class TicketDataTable extends DataTable
         return (new EloquentDataTable($query))
             ->addColumn('action', function ($data) {
                 return
-                    '<a href="' . route('ticket.show', $data) . '" class="btn btn-outline-info btn-flat btn-sm">
-                        <i class="fas fa-eye"></i>
-                    </a>
-                    <button data-target="#deleteModal" data-url="' . route('queue.destroy', $data) . '" class="btn btn-outline-danger btn-flat btn-sm btnDeleteModal">
-                            <i class="fas fa-ban"></i>
+                    '<a href="' . route('ticket.show',  ['ticket' => $data, 'queue_id' => request()->input('queue_id')]) . '" class="btn">
+                        <i class="fas fa-pencil"></i></a>
+                    <button data-target="#deleteModal" data-url="' . route('queue.destroy', $data) . '" class="btn btn-danger btn-sm btnDeleteModal">
+                            <i class="fas fa-xmark"></i>
                     </button>';
             })
             ->setRowClass(function ($data) {
@@ -83,6 +86,7 @@ class TicketDataTable extends DataTable
         return $this->builder()
         ->ajax([
             'data' => 'function(params) { 
+                params.ticket_id = $("#ticket_id").val()
                 params.invoice = $("#invoice").val() 
                 params.subject = $("#subject").val() 
                 params.sender = $("#sender").val() 
@@ -116,7 +120,6 @@ class TicketDataTable extends DataTable
     public function parameters() {
         return [
             'pageLength' => app(ConfigSettings::class)->results_per_page,
-            'stateSave' => true
         ];
     }
 }

@@ -7,6 +7,7 @@ use App\Models\Notification;
 use App\Models\Reply;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
 class NotificationController extends Controller
@@ -40,24 +41,35 @@ class NotificationController extends Controller
      */
     public function store(Request $request)
     {
-
         if ($request->relation === Ticket::class) {
             $model = Ticket::find($request->model_id);
         } else  {
             $model = Reply::find($request->model_id);
         }
-        
-        $model->notifications()->save(new Notification([
-            'author_id' => $request->author_id,
-            'body' => $request->body,
-        ]));
-        
-        $json = array(
-            'title' => __('el.text_success'),
-            'success' => __( 'text_success'),
-            'count' => $model->notifications()->count(),
-            'id' => 'notif' . Str::replace('App\\Models\\', '', $request->relation) . $model->id
-        );
+
+        $validator = Validator::make($request->all(), [
+            'body' => 'required|min:3'
+        ]);
+
+        if ($validator->fails()) {
+            $json = array(
+                'title' => __('el.text_danger'),
+                'errors' => $validator->getMessageBag()->toArray()
+            );
+        } else {
+            $model->notifications()->save(new Notification([
+                'author_id' => $request->author_id,
+                'body' => $request->body,
+            ]));
+            
+            $json = array(
+                'title' => __('el.text_success'),
+                'success' => __( 'text_success'),
+                'count' => $model->notifications()->count(),
+                'id' => 'notif' . Str::replace('App\\Models\\', '', $request->relation) . $model->id
+            );
+        }
+
         
         return response()->json($json, 200);
     }

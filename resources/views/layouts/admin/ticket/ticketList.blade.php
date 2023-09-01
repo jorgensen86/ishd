@@ -4,12 +4,12 @@
     <x-admin.page-header :heading="$title"></x-admin.page-header>
     <section class="content">
         <div class="container-fluid">
-            <nav class="navbar navbar-expand navbar-orange navbar-dark">
+            <nav class="navbar navbar-expand navbar-dark mb-2">
                 <ul class="navbar-nav">
                     @foreach ($queues as $queue)
                         <li class="nav-item d-none d-sm-inline-block">
-                            <a href="{{ route('ticket.index', $queue->id) }}"
-                                class="nav-link{{ request()->route('queue_id') == $queue->id ? ' active' : null }}">{{ $queue->name }}</a>
+                            <a href="{{ route('ticket.index', ['queue_id' =>  $queue->id]) }}"
+                                class="nav-link{{ request()->input('queue_id') == $queue->id ? ' active' : null }}">{{ $queue->name }}</a>
                         </li>
                     @endforeach
                 </ul>
@@ -17,6 +17,9 @@
             <div class="card">
                 <div class="card-header">
                     <div class="row">
+                        <div class="col-md-2">
+                            <x-admin.form.text name="ticket_id" id="ticket_id" :placeholder="__('ticket.invoice')" :value="$filter_invoice"></x-admin.form.text>
+                        </div>
                         <div class="col-md-2">
                             <div class="form-group">
                                 <label>{{ __('ticket.invoice') }}</label>
@@ -53,7 +56,11 @@
     });
 
     $("#filter_button").on('click', function(){
-            $('#ticketTable').DataTable().ajax.reload();
+        $('#ticketTable').DataTable().ajax.reload();
+    });
+
+    $("#ticket_id").on('input', function(){
+        $('#ticketTable').DataTable().ajax.reload();
     });
 //     $('#ticketTable').on( 'click', 'tbody tr', function () {
 //   window.location.href = $(this).data('link');

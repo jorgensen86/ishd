@@ -6,9 +6,10 @@
         dictDefaultMessage: '{{ __("el.text_upload") }}',
         dictRemoveFile : 'Διαγραφή',
         paramName: "file",
-        autoProcessQueue: true,
-        addRemoveLinks: true,
-        acceptedFiles: 'image/*, .pdf, .doc, .docx, .xls, .xlsx, .csv, .txt',
+        maxFilesize: '{{ $max_filesize }}',
+        autoProcessQueue: true, 
+        addRemoveLinks: true, 
+        acceptedFiles: '{{ $accepted_files }}',
         params: {
             _token: "{{ csrf_token() }}"
         },

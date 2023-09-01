@@ -48,14 +48,17 @@
                                         <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                             <i class="fas {{ $ticket->replies->count() ? 'fa-plus' : 'fa-minus' }}"></i>
                                         </button>
-                                        <button type="button" class="btn btn-tool" title="Contacts"
+                                        <button type="button" class="btn btn-tool btnOpenModal" title="Contacts" data-target="#notificationModal"
+                                        data-url="{{ route('notification.index', ['ticket', $ticket]) }}"
                                             data-widget="chat-pane-toggle">
                                             <i class="fas fa-comments"></i>
+                                            <span id="notifTicket{{ $ticket->id }}" class="badge badge-danger navbar-badge">{{ $ticket->notifications->count() }}</span>
                                         </button>
                                     </div>
                                 </div>
                                 <div class="card-body">
                                     {!! $ticket->body !!}
+                                    
                                     @if ($ticket->getMedia('images')->count())
                                         <div class="attachment-block clearfix">
                                             @foreach ($ticket->getMedia('images') as $image)
@@ -170,6 +173,7 @@
                 </div>
             </div>
         </div>
+        <x-admin.form-modal id="notificationModal" size="lg" :title="__('client.edit_title')"></x-admin.form-modal>
     </section>
 
 @endsection

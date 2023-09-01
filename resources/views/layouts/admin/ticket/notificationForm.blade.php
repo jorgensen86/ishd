@@ -33,7 +33,7 @@
                     <h3 class="timeline-header">
                         {{ $notification->user->name }}
                     </h3>
-                    <div class="timeline-body">{!! nl2br($notification->body) !!}</div>
+                    <div class="timeline-body">{!! nl2br(e($notification->body)) !!}</div>
                 </div>
             </div>
         @endforeach

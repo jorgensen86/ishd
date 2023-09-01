@@ -117,6 +117,10 @@ $(function() {
                         displayToast('bg-danger', json.title, json.errors[key]);
                     });
                 }
+
+                if(json.success) {
+                    location.href  = json.redirect;
+                }
             }
         })
     })

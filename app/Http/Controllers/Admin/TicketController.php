@@ -26,7 +26,7 @@ class TicketController extends Controller
 
     public function index(TicketDataTable $dataTable, $queue_id = null)
     {
-        Queue::findOrFail($queue_id );
+        // Queue::findOrFail($queue_id );
 
         return $dataTable->render(self::LAYOUT_PATH . 'List', [
             'title' => __(self::LANG_PATH . 'title'),
@@ -55,7 +55,6 @@ class TicketController extends Controller
      */
     public function store(Request $request)
     {
-
         $json = [];
         
         $validator = Validator::make($request->all(), [

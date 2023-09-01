@@ -4,7 +4,7 @@
     <section class="content" id="ticketPage">
         <div class="container-fluid">
             <div class="card card-outline card-info">
-                <form action="{{ route('ticket.store') }}" method="post" id="ticketForm">
+                <form action="{{ route('ticket.store') }}" method="post" id="ticketForm" enctype="multipart/form-data">
                     <div class="card-body">
                         <div class="row">
                             {{-- Ticket Form --}}
@@ -45,25 +45,6 @@
 <script src="{{ asset('assets/plugins/select2/js/el.js') }}" defer></script>
 
 <script type="module">
-     $('#ticketForm').on('submit', function(e){
-        e.preventDefault();
-        $('.text-danger').remove()
-        $.ajax({
-            url: $(this).attr('action'),
-            type: 'post',
-            dataType: 'json',
-            data: $(this).serialize(),
-            success: function(json) {
-                if (json.errors) {
-                    let errors = '';
-                    Object.keys(json.errors).forEach(function (key) {
-                        $('[name="' + key + '"]').parent().before(`<div class="text-danger">${json.errors[key]}</div>`)
-                    });
-                }
-            }
-        })
-    })
-
     $('#invoices').select2({
         placeholder: "Αναζήτηση με crm ή domain",
         width: '100%',

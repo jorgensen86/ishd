@@ -90,7 +90,7 @@ Route::middleware(['auth','admin'])->group(function() {
 
     Route::prefix('ticket')->group(function () {
         Route::resource('ticket',  App\Http\Controllers\Admin\TicketController::class)->except(['edit']);
-        Route::get('queue/{queue_id?}',  [App\Http\Controllers\Admin\TicketController::class, 'index'])->name('ticket.index');
+        // Route::get('queue/{queue_id?}',  [App\Http\Controllers\Admin\TicketController::class, 'index'])->name('ticket.index');
     });
 });
 
