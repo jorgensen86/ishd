@@ -162,9 +162,7 @@ class UserController extends Controller
             $user->syncRoles($request->role);
 
             if($request->permissions) {            
-                foreach ($request->permissions as $permission) {
-                    $user->givePermissionTo($permission);
-                }
+                $user->syncPermissions($request->permissions);
             } else {
                 $user->syncPermissions();
             }

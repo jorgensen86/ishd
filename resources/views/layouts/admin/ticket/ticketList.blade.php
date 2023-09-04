@@ -8,10 +8,10 @@
                 <ul class="navbar-nav">
                     @foreach ($queues as $queue)
                         <li class="nav-item d-none d-sm-inline-block">
-                            {{-- @can('view_queue_' . $queue->id) --}}
+                            @can('view_queue_' . $queue->id)
                                 <a href="{{ route('ticket.index', ['queue_id' => $queue->id]) }}"
-                                    class="nav-link{{ request()->input('queue_id') == $queue->id ? ' active' : null }}">{{ $queue->name }}</a>
-                            {{-- @endcan --}}
+                                    class="nav-link{{ request()->input('queue_id') == $queue->id ? ' active' : null }}">{{ $queue->name }} (<span>{{ $queue->tickets->count() }}</span>)</a> 
+                            @endcan
                         </li>
                     @endforeach
                 </ul>

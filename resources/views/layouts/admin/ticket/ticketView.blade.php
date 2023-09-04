@@ -38,7 +38,7 @@
             {{-- Reply Form --}}
 
             <div class="row">
-                <div class="col-md-9">
+                <div class="col-lg-9">
                     <div class="card card-default">
                         <div class="card-header">
                             <h3 class="card-title">{{ __('ticket.subject') }} : {{ $ticket->subject }}</h3>
@@ -69,7 +69,7 @@
                                 <div class="card-body">
                                     {!! $ticket->body !!}
                                     @if ($ticket->getMedia('images')->count() || $ticket->getMedia('downloads')->count())
-                                        <div class="attachment-block clearfix">
+                                        <div class="attachment-block clearfix mt-2">
                                             <ul class="list-group">
                                                 @foreach ($ticket->getMedia('images') as $image)
                                                     <li><i class="fas fa-file-image mr-1"></i><a
@@ -87,7 +87,7 @@
                                         </div>
                                     @endif
                                 </div>
-                            </div>
+                            </div> 
 
                             @foreach ($ticket->replies as $reply)
                                 <div
@@ -117,63 +117,66 @@
                                     </div>
                                     <div class="card-body">
                                         {!! $reply->body !!}
-                                        @if ($reply->getMedia('images')->count())
-                                            <div class="attachment-block clearfix">
+                                        @if ($reply->getMedia('images')->count() || $reply->getMedia('downloads')->count())
+                                        <div class="attachment-block clearfix mt-2">
+                                            <ul class="list-group">
                                                 @foreach ($reply->getMedia('images') as $image)
-                                                    <a href="{{ $image->getUrl() }}" data-toggle="lightbox"
-                                                        data-gallery="example-gallery">
-                                                        <img class="attachment-img" src="{{ $image->getUrl() }}"
-                                                            alt="Attachment Image">
-                                                    </a>
+                                                    <li><i class="fas fa-file-image mr-1"></i><a
+                                                            href="{{ $image->getUrl() }}" data-toggle="lightbox"
+                                                            data-gallery="example-gallery">{{ $image->file_name }}
+                                                        </a></li>
                                                 @endforeach
-                                            </div>
-                                        @endif
-                                        @foreach ($reply->getMedia('downloads') as $download)
-                                            <div class="attachment-block clearfix">
-                                                <a href="{{ $download->getUrl() }}"
-                                                    target="__blank">{{ $download->file_name }}</a>
-                                            </div>
-                                        @endforeach
+                                            </ul>
+                                            <ul class="list-group">
+                                                @foreach ($reply->getMedia('downloads') as $download)
+                                                    <li><i class="fas fa-file mr-1"></i><a href="{{ $download->getUrl() }}"
+                                                            target="__blank">{{ $download->file_name }}</a></li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    @endif
                                     </div>
                                 </div>
                             @endforeach
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-lg-3">
                     <div class="card card-default">
                         <div class="card-header">
                             <h3 class="card-title">{{ __('ticket.info') }}</h3>
                         </div>
                         <div class="card-body p-0">
-                            <table class="table table-bordered table-sm">
-                                <tbody>
-                                    <tr>
-                                        <th>{{ __('ticket.ticket_id') }}</th>
-                                        <td>{{ $ticket->ticket_id }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>{{ __('ticket.date') }}</th>
-                                        <td>{{ $ticket->created_at->format('d/m/Y') }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>{{ __('admin/user/client.fullname') }}</th>
-                                        <td>{{ $ticket->user->name }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>{{ __('ticket.invoice') }}</th>
-                                        <td>{{ $ticket->invoice->invoice_number }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>{{ __('ticket.domain') }}</th>
-                                        <td>{{ $ticket->invoice->domain }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>{{ __('ticket.queue') }}</th>
-                                        <td>{{ $ticket->queue->name }}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-sm">
+                                    <tbody>
+                                        <tr>
+                                            <th>{{ __('ticket.ticket_id') }}</th>
+                                            <td>{{ $ticket->ticket_id }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>{{ __('ticket.date') }}</th>
+                                            <td>{{ $ticket->created_at->format('d/m/Y') }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>{{ __('admin/user/client.fullname') }}</th>
+                                            <td>{{ $ticket->user->name }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>{{ __('ticket.invoice') }}</th>
+                                            <td>{{ $ticket->invoice->invoice_number }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>{{ __('ticket.domain') }}</th>
+                                            <td>{{ $ticket->invoice->domain }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>{{ __('ticket.queue') }}</th>
+                                            <td>{{ $ticket->queue->name }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                         <div class="card-footer">
                             <button id="replyButton"

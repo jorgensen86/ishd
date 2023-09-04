@@ -3,6 +3,10 @@ body {
     font-size: 0.9rem;
 }
 
+p {
+    margin-bottom: 0;
+}
+
 a {
     color: #006adb;
 }
