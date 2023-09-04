@@ -13,7 +13,7 @@ use Illuminate\Support\Str;
 class NotificationController extends Controller
 {
     const LAYOUT_PATH = 'layouts.admin.ticket.notification';
-    const LANG_PATH = 'admin/ticket/notification.';
+    const LANG_PATH = 'notification.';
 
     public function index($type, $id)
     {  
@@ -64,7 +64,7 @@ class NotificationController extends Controller
             
             $json = array(
                 'title' => __('el.text_success'),
-                'success' => __( 'text_success'),
+                'success' => __( 'notification.text_success'),
                 'count' => $model->notifications()->count(),
                 'id' => 'notif' . Str::replace('App\\Models\\', '', $request->relation) . $model->id
             );

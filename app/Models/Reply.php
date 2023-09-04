@@ -23,9 +23,9 @@ class Reply extends Model implements HasMedia
         'reply_id'
     ];
 
-    protected $appends = [
-        'date_added'
-    ];
+    // protected $appends = [
+    //     'date_added'
+    // ];
 
     protected $casts = [
         'created_at' => 'datetime:d-m-Y H:m',
@@ -43,7 +43,7 @@ class Reply extends Model implements HasMedia
         return $this->morphMany(Notification::class, 'model');
     }
 
-    protected function dateAdded(): Attribute
+    protected function humanDate(): Attribute
     {
         return new Attribute(
             get: fn () => $this->created_at->diffForHumans()

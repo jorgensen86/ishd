@@ -21,7 +21,7 @@ class TicketController extends Controller
      */
     public function __construct()
     {
-        // $this->middleware('permission:view_queue_' . request()->route('queue_id') );
+        // $this->middleware('permission:view_queue_' . request()->input('queue_id') );
     }
 
     public function index(TicketDataTable $dataTable, $queue_id = null)
@@ -102,7 +102,6 @@ class TicketController extends Controller
      */
     public function show(Ticket $ticket)
     {
-
         if (!$ticket->is_opened) {
             $ticket->update(['is_opened' => 1]);
         }
@@ -122,8 +121,20 @@ class TicketController extends Controller
      */
     public function update(Request $request,Ticket $ticket)
     {
-        $ticket->queue_id = $request->queue_id;
-        $ticket->touch();
+        $json = [];
+
+        if (request()->ajax()) {
+            $ticket->queue_id = $request->queue_id;
+            $ticket->touch();
+
+            $json = array(
+                'title' => __('el.text_success'),
+                'success' =>  __('user.text_success'),
+            );
+        }
+
+        return response()->json($json, 200);
+        
     }
 
     /**

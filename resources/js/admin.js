@@ -152,4 +152,25 @@ $(function() {
             }
         })
     })
+
+    $('#editTicket').on('submit', function(e) {
+        e.preventDefault();
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'post',
+            dataType: 'json',
+            data: $(this).serialize(),
+            beforeSend: function() {
+
+            },
+            success: function(json) {
+                if (json.success) {
+                    displayToast('bg-success', json.title, json.success);
+                }
+            },
+            error: (xhr) => {
+                alert(xhr.status + ' - ' + xhr.responseJSON.message)
+            }
+        })
+    })
 })

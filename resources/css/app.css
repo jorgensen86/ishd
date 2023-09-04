@@ -113,6 +113,29 @@ a {
     border-top-color: #00274e;
 }
 
+.user-block .comment, .user-block .description, .user-block .username {
+    margin-left: 0;
+}
+
+.card-body .attachment-block .list-group {
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+}
+
+.card-body .attachment-block li {
+    list-style-type: none;
+    padding: 5px 10px;
+}
+
+.card-body .attachment-block li a {
+    color: #5a1841;
+    font-size: 15px;
+}
+
 /* Timeline */
 .timeline>div>.timeline-item .timeline-body, .timeline>div>.timeline-item .timeline-footer {
     padding: 10px;

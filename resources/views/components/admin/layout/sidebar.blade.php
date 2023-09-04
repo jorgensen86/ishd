@@ -39,7 +39,7 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="{{ route('ticket.index', 1) }}" class="nav-link {{ request()->is('ticket/queue/*') ? 'active' : null }}">
+              <a href="{{ route('ticket.index', ['queue_id'=> 1]) }}" class="nav-link {{ request()->is('ticket/queue/*') ? 'active' : null }}">
                 <i class="fas fa-angle-right nav-icon"></i>
                 <p>{{ __('sidebar.ticket_list') }}</p>
               </a>

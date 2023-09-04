@@ -9,6 +9,7 @@
                     {{ session('success') }}
                 </div>
             @endif
+            {{-- Reply Form --}}
             <form action="{{ route('reply.store') }}" method="post" id="replyForm">
                 <div class="card">
                     <div class="card-body p-3">
@@ -34,67 +35,84 @@
                     </div>
                 </div>
             </form>
-            <div class="card card-info">
-                <div class="card-header">
-                    <h3 class="card-title">{{ __('ticket.subject') }} : {{ $ticket->subject }}</h3>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-9">
-                            <div class="card {{ $ticket->replies->count() ? 'collapsed-card' : null }}">
+            {{-- Reply Form --}}
+
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="card card-default">
+                        <div class="card-header">
+                            <h3 class="card-title">{{ __('ticket.subject') }} : {{ $ticket->subject }}</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="card card-widget {{ $ticket->replies->count() ? 'collapsed-card' : null }}">
                                 <div class="card-header">
-                                    <h3 class="card-title"># {{ $ticket->ticket_id }} - {{ $ticket->user->name }}</h3>
+                                    <div class="user-block">
+                                        <span
+                                            class="username {{ $ticket->user->administrator ? 'text-success' : 'text-danger' }}">{{ $ticket->user->name }}</span>
+                                        <span class="description">{{ $ticket->created_at->format('d/m/Y H:i:s') }}
+                                            ({{ $ticket->date_added }})</span>
+                                    </div>
                                     <div class="card-tools">
                                         <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                             <i class="fas {{ $ticket->replies->count() ? 'fa-plus' : 'fa-minus' }}"></i>
                                         </button>
-                                        <button type="button" class="btn btn-tool btnOpenModal" title="Contacts" data-target="#notificationModal"
-                                        data-url="{{ route('notification.index', ['ticket', $ticket]) }}"
+                                        <button type="button" class="btn btn-tool btnOpenModal"
+                                            title="{{ __('notification.add') }}" data-target="#notificationModal"
+                                            data-url="{{ route('notification.index', ['ticket', $ticket]) }}"
                                             data-widget="chat-pane-toggle">
                                             <i class="fas fa-comments"></i>
-                                            <span id="notifTicket{{ $ticket->id }}" class="badge badge-danger navbar-badge">{{ $ticket->notifications->count() }}</span>
                                         </button>
+                                        <span id="notifTicket{{ $ticket->id }}"
+                                            class="badge badge-danger navbar-badge">{{ $ticket->notifications->count() }}</span>
                                     </div>
                                 </div>
                                 <div class="card-body">
                                     {!! $ticket->body !!}
-                                    
-                                    @if ($ticket->getMedia('images')->count())
+                                    @if ($ticket->getMedia('images')->count() || $ticket->getMedia('downloads')->count())
                                         <div class="attachment-block clearfix">
-                                            @foreach ($ticket->getMedia('images') as $image)
-                                                <a href="{{ $image->getUrl() }}" data-toggle="lightbox"
-                                                    data-gallery="example-gallery">
-                                                    <img class="attachment-img" src="{{ $image->getUrl() }}"
-                                                        alt="Attachment Image">
-                                                </a>
-                                            @endforeach
+                                            <ul class="list-group">
+                                                @foreach ($ticket->getMedia('images') as $image)
+                                                    <li><i class="fas fa-file-image mr-1"></i><a
+                                                            href="{{ $image->getUrl() }}" data-toggle="lightbox"
+                                                            data-gallery="example-gallery">{{ $image->file_name }}
+                                                        </a></li>
+                                                @endforeach
+                                            </ul>
+                                            <ul class="list-group">
+                                                @foreach ($ticket->getMedia('downloads') as $download)
+                                                    <li><i class="fas fa-file mr-1"></i><a href="{{ $download->getUrl() }}"
+                                                            target="__blank">{{ $download->file_name }}</a></li>
+                                                @endforeach
+                                            </ul>
                                         </div>
                                     @endif
-                                    @foreach ($ticket->getMedia('downloads') as $download)
-                                        <div class="attachment-block clearfix">
-                                            <a href="{{ $download->getUrl() }}"
-                                                target="__blank">{{ $download->file_name }}</a>
-                                        </div>
-                                    @endforeach
                                 </div>
                             </div>
 
                             @foreach ($ticket->replies as $reply)
                                 <div
-                                    class="card {{ $reply->id !== $ticket->replies->last()->id ? 'collapsed-card' : null }}">
+                                    class="card card-widget {{ $reply->id !== $ticket->replies->last()->id ? 'collapsed-card' : null }}">
                                     <div class="card-header">
-                                        <h3 class="card-title"># {{ $ticket->ticket_id }}/{{ $reply->id }} -
-                                            {{ $reply->user->name }}
-                                        </h3>
+                                        <div class="user-block">
+                                            <span
+                                                class="username {{ $reply->user->administrator ? 'text-success' : 'text-danger' }}">{{ $reply->user->name }}</span>
+                                            <span class="description">{{ $reply->created_at->format('d/m/Y H:i:s') }}
+                                                ({{ $reply->human_date }})
+                                            </span>
+                                        </div>
                                         <div class="card-tools">
                                             <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                                 <i
                                                     class="fas {{ $reply->id !== $ticket->replies->last()->id ? 'fa-plus' : 'fa-minus' }}"></i>
                                             </button>
-                                            <button type="button" class="btn btn-tool" title="Contacts"
+                                            <button type="button" class="btn btn-tool btnOpenModal"
+                                                title="{{ __('notification.add') }}" data-target="#notificationModal"
+                                                data-url="{{ route('notification.index', ['reply', $reply]) }}"
                                                 data-widget="chat-pane-toggle">
                                                 <i class="fas fa-comments"></i>
                                             </button>
+                                            <span id="notifReply{{ $reply->id }}"
+                                                class="badge badge-danger navbar-badge">{{ $reply->notifications->count() }}</span>
                                         </div>
                                     </div>
                                     <div class="card-body">
@@ -120,56 +138,65 @@
                                 </div>
                             @endforeach
                         </div>
-                        <div class="col-md-3">
-                            <div class="card card-primary">
-                                <div class="card-header">
-                                    <h3 class="card-title">{{ __('ticket.info') }}</h3>
-                                </div>
-                                <div class="card-body p-0">
-                                    <table class="table table-bordered table-sm">
-                                        <tbody>
-                                            <tr>
-                                                <th>{{ __('admin/user/client.fullname') }}</th>
-                                                <td>{{ $ticket->user->name }}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>{{ __('ticket.invoice') }}</th>
-                                                <td>{{ $ticket->invoice->invoice_number }}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>{{ __('ticket.domain') }}</th>
-                                                <td>{{ $ticket->invoice->domain }}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>{{ __('ticket.queue') }}</th>
-                                                <td>{{ $ticket->queue->name }}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="card-footer">
-                                    <button id="replyButton"
-                                        class="btn btn-primary btn-sm float-right">{{ __('el.button_reply') }}</button>
-                                </div>
-                            </div>
-                            <form action="{{ route('ticket.update', $ticket) }}" method="post" enctype="multipart/form-data">
-                                @csrf
-                                @method('put')
-                                <div class="card card-primary">
-                                    <div class="card-header">
-                                        <h3 class="card-title">{{ __('ticket.edit') }}</h3>
-                                    </div>
-                                    <div class="card-body">
-                                        <x-admin.form.select :selected="$ticket->queue_id" label="{{ __('ticket.queue') }}"
-                                            name="queue_id" :options="$queues"></x-admin.form.select>
-                                    </div>
-                                    <div class="card-footer">
-                                        <input type="submit" value="sss">
-                                    </div>
-                                </div>
-                            </form>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card card-default">
+                        <div class="card-header">
+                            <h3 class="card-title">{{ __('ticket.info') }}</h3>
+                        </div>
+                        <div class="card-body p-0">
+                            <table class="table table-bordered table-sm">
+                                <tbody>
+                                    <tr>
+                                        <th>{{ __('ticket.ticket_id') }}</th>
+                                        <td>{{ $ticket->ticket_id }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>{{ __('ticket.date') }}</th>
+                                        <td>{{ $ticket->created_at->format('d/m/Y') }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>{{ __('admin/user/client.fullname') }}</th>
+                                        <td>{{ $ticket->user->name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>{{ __('ticket.invoice') }}</th>
+                                        <td>{{ $ticket->invoice->invoice_number }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>{{ __('ticket.domain') }}</th>
+                                        <td>{{ $ticket->invoice->domain }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>{{ __('ticket.queue') }}</th>
+                                        <td>{{ $ticket->queue->name }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="card-footer">
+                            <button id="replyButton"
+                                class="btn btn-primary btn-sm float-right">{{ __('el.button_reply') }}</button>
                         </div>
                     </div>
+
+                    <form action="{{ route('ticket.update', $ticket) }}" id="editTicket" method="post"
+                        enctype="multipart/form-data">
+                        @csrf
+                        @method('put')
+                        <div class="card card-default">
+                            <div class="card-header">
+                                <h3 class="card-title">{{ __('ticket.edit') }}</h3>
+                            </div>
+                            <div class="card-body">
+                                <x-admin.form.select :selected="$ticket->queue_id" label="{{ __('ticket.queue') }}" name="queue_id"
+                                    :options="$queues"></x-admin.form.select>
+                                <button class="btn btn-sm btn-default float-right"
+                                    type="submit">{{ __('el.button_save') }}</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

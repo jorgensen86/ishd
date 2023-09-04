@@ -8,8 +8,10 @@
                 <ul class="navbar-nav">
                     @foreach ($queues as $queue)
                         <li class="nav-item d-none d-sm-inline-block">
-                            <a href="{{ route('ticket.index', ['queue_id' =>  $queue->id]) }}"
-                                class="nav-link{{ request()->input('queue_id') == $queue->id ? ' active' : null }}">{{ $queue->name }}</a>
+                            {{-- @can('view_queue_' . $queue->id) --}}
+                                <a href="{{ route('ticket.index', ['queue_id' => $queue->id]) }}"
+                                    class="nav-link{{ request()->input('queue_id') == $queue->id ? ' active' : null }}">{{ $queue->name }}</a>
+                            {{-- @endcan --}}
                         </li>
                     @endforeach
                 </ul>
@@ -17,29 +19,25 @@
             <div class="card">
                 <div class="card-header">
                     <div class="row">
-                        <div class="col-md-2">
-                            <x-admin.form.text name="ticket_id" id="ticket_id" :placeholder="__('ticket.invoice')" :value="$filter_invoice"></x-admin.form.text>
+                        <div class="col-md-3">
+                            <x-admin.form.text name="ticket_id" id="ticket_id" :placeholder="__('ticket.ticket_id')"
+                                :value="$filter_invoice"></x-admin.form.text>
                         </div>
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                <label>{{ __('ticket.invoice') }}</label>
-                                <input type="text" id="invoice" name="invoice" value="{{ $filter_invoice }}" class="form-control form-control-sm" placeholder="{{ __('ticket.invoice') }}">
-                            </div>
+                        <div class="col-md-3">
+                            <x-admin.form.text name="invoice" id="invoice" :placeholder="__('ticket.invoice')"
+                                :value="$filter_invoice"></x-admin.form.text>
                         </div>
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                <label>{{ __('ticket.sender') }}</label>
-                                <input type="text" name="sender" id="sender" class="form-control form-control-sm" placeholder="{{ __('ticket.sender') }}">
-                            </div>
+                        <div class="col-md-3">
+                            <x-admin.form.text name="sender" id="sender" :placeholder="__('ticket.sender')"
+                                :value="$filter_invoice"></x-admin.form.text>
                         </div>
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                <label>{{ __('ticket.subject') }}</label>
-                                <input type="text" name="subject" id="subject" class="form-control form-control-sm" placeholder="{{ __('ticket.subject') }}">
-                            </div>
+                        <div class="col-md-3">
+                            <x-admin.form.text name="subject" id="subject" :placeholder="__('ticket.subject')"
+                                :value="$filter_invoice"></x-admin.form.text>
+                            <button type="button" id="filter_button" class="btn btn-info btn-sm"><i
+                                    class="far fa-filter"></i></button>
                         </div>
                     </div>
-                    <button type="button" id="filter_button" class="btn btn-info btn-sm"><i class="far fa-filter"></i></button>
                 </div>
                 <div class="card-body">
                     {{ $dataTable->table() }}
@@ -51,19 +49,19 @@
 @push('scripts')
     {{ $dataTable->scripts(attributes: ['type' => 'module']) }}
     <script type="module">
-        $("#test").on('change', function(){
+        $("#test").on('change', function() {
             $('table').DataTable().draw();
-    });
+        });
 
-    $("#filter_button").on('click', function(){
-        $('#ticketTable').DataTable().ajax.reload();
-    });
+        $("#filter_button").on('click', function() {
+            $('#ticketTable').DataTable().ajax.reload();
+        });
 
-    $("#ticket_id").on('input', function(){
-        $('#ticketTable').DataTable().ajax.reload();
-    });
-//     $('#ticketTable').on( 'click', 'tbody tr', function () {
-//   window.location.href = $(this).data('link');
-// });
+        $("#ticket_id").on('input', function() {
+            $('#ticketTable').DataTable().ajax.reload();
+        });
+        //     $('#ticketTable').on( 'click', 'tbody tr', function () {
+        //   window.location.href = $(this).data('link');
+        // });
     </script>
 @endpush
