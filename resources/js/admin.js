@@ -48,10 +48,10 @@ $(function() {
                 if (json.errors) {
                     let errors = '';
                     Object.keys(json.errors).forEach(function (key) {
-                        $('input[name="' + key + '"]').addClass('is-invalid')
+                        $('[name="' + key + '"]').addClass('is-invalid')
                         errors += json.errors[key] + "<br>";
                     });
-
+                    
                     displayToast('bg-danger', json.title, errors);
 
                 } else {
@@ -77,10 +77,10 @@ $(function() {
             url: $(this).attr('action'),
             data: $('#deleteForm').serialize(),
             beforeSend: () => {
-                $('.modal button').prop('disable', true)
+                $('#btnConfirm, #btnCancel').prop('disabled', true)
             },
             complete: () => {
-                
+                $('#btnConfirm, #btnCancel').prop('disabled', false)
             },
             success: (json) => {
                 if(json.errors) {
@@ -88,7 +88,6 @@ $(function() {
                         displayToast('bg-danger', json.title, json.errors[index]);
                     }
                 } 
-
                 if(json.success) {
                     $('#deleteModal').modal('hide');
                     displayToast('bg-success', json.title, json.success);
@@ -119,7 +118,6 @@ $(function() {
                         displayToast('bg-danger', json.title, json.errors[key]);
                     });
                 }
-
                 if(json.success) {
                     location.href  = json.redirect;
                 }

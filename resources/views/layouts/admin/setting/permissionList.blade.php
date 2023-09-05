@@ -8,7 +8,7 @@
             <div class="card-header">
                 <div class="card-tools">
                     <button data-url="{{ route('permission.create') }}" data-target="#permissionModal"
-                        class="btn btn-sm btn-info btnOpenModal">{{ __('el.button_add') }}</button>
+                        class="btn btn-sm btn-default btnOpenModal">{{ __('el.button_add') }} <i class="fas fa-plus"></i></button>
                 </div>
             </div>
             <div class="card-body table-responsive">
@@ -17,8 +17,8 @@
         </div>
 
     </div>
-    <x-admin.form-modal id="permissionModal" size="sm" :title="__('client.edit_title')"></x-admin.form-modal>
-    <x-admin.delete-modal id="deleteModal" size="sm" :title="__('permission.delete_title')"></x-admin.delete-modal>
+    <x-modal.open id="permissionModal" size="md"></x-modal.open>
+    <x-modal.delete size="sm"></x-modal.delete>
 </section>
 @endsection
 

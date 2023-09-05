@@ -13,8 +13,7 @@ class PermissionController extends Controller
 {
 
     const LAYOUT_PATH = 'layouts.admin.setting.permission';
-    const LANG_PATH = 'admin/setting/permission.';
-    const PAGE_CLASS = 'permissionPage';
+    const LANG_PATH = 'permission.';
 
     /**
      * Display a listing of the resource.
@@ -70,7 +69,7 @@ class PermissionController extends Controller
 
             $json = array(
                 'title' => __('el.text_success'),
-                'success' =>  __('user.text_success'),
+                'success' =>  __('permission.text_success'),
             );
         }
 
@@ -123,7 +122,7 @@ class PermissionController extends Controller
 
             $json = array(
                 'title' => __('el.text_success'),
-                'success' =>  __('user.text_success'),
+                'success' =>  __('permission.text_success'),
             );
         }
 
@@ -140,18 +139,18 @@ class PermissionController extends Controller
     {
         $json = [];
         
-        // if(User::role($role->name)->count()) {
-        //     $json = array(
-        //         'title' => __('el.text_danger'),
-        //         'errors' => __('user.error_delete')
-        //     );
-        // }
+        if($permission->users()->count()) {
+            $json = array(
+                'title' => __('el.text_danger'),
+                'errors' =>  array(sprintf(__('permission.user_alert'), $permission->users()->count()))
+            );
+        }
         
         if(!$json) {
-            Permission::find($permission->id)->delete();
+            Permission::findOrFail($permission->id)->delete();
             $json = array(
                 'title' => __('el.text_success'),
-                'success' =>  __('user.text_success'),
+                'success' =>  __('permission.text_success'),
             );
         }
         

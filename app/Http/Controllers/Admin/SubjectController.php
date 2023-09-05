@@ -23,8 +23,7 @@ class SubjectController extends Controller
     public function index(SubjectDataTable $subjectDataTable)
     {
         return $subjectDataTable->render(self::LAYOUT_PATH . 'List', [
-            'title' => __(self::LANG_PATH . 'title'),
-            'queues' => Subject::all()
+            'title' => __(self::LANG_PATH . 'title')
         ]);
     }
 
@@ -125,7 +124,6 @@ class SubjectController extends Controller
                 'title' => __('el.text_danger'),
                 'errors' => $validator->getMessageBag()->toArray()
             );
-            
         } else {
             $subject->name = $request->name;
             $subject->queue_id = $request->queue_id;
@@ -149,23 +147,14 @@ class SubjectController extends Controller
      */
     public function destroy(Subject $subject)
     {
-        $json = [];
+
+        Subject::find($subject->id)->delete();
         
-        // if(User::role($role->name)->count()) {
-        //     $json = array(
-        //         'title' => __('el.text_danger'),
-        //         'errors' => __('user.error_delete')
-        //     );
-        // }
-        
-        if(!$json) {
-            Subject::find($subject->id)->delete();
-            $json = array(
-                'title' => __('el.text_success'),
-                'success' =>  __('user.text_success'),
-            );
-        }
-        
+        $json = array(
+            'title' => __('el.text_success'),
+            'success' =>   __(self::LANG_PATH . 'text_success'),
+        );
+
         return response()->json($json, 200);
     }
 }

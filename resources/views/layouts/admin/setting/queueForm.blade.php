@@ -9,7 +9,7 @@
     </form>
 </div>
 <div class="modal-footer justify-content-between">
-    <button type="button" id="btnCancel" class="btn btn-sm btn-default" data-dismiss="modal">{{ __('el.button_cancel') }}</button>
+    <x-modal.close-button></x-modal.close-button>
     <button type="button" id="btnSave" data-form="#queueForm"
         class="btn btn-sm btn-success">{{ __('el.button_save') }}</button>
 </div>

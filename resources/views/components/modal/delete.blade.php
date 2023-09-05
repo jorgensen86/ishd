@@ -12,9 +12,9 @@
                 </form>
             </div>
             <div class="modal-footer justify-content-around">
-                <button type="button" class="btn btn-sm btn-outline-danger px-3"
+                <button type="button" id="btnCancel" class="btn btn-sm btn-outline-danger px-3"
                     data-dismiss="modal"><i class="far fa-xmark"></i> {{ __('el.text_no') }}</button>
-                <button type="submit" class="btn btn-sm btn-outline-success px-3"
+                <button type="submit" id="btnConfirm" class="btn btn-sm btn-outline-success px-3"
                     form="deleteForm"><i class="far fa-check"></i> {{ __('el.text_yes') }}</button>
             </div>
         </div>
