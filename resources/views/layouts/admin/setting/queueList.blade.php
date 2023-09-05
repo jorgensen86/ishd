@@ -7,8 +7,7 @@
         <div class="card">
             <div class="card-header">
                 <div class="card-tools">
-                    <button data-url="{{ route('queue.create') }}" data-target="#queueModal"
-                        class="btn btn-sm btn-default btnOpenModal">{{ __('el.button_add') }} <i class="fas fa-plus"></i></button>
+                    <x-modal.open-button :url="route('queue.create')" target="#queueModal"></x-modal.open-button>
                 </div>
             </div>
             <div class="card-body table-responsive">
@@ -17,8 +16,8 @@
         </div>
 
     </div>
-    <x-admin.form-modal id="queueModal" size="md" :title="__('client.edit_title')"></x-admin.form-modal>
-    <x-admin.delete-modal id="deleteModal" size="sm" :title="__('queue.delete_title')"></x-admin.delete-modal>
+    <x-modal.open id="queueModal" size="md"></x-modal.open>
+    <x-modal.delete size="sm"></x-modal.delete>
 </section>
 @endsection
 

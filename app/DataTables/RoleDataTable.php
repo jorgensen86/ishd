@@ -2,7 +2,6 @@
 
 namespace App\DataTables;
 
-use App\Http\Controllers\Admin\RoleController;
 use App\Settings\ConfigSettings;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
@@ -25,11 +24,11 @@ class RoleDataTable extends DataTable
         return (new EloquentDataTable($query))
              ->addColumn('action', function ($data) {
                 return
-                    '<button data-target="#roleModal" data-url="' . route('role.edit', $data) . '" class="btn btn-outline-info btn-flat btn-sm btnOpenModal">
-                        <i class="fas fa-edit"></i>
+                    '<button data-target="#roleModal" data-url="' . route('role.edit', $data) . '" class="btn btn-default btn-sm btnOpenModal">
+                        <i class="fas fa-pencil"></i>
                     </button>
-                    <button data-target="#deleteModal" data-url="' . route('role.destroy', $data) . '" class="btn btn-outline-danger btn-flat btn-sm btnDeleteModal">
-                            <i class="fas fa-ban"></i>
+                    <button data-target="#deleteModal" data-url="' . route('role.destroy', $data) . '" class="btn btn-danger btn-flat btn-sm btnDeleteModal">
+                        <i class="fas fa-xmark"></i>
                     </button>';
             })
             ->editColumn('created_at', function ($data) {
@@ -66,7 +65,7 @@ class RoleDataTable extends DataTable
             ->parameters(array_merge(config('datatables.parameters'), $this->parameters()))
             ->minifiedAjax()
             ->dom('rtip')
-            ->orderBy(1,'asc');
+            ->orderBy(0, 'asc');
     }
 
     /**
@@ -77,10 +76,9 @@ class RoleDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::make('id')->title('ID'),
-            Column::make('name')->title(__(RoleController::LANG_PATH . 'name')),
-            Column::make('created_at')->title(__(RoleController::LANG_PATH . 'created'))->className('text-right'),
-            Column::make('updated_at')->title(__(RoleController::LANG_PATH . 'updated'))->className('text-right'),
+            Column::make('name')->title(__('role.name')),
+            Column::make('created_at')->title(__('el.created'))->className('text-right'),
+            Column::make('updated_at')->title(__('el.updated'))->className('text-right'),
             Column::computed('action')->title('')->className('text-right'),
         ];
     }
@@ -89,7 +87,6 @@ class RoleDataTable extends DataTable
     {
         return [
             'pageLength' => app(ConfigSettings::class)->results_per_page,
-            'stateSave' => false
         ];
     }
 }

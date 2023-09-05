@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\DataTables\RoleDataTable;
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Validator;
@@ -12,10 +11,7 @@ use Illuminate\Validation\Rule;
 
 class RoleController extends Controller
 {
-
     const LAYOUT_PATH = 'layouts.admin.setting.role';
-    const LANG_PATH = 'admin/setting/role.';
-    const PAGE_CLASS = 'rolePage';
 
     /**
      * Display a listing of the resource.
@@ -25,7 +21,7 @@ class RoleController extends Controller
     public function index(RoleDataTable $roleDataTable)
     {
         return $roleDataTable->render(self::LAYOUT_PATH . 'List', [
-            'title' => __(self::LANG_PATH . 'title'),
+            'title' => __('role.title'),
         ]);
     }
     /**
@@ -37,10 +33,10 @@ class RoleController extends Controller
     {
         if (request()->ajax()) {
             return view(self::LAYOUT_PATH . 'Form')
-                ->with('title', __(self::LANG_PATH . 'create'))
+                ->with('title', __('role.create'))
                 ->with('action', route('role.store'))
                 ->with('method', 'post')
-                ->with('role', new Role());
+                ->with('data', new Role());
         }
     }
 
@@ -70,7 +66,7 @@ class RoleController extends Controller
 
             $json = array(
                 'title' => __('el.text_success'),
-                'success' =>  __('user.text_success'),
+                'success' =>  __('role.text_success'),
             );
         }
 
@@ -88,10 +84,10 @@ class RoleController extends Controller
     {
         if (request()->ajax()) {
             return view(self::LAYOUT_PATH . 'Form')
-                ->with('title', __(self::LANG_PATH . 'edit'))
+                ->with('title', __('role.edit'))
                 ->with('action', route('role.update', $role))
                 ->with('method', 'put')
-                ->with('role', $role);
+                ->with('data', $role);
         }
     }
 
@@ -122,7 +118,7 @@ class RoleController extends Controller
 
             $json = array(
                 'title' => __('el.text_success'),
-                'success' =>  __('user.text_success'),
+                'success' =>  __('role.text_success'),
             );
         }
 
@@ -139,10 +135,10 @@ class RoleController extends Controller
     {
         $json = [];
         
-        if(User::role($role->name)->count()) {
+        if($role->users()->count()) {
             $json = array(
                 'title' => __('el.text_danger'),
-                'errors' => __('user.error_delete')
+                'errors' => array(sprintf(__('role.user_alert'), $role->users()->count()))
             );
         }
         
@@ -150,7 +146,7 @@ class RoleController extends Controller
             Role::find($role->id)->delete();
             $json = array(
                 'title' => __('el.text_success'),
-                'success' =>  __('user.text_success'),
+                'success' =>  __('role.text_success'),
             );
         }
         

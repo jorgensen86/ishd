@@ -7,9 +7,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="card-tools">
-                        <button data-url="{{ route('subject.create') }}" data-target="#subjectModal"
-                            class="btn btn-sm btn-default btnOpenModal">{{ __('el.button_add') }} <i
-                                class="fas fa-plus"></i></button>
+                        <x-modal.open-button :url="route('subject.create')" target="#subjectModal"></x-modal.open-button>
                     </div>
                 </div>
                 <div class="card-body table-responsive">
