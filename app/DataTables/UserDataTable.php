@@ -2,7 +2,6 @@
 
 namespace App\DataTables;
 
-use App\Http\Controllers\Admin\UserController;
 use App\Models\User;
 use App\Settings\ConfigSettings;
 use Carbon\Carbon;
@@ -28,11 +27,11 @@ class UserDataTable extends DataTable
             ->addColumn('action', function ($data) {
                 $html = '';
                 if (auth()->user()->hasPermissionTo('edit_users')) {
-                    $html .= '<button data-target="#userModal" data-url="' . route('user.edit', $data) . '" class="btn btn-outline-secondary btn-flat btn-sm btnOpenModal"><i class="fas fa-edit"></i></button>';
+                    $html .= '<button data-target="#userModal" data-url="' . route('user.edit', $data) . '" class="btn btn-default btn-sm btnOpenModal"><i class="fas fa-pencil"></i></button>';
                 }
 
                 if (auth()->user()->hasPermissionTo('delete_users')) {
-                    $html .= '<button data-target="#deleteModal" data-url="' . route('user.destroy', $data) . '" class="btn btn-danger btn-flat btn-sm btnDeleteModal ml-1"><i class="fas fa-xmark"></i></button>';
+                    $html .= '<button data-target="#deleteModal" data-url="' . route('user.destroy', $data) . '" class="btn btn-danger btn-sm btnDeleteModal ml-1"><i class="fas fa-xmark"></i></button>';
                 }
                 return $html;
             })
@@ -83,12 +82,12 @@ class UserDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::make('name')->title(__(UserController::LANG_PATH . 'fullname')),
-            Column::make('email')->title(__(UserController::LANG_PATH . 'email')),
-            Column::make('username')->title(__(UserController::LANG_PATH . 'username')),
-            Column::computed('active')->title(__(UserController::LANG_PATH . 'active'))->className('text-center'),
-            Column::computed('created_at')->title(__(UserController::LANG_PATH . 'created')),
-            Column::computed('updated_at')->title(__(UserController::LANG_PATH . 'updated')),
+            Column::make('name')->title(__('user.fullname')),
+            Column::make('email')->title(__('user.email')),
+            Column::make('username')->title(__('user.username')),
+            Column::computed('active')->title(__('user.status'))->className('text-center'),
+            Column::computed('created_at')->title(__('el.created'))->className('text-right'),
+            Column::computed('updated_at')->title(__('el.updated'))->className('text-right'),
             Column::computed('action')->title('')->className('text-right'),
         ];
     }

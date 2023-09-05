@@ -5,6 +5,7 @@ return [
     'disable'               => 'Μη ενεργός',
     'text_yes'              => 'Ναι',
     'text_no'               => 'Όχι',
+    'text_all'              => 'Προσθήκη / Αφαίρεση όλων',
     'text_opened'           => 'Ανοιχτά',
     'text_closed'           => 'Κλειστά',
     'text_select'           => 'Παρακαλώ Επιλέξτε',

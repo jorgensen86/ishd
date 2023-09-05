@@ -17,8 +17,6 @@ use Spatie\Permission\Models\Role;
 class UserController extends Controller
 {
     const LAYOUT_PATH = 'layouts.admin.user.user';
-    const LANG_PATH = 'admin/user/user.';
-    const PAGE_CLASS = 'userPage';
 
     /**
      * Display a listing of the resource.
@@ -40,7 +38,7 @@ class UserController extends Controller
     public function index(UserDataTable $userDataTable)
     {        
         return $userDataTable->render(self::LAYOUT_PATH . 'List', [
-            'title' => __(self::LANG_PATH . 'title'),
+            'title' => __('user.title'),
         ]);
 
     }
@@ -53,8 +51,8 @@ class UserController extends Controller
     public function create()
     {
         if (request()->ajax()) {
-            return view('layouts.admin.user.userForm')
-                ->with('title', __(self::LANG_PATH . 'create'))
+            return view(self::LAYOUT_PATH .'Form')
+                ->with('title', __('user.create'))
                 ->with('action', route('user.store'))
                 ->with('method', 'post')
                 ->with('data', new User())
@@ -96,6 +94,14 @@ class UserController extends Controller
                 'password' => Hash::make($request->password)
             ]);
 
+            $user->syncRoles($request->role);
+
+            if($request->permissions) {            
+                $user->syncPermissions($request->permissions);
+            } else {
+                $user->syncPermissions();
+            }
+
             $json = array(
                 'title' => __('el.text_success'),
                 'success' =>  __('user.text_success'),
@@ -115,8 +121,8 @@ class UserController extends Controller
     public function edit(User $user)
     {
         if (request()->ajax()) {
-            return view('layouts.admin.user.userForm')
-                ->with('title', __(self::LANG_PATH . 'edit'))
+            return view(self::LAYOUT_PATH .'Form')
+                ->with('title', __('user.edit'))
                 ->with('action', route('user.update', $user))
                 ->with('method', 'put')
                 ->with('data', $user)
@@ -185,21 +191,26 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $json = [];
+        
+        if($user->tickets()->count()) {
+            $json['errors'][] =  sprintf(__('user.ticket_alert') , $user->tickets()->count());
+        }
 
         if($user->user_id === auth()->user()->user_id) {
-            $json = array(
-                'title' => __('el.text_danger'),
-                'errors' => __('user.error_delete')
-            );
+            $json['errors'][] =  __('user.error_delete');
         }
-        
-        if(!$json) {
-            User::find($user->user_id)->delete();
+
+        if($json) {
+            $json['title'] = __('el.text_danger');
+        } else {
+            User::findOrFail($user->user_id)->delete();
+
             $json = array(
                 'title' => __('el.text_success'),
                 'success' =>  __('user.text_success'),
             );
         }
+        
         return response()->json($json, 200);
     }
 }

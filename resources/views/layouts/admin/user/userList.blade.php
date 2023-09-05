@@ -7,8 +7,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="card-tools">
-                        <button data-url="{{ route('user.create') }}" data-target="#userModal"
-                            class="btn btn-sm btn-info btnOpenModal">{{ __('el.button_add') }}</button>
+                        <x-modal.open-button :url="route('user.create')" target="#userModal"></x-modal.open-button>
                     </div>
                 </div>
                 <div class="card-body table-responsive p-3">
@@ -17,8 +16,8 @@
             </div>
 
         </div>
-        <x-admin.form-modal id="userModal" size="xl" :title="__('user.edit_user')"></x-admin.form-modal>
-        <x-admin.delete-modal id="deleteModal" size="sm" :title="__('user.delete')"></x-admin.delete-modal>
+        <x-modal.open id="userModal" size="xl"></x-modal.open>
+        <x-modal.delete size="sm"></x-modal.delete>
     </section>
 @endsection
 
