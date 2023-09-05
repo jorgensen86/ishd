@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\DataTables\QueueDataTable;
 use App\Http\Controllers\Controller;
 use App\Models\Queue;
-use App\Models\Subject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -13,8 +12,7 @@ use Illuminate\Validation\Rule;
 class QueueController extends Controller
 {
     const LAYOUT_PATH = 'layouts.admin.setting.queue';
-    const LANG_PATH = 'admin/setting/queue.';
-    const PAGE_CLASS = 'queuePage';
+    const LANG_PATH = 'queue.';
 
     /**
      * Display a listing of the resource.
@@ -25,7 +23,6 @@ class QueueController extends Controller
     {
         return $queueDataTable->render(self::LAYOUT_PATH . 'List', [
             'title' => __(self::LANG_PATH . 'title'),
-            'queues' => Queue::all()
         ]);
     }
 
@@ -139,6 +136,28 @@ class QueueController extends Controller
      */
     public function destroy(Queue $queue)
     {
-        //
+        $json = [];
+
+        if($queue->subjects->count()) {
+            $json['errors'][] = sprintf(__('queue.subject_alert'), $queue->subjects->count());
+        }
+
+        if($queue->tickets->count()) {
+            $json['errors'][] = sprintf(__('queue.ticket_alert'), $queue->tickets->count());
+        }
+
+        if($json) {
+            $json['title'] = __('el.text_danger');
+        } else {
+            
+            Queue::findOrFail($queue->id)->delete();
+            
+            $json = array(
+                'title' => __('el.text_success'),
+                'success' =>  __('queue.text_success'),
+            );
+        }
+
+        return response()->json($json, 200);
     }
 }

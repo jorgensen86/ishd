@@ -13,8 +13,7 @@ use Illuminate\Validation\Rule;
 class SubjectController extends Controller
 {
     const LAYOUT_PATH = 'layouts.admin.setting.subject';
-    const LANG_PATH = 'admin/setting/subject.';
-    const PAGE_CLASS = 'subjectPage';
+    const LANG_PATH = 'subject.';
 
     /**
      * Display a listing of the resource.

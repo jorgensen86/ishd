@@ -54,8 +54,12 @@ a {
 }
 
 /* Tables */
+.table td, .table th {
+    vertical-align: middle;
+}
+
 .table td {
-    padding: 0.5rem;
+    padding: 0.3rem 1rem;
 }
 
 /* Modals */

@@ -27,11 +27,12 @@ class SubjectDataTable extends DataTable
         return (new EloquentDataTable($query))
             ->addColumn('action', function ($data) {
                 return
-                    '<button data-target="#subjectModal" data-url="' . route('subject.edit', $data) . '" class="btn btn-outline-info btn-flat btn-sm btnOpenModal">
-                        <i class="fas fa-edit"></i>
+                    '
+                    <button data-target="#subjectModal" data-url="' . route('subject.edit', $data) . '" class="btn btn-default btn-sm btnOpenModal">
+                        <i class="fas fa-pencil"></i>
                     </button>
-                    <button data-target="#deleteModal" data-url="' . route('subject.destroy', $data) . '" class="btn btn-outline-danger btn-flat btn-sm btnDeleteModal">
-                            <i class="fas fa-ban"></i>
+                    <button data-target="#deleteModal" data-url="' . route('subject.destroy', $data) . '" class="btn btn-danger btn-flat btn-sm btnDeleteModal">
+                            <i class="fas fa-xmark"></i>
                     </button>';
             })
             ->editColumn('active', function ($data) {
@@ -71,7 +72,7 @@ class SubjectDataTable extends DataTable
             ->parameters(array_merge(config('datatables.parameters'), $this->parameters()))
             ->minifiedAjax()
             ->dom('rtip')
-            ->orderBy(1);
+            ->orderBy(0, 'asc');
     }
 
     /**
@@ -84,9 +85,9 @@ class SubjectDataTable extends DataTable
         return [
             Column::make('name')->title(__(SubjectController::LANG_PATH . 'name')),
             Column::computed('queue.name')->title(__(SubjectController::LANG_PATH . 'queue')),
-            Column::computed('active')->title(__(SubjectController::LANG_PATH . 'active'))->className('text-center'),
-            Column::make('created_at')->title(__(SubjectController::LANG_PATH . 'created'))->className('text-right')->width(200),
-            Column::make('updated_at')->title(__(SubjectController::LANG_PATH . 'updated'))->className('text-right')->width(200),
+            Column::computed('active')->title(__(SubjectController::LANG_PATH . 'status'))->className('text-center'),
+            Column::make('created_at')->title(__('el.created'))->className('text-right')->width(200),
+            Column::make('updated_at')->title(__('el.updated'))->className('text-right')->width(200),
             Column::computed('action')->title('')->className('text-right'),
         ];
     }
@@ -95,7 +96,6 @@ class SubjectDataTable extends DataTable
     {
         return [
             'pageLength' => app(ConfigSettings::class)->results_per_page,
-            'stateSave' => false
         ];
     }
 }

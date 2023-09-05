@@ -14,12 +14,8 @@ class Queue extends Model
         'active'
     ];
 
-    protected $with = [
-        'subject',
-    ];
-
-    public function subject() {
-        return $this->belongsTo(Subject::class, 'queue_id', 'id');
+    public function subjects() {
+        return $this->hasMany(Subject::class);
     }
 
     public function tickets() {

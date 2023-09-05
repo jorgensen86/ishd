@@ -11,6 +11,7 @@ class Subject extends Model
 
     protected $fillable = [
         'name',
+        'queue_id',
         'active'
     ];
 
@@ -19,6 +20,6 @@ class Subject extends Model
     ];
 
     public function queue() {
-        return $this->hasOne(Queue::class, 'id', 'queue_id');
+        return $this->belongsTo(Queue::class);
     }
 }

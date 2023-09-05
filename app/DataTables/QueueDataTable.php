@@ -2,11 +2,11 @@
 
 namespace App\DataTables;
 
+use App\Http\Controllers\Admin\QueueController;
 use App\Models\Queue;
 use App\Settings\ConfigSettings;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
-use Illuminate\Support\Facades\Lang;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Column;
@@ -14,8 +14,6 @@ use Yajra\DataTables\Services\DataTable;
 
 class QueueDataTable extends DataTable
 {
-    const LANG_PATH = 'admin/setting/queue.';
-
     /**
      * Build DataTable class.
      *
@@ -33,11 +31,9 @@ class QueueDataTable extends DataTable
             })
             ->addColumn('action', function ($data) {
                 return
-                    '<button data-target="#queueModal" data-url="' . route('queue.edit', $data) . '" class="btn btn-outline-info btn-flat btn-sm btnOpenModal">
-                        <i class="fas fa-edit"></i>
-                    </button>
-                    <button data-target="#deleteModal" data-url="' . route('queue.destroy', $data) . '" class="btn btn-outline-danger btn-flat btn-sm btnDeleteModal">
-                        <i class="fas fa-ban"></i>
+                    '<button data-target="#queueModal" data-url="' . route('queue.edit', $data) . '" class="btn btn-default btn-sm btnOpenModal"><i class="fas fa-pencil"></i></button>
+                    <button data-target="#deleteModal" data-url="' . route('queue.destroy', $data) . '" class="btn btn-danger btn-flat btn-sm btnDeleteModal">
+                        <i class="fas fa-xmark"></i>
                     </button>';
             })
             ->editColumn('active', function ($data) {
@@ -71,7 +67,7 @@ class QueueDataTable extends DataTable
             ->parameters(array_merge(config('datatables.parameters'), $this->parameters()))
             ->minifiedAjax()
             ->dom('rtip')
-            ->orderBy(1);
+            ->orderBy(0, 'asc');
     }
 
     /**
@@ -82,12 +78,12 @@ class QueueDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::make('id'),
-            Column::make('name')->title(Lang::get(self::LANG_PATH . 'name')),
-            Column::make('active')->title(Lang::get(self::LANG_PATH . 'active'))->searchable(false)->orderable(false)->className('text-center'),
-            Column::make('created_at')->title(Lang::get(self::LANG_PATH . 'created'))->className('text-right'),
-            Column::make('updated_at')->title(Lang::get(self::LANG_PATH . 'updated'))->className('text-right'),
-            Column::make('action')->title('')->searchable(false)->orderable(false)->className('text-right'),
+            Column::make('id')->title(__(QueueController::LANG_PATH . 'id')),
+            Column::make('name')->title(__(QueueController::LANG_PATH . 'name')),
+            Column::computed('active')->title(__(QueueController::LANG_PATH . 'status'))->className('text-center'),
+            Column::make('created_at')->title(__(QueueController::LANG_PATH . 'created'))->className('text-right'),
+            Column::make('updated_at')->title(__(QueueController::LANG_PATH . 'updated'))->className('text-right'),
+            Column::computed('action')->title('')->className('text-right'),
         ];
     }
 
@@ -95,7 +91,6 @@ class QueueDataTable extends DataTable
     {
         return [
             'pageLength' => app(ConfigSettings::class)->results_per_page,
-            'stateSave' => true
         ];
     }
 }

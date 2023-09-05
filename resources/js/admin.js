@@ -39,10 +39,10 @@ $(function() {
             data: $form.serialize(),
             url: $form.attr('action'),
             beforeSend: () => {
-                $('#user-modal button').prop('disabled', true)
+                $('#btnSave, #btnCancel').prop('disabled', true)
             },
             complete: () => {
-                $('#user-modal button').prop('disabled', false)
+                $('#btnSave, #btnCancel').prop('disabled', false)
             },
             success: (json) => {
                 if (json.errors) {
@@ -84,7 +84,9 @@ $(function() {
             },
             success: (json) => {
                 if(json.errors) {
-                    displayToast('bg-danger', json.title, json.errors);
+                    for (let index = 0; index < json.errors.length; index++) {
+                        displayToast('bg-danger', json.title, json.errors[index]);
+                    }
                 } 
 
                 if(json.success) {
@@ -133,7 +135,12 @@ $(function() {
             dataType: 'json',
             data: $(this).serialize(),
             beforeSend: function() {
-
+                $('.overlay').show();
+                $('#replyForm .btn').prop('disabled', true)
+            },
+            complete: function() {
+                $('.overlay').hide();
+                $('#replyForm .btn').prop('disabled', false)
             },
             success: function(json) {
                 if (json.errors) {

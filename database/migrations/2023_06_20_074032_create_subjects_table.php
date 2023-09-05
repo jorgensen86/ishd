@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('subjects', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('queue_id')->nullable()->constrained('queues','id');
             $table->string('name')->unique();
             $table->boolean('active')->default(0);
             $table->timestamps();
