@@ -9,6 +9,5 @@
 </div>
 <div class="modal-footer justify-content-between">
     <x-modal.close-button></x-modal.close-button>
-    <button type="button" id="btnSave" data-form="#permissionForm"
-        class="btn btn-sm btn-success">{{ __('el.button_save') }}</button>
+    <x-modal.save-button data-Form="#permissionForm"></x-modal.save-button>
 </div>

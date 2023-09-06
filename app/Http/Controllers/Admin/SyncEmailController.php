@@ -7,7 +7,6 @@ use App\Models\Imap;
 use App\Models\Email;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Webklex\IMAP\Facades\Client;
 
 class SyncEmailController extends Controller

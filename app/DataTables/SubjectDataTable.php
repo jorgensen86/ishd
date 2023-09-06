@@ -2,7 +2,6 @@
 
 namespace App\DataTables;
 
-use App\Http\Controllers\Admin\SubjectController;
 use App\Models\Subject;
 use Carbon\Carbon;
 use App\Settings\ConfigSettings;
@@ -14,8 +13,6 @@ use Yajra\DataTables\Services\DataTable;
 
 class SubjectDataTable extends DataTable
 {
-    const LANG_PATH = 'admin/setting/subject.';
-
     /**
      * Build DataTable class.
      *
@@ -83,9 +80,9 @@ class SubjectDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::make('name')->title(__(SubjectController::LANG_PATH . 'name')),
-            Column::computed('queue.name')->title(__(SubjectController::LANG_PATH . 'queue')),
-            Column::computed('active')->title(__(SubjectController::LANG_PATH . 'status'))->className('text-center'),
+            Column::make('name')->title(__('subject.name')),
+            Column::computed('queue.name')->title(__('subject.queue')),
+            Column::computed('active')->title(__('subject.status'))->className('text-center'),
             Column::make('created_at')->title(__('el.created'))->className('text-right')->width(200),
             Column::make('updated_at')->title(__('el.updated'))->className('text-right')->width(200),
             Column::computed('action')->title('')->className('text-right'),

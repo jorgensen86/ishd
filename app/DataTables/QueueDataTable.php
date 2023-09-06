@@ -2,7 +2,6 @@
 
 namespace App\DataTables;
 
-use App\Http\Controllers\Admin\QueueController;
 use App\Models\Queue;
 use App\Settings\ConfigSettings;
 use Carbon\Carbon;
@@ -78,11 +77,11 @@ class QueueDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::make('id')->title(__(QueueController::LANG_PATH . 'id')),
-            Column::make('name')->title(__(QueueController::LANG_PATH . 'name')),
-            Column::computed('active')->title(__(QueueController::LANG_PATH . 'status'))->className('text-center'),
-            Column::make('created_at')->title(__(QueueController::LANG_PATH . 'created'))->className('text-right'),
-            Column::make('updated_at')->title(__(QueueController::LANG_PATH . 'updated'))->className('text-right'),
+            Column::make('id')->title(__('queue.id')),
+            Column::make('name')->title(__('queue.name')),
+            Column::computed('active')->title(__('queue.status'))->className('text-center'),
+            Column::make('created_at')->title(__('el.created'))->className('text-right'),
+            Column::make('updated_at')->title(__('el.updated'))->className('text-right'),
             Column::computed('action')->title('')->className('text-right'),
         ];
     }

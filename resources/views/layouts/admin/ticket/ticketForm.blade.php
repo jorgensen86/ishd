@@ -3,17 +3,23 @@
     <x-admin.page-header :heading="$title"></x-admin.page-header>
     <section class="content" id="ticketPage">
         <div class="container-fluid">
-            <div class="card card-outline card-info">
+            <div class="card">
                 <form action="{{ route('ticket.store') }}" method="post" id="ticketForm" enctype="multipart/form-data">
                     <div class="card-body">
                         <div class="row">
                             {{-- Ticket Form --}}
                             <div class="col-md-8">
                                 @csrf
-                                <x-admin.form.select selected="" label="{{ __('ticket.sender') }}" name="queue_id" :options="$queues"></x-admin.form.select>
-                                <x-admin.form.select2 label="{{ __('ticket.recipient') }}" name="invoice_id" id="invoices" options="" :multiple="false"></x-admin.form.select>
-                                <x-admin.form.text name="subject" id="inputSubject" placeholder="{{ __('ticket.subject') }}" value=""></x-admin.form.text>
-                                <x-admin.ckeditor label="{{ __('ticket.message') }}"  :id="'bodyEditor'" :name="'body'"></x-admin.ckeditor>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <x-form.select selected="" label="{{ __('ticket.sender') }}" name="queue_id" :options="$queues"></x-form.select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <x-form.select2 label="{{ __('ticket.recipient') }}" name="invoice_id" id="invoices" options="" :multiple="false"></x-form.select>
+                                    </div>
+                                </div>
+                                <x-form.text name="subject" id="inputSubject" placeholder="{{ __('ticket.subject') }}" value=""></x-form.text>
+                                <x-.form.ckeditor label="{{ __('ticket.message') }}"  :id="'bodyEditor'" :name="'body'"></x-ckeditor>
                             </div>
                             {{--/ Ticket Form  --}}
                             

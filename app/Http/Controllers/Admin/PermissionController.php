@@ -13,7 +13,6 @@ class PermissionController extends Controller
 {
 
     const LAYOUT_PATH = 'layouts.admin.setting.permission';
-    const LANG_PATH = 'permission.';
 
     /**
      * Display a listing of the resource.
@@ -23,7 +22,7 @@ class PermissionController extends Controller
     public function index(PermissionDataTable $permissionDataTable)
     {
         return $permissionDataTable->render(self::LAYOUT_PATH . 'List', [
-            'title' => __(self::LANG_PATH . 'title'),
+            'title' => __('permission.title'),
         ]);
     }
 
@@ -36,7 +35,7 @@ class PermissionController extends Controller
     {
         if (request()->ajax()) {
             return view(self::LAYOUT_PATH . 'Form')
-                ->with('title', __(self::LANG_PATH . 'create'))
+                ->with('title', __('permission.create'))
                 ->with('action', route('permission.store'))
                 ->with('method', 'post')
                 ->with('data', new Permission());
@@ -88,7 +87,7 @@ class PermissionController extends Controller
         if (request()->ajax()) {
 
             return view(self::LAYOUT_PATH . 'Form')
-                ->with('title', __(self::LANG_PATH . 'edit'))
+                ->with('title', __('permission.edit'))
                 ->with('action', route('permission.update', $permission))
                 ->with('method', 'put')
                 ->with('data', $permission);

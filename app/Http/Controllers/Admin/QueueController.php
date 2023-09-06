@@ -12,7 +12,6 @@ use Illuminate\Validation\Rule;
 class QueueController extends Controller
 {
     const LAYOUT_PATH = 'layouts.admin.setting.queue';
-    const LANG_PATH = 'queue.';
 
     /**
      * Display a listing of the resource.
@@ -22,7 +21,7 @@ class QueueController extends Controller
     public function index(QueueDataTable $queueDataTable)
     {
         return $queueDataTable->render(self::LAYOUT_PATH . 'List', [
-            'title' => __(self::LANG_PATH . 'title'),
+            'title' => __('queue.title'),
         ]);
     }
 
@@ -35,7 +34,7 @@ class QueueController extends Controller
     {
         if (request()->ajax()) {
             return view(self::LAYOUT_PATH . 'Form')
-                ->with('title', __(self::LANG_PATH . 'create'))
+                ->with('title', __('queue.create'))
                 ->with('action', route('queue.store'))
                 ->with('method', 'post')
                 ->with('data', new Queue());
@@ -69,7 +68,7 @@ class QueueController extends Controller
 
             $json = array(
                 'title' => __('el.text_success'),
-                'success' => __(self::LANG_PATH . 'text_success'),
+                'success' => __('queue.text_success'),
             );
         }
 
@@ -86,7 +85,7 @@ class QueueController extends Controller
     {
         if (request()->ajax()) {
             return view(self::LAYOUT_PATH . 'Form')
-                ->with('title', __(self::LANG_PATH . 'edit'))
+                ->with('title', __('queue.edit'))
                 ->with('action', route('queue.update', $queue))
                 ->with('method', 'put')
                 ->with('data', $queue);
@@ -121,7 +120,7 @@ class QueueController extends Controller
 
             $json = array(
                 'title' => __('el.text_success'),
-                'success' => __(self::LANG_PATH . 'text_success'),
+                'success' => __('queue.text_success'),
             );
         }
 

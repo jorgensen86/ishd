@@ -2,7 +2,6 @@
 
 namespace App\DataTables;
 
-use App\Http\Controllers\Admin\PermissionController;
 use Carbon\Carbon;
 use App\Settings\ConfigSettings;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
@@ -77,7 +76,7 @@ class PermissionDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::make('name')->title(__(PermissionController::LANG_PATH . 'name')),
+            Column::make('name')->title(__('permission.name')),
             Column::make('created_at')->title(__('el.created'))->className('text-right'),
             Column::make('updated_at')->title(__('el.updated'))->className('text-right'),
             Column::computed('action')->title('')->className('text-right'),

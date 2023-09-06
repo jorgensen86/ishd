@@ -10,6 +10,5 @@
 </div>
 <div class="modal-footer justify-content-between">
     <x-modal.close-button></x-modal.close-button>
-    <button type="button" id="btnSave" data-form="#queueForm"
-        class="btn btn-sm btn-success">{{ __('el.button_save') }}</button>
+    <x-modal.save-button data-Form="#queueForm"></x-modal.save-button>
 </div>

@@ -13,7 +13,6 @@ use Illuminate\Validation\Rule;
 class SubjectController extends Controller
 {
     const LAYOUT_PATH = 'layouts.admin.setting.subject';
-    const LANG_PATH = 'subject.';
 
     /**
      * Display a listing of the resource.
@@ -23,7 +22,7 @@ class SubjectController extends Controller
     public function index(SubjectDataTable $subjectDataTable)
     {
         return $subjectDataTable->render(self::LAYOUT_PATH . 'List', [
-            'title' => __(self::LANG_PATH . 'title')
+            'title' => __('subject.title')
         ]);
     }
 
@@ -36,7 +35,7 @@ class SubjectController extends Controller
     {
         if (request()->ajax()) {
             return view(self::LAYOUT_PATH . 'Form')
-                ->with('title', __(self::LANG_PATH . 'create'))
+                ->with('title', __('subject.create'))
                 ->with('action', route('subject.store'))
                 ->with('method', 'post')
                 ->with('queues', Queue::where('active', 1)->get())
@@ -58,7 +57,7 @@ class SubjectController extends Controller
             'name' => 'required|unique:subjects',
             'queue_id' => 'required',
         ], [
-            'queue_id.required' => __(self::LANG_PATH . 'error_queue')
+            'queue_id.required' => __('subject.error_queue')
         ]);
 
         if ($validator->fails()) {
@@ -76,7 +75,7 @@ class SubjectController extends Controller
 
             $json = array(
                 'title' => __('el.text_success'),
-                'success' => __(self::LANG_PATH . 'text_success'),
+                'success' => __('subject.text_success'),
             );
         }
 
@@ -93,7 +92,7 @@ class SubjectController extends Controller
     {
         if (request()->ajax()) {
             return view(self::LAYOUT_PATH . 'Form')
-                ->with('title', __(self::LANG_PATH . 'edit'))
+                ->with('title', __('subject.edit'))
                 ->with('action', route('subject.update', $subject))
                 ->with('method', 'put')
                 ->with('queues', Queue::where('active', 1)->get())
@@ -116,7 +115,7 @@ class SubjectController extends Controller
             'name' => ['required', Rule::unique('roles', 'name')->ignore($subject->id, 'id')],
             'queue_id' => 'required'
         ], [
-            'queue_id.required' => __(self::LANG_PATH . 'error_queue')
+            'queue_id.required' => __('subject.error_queue')
         ]);
 
         if ($validator->fails()) {
@@ -132,7 +131,7 @@ class SubjectController extends Controller
 
             $json = array(
                 'title' => __('el.text_success'),
-                'success' => __(self::LANG_PATH . 'text_success'),
+                'success' => __('subject.text_success'),
             );
         }
 
@@ -152,7 +151,7 @@ class SubjectController extends Controller
         
         $json = array(
             'title' => __('el.text_success'),
-            'success' =>   __(self::LANG_PATH . 'text_success'),
+            'success' =>   __('subject.text_success'),
         );
 
         return response()->json($json, 200);

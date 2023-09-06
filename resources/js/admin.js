@@ -105,7 +105,7 @@ $(function() {
 
     $('#ticketForm').on('submit', function(e){
         e.preventDefault();
-        $('.text-danger').remove()
+        $('.is-invalid').removeClass('is-invalid');
         $.ajax({
             url: $(this).attr('action'),
             type: 'post',
@@ -115,6 +115,7 @@ $(function() {
                 if (json.errors) {
                     Object.keys(json.errors).forEach(function (key) {
                         $('[name="' + key + '"]').addClass('is-invalid')
+                        $('[name="' + key + '"]').next().addClass('is-invalid')
                         displayToast('bg-danger', json.title, json.errors[key]);
                     });
                 }

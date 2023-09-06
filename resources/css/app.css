@@ -194,6 +194,10 @@ a {
 }
 
 /* Select 2 Plugin */
+#ticketPage .select2-container.is-invalid .select2-selection--single {
+    border-color: #dc3545;
+}
+
 #ticketPage .select2-container .select2-selection--single {
     height: 38px;
     background-image: none;
