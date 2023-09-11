@@ -16,7 +16,7 @@
     @stack('styles')
 </head>
 
-<body class="{{ auth()->check() ? 'sidebar-mini' : null }}">
+<body class="{{ auth()->check() ? 'sidebar-mini' : 'login-page' }}">
     @auth
     <div class="wrapper">
         <!-- Navbar Componnent -->

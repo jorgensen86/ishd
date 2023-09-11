@@ -113,7 +113,6 @@ class EmailDataTable extends DataTable
     public function parameters() {
         return [
             'pageLength' => app(ConfigSettings::class)->results_per_page,
-            'stateSave' => true
         ];
     }
 }

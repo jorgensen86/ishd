@@ -5,6 +5,8 @@
         url: "{{ $action }}",
         dictDefaultMessage: '{{ __("el.text_upload") }}',
         dictRemoveFile : 'Διαγραφή',
+        thumbnailWidth: 60,
+        thumbnailHeight: 60,
         paramName: "file",
         maxFilesize: '{{ $max_filesize }}',
         autoProcessQueue: true, 

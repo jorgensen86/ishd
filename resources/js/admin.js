@@ -179,4 +179,34 @@ $(function() {
             }
         })
     })
+
+
+    $('#invoices').select2({
+        placeholder: "Αναζήτηση με crm ή domain",
+        width: '100%',
+        theme: "classic",
+        minimumInputLength: 3,
+        language: "el",
+        allowClear: true,
+        ajax: {
+            url: "{{ route('invoice.index') }}",
+            dataType: "json",
+            delay: 600,
+            data: (params) => {
+                return {
+                    filter_invoice: params.term,
+                };
+            },
+            processResults: function(json) {
+                return {
+                    results: $.map(json, function(item) {
+                        return {
+                            text: `${item.invoice_number}  ${item.user.name}`,
+                            id: item.invoice_id
+                        }
+                    })
+                };
+            },
+        },
+    });
 })

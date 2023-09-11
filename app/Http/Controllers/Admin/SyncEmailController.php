@@ -32,8 +32,13 @@ class SyncEmailController extends Controller
                 $client->connect();
                 foreach ($client->getFolder('INBOX')->messages()->unseen()->get() as $message) {
                     // dump($message->getFrom()->first()->mail);
+
+                    // foreach ($message->attachments as $attach) {
+                    //     # code...
+                    //     echo $attach->content;
+                    //     dd();
+                    // }
                     if(!Email::where(['uid' => $message->getUid(), 'imap_id' => $account->id])->exists()) {
-                        
                         $ticket_id = Email::orderBy('id', 'DESC')->first()->ticket_id;
 
                         $email = New Email();
@@ -45,7 +50,7 @@ class SyncEmailController extends Controller
                         $email->reply = $message->getReplyTo()->first();
                         $email->cc = $message->getCc()->first();
                         $email->subject = iconv_mime_decode($message->getSubject());
-                        $email->body = $message->hasHTMLBody() ? $message->getHTMLBody() : $message->getTextBody();
+                        $email->body = $message->hasHTMLBody() ? $message->getHTMLBody(false) : $message->getTextBody();
                         $email->sent_at = Carbon::parse( $message->getDate())->format('Y-m-d H:i:s');
                         $email->save();
     

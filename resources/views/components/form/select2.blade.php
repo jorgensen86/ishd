@@ -1,6 +1,6 @@
 <div class="form-group">
     <label for="{{ $id }}">{{ $label }}</label>
-    <select name="{{ $name }}" id="{{ $id }}"
+    <select name="{{ $name }}" id="{{ $id }}" style="visibility:hidden"
         {{ $multiple ? 'multiple' : null }}>
         @if ($options)
             @foreach ($options as $option)
