@@ -33,6 +33,10 @@ class Ticket extends Model implements HasMedia
 
     protected $guarded = [];
 
+    public function ticket_number() {
+        return $this->morphOne(TicketNumber::class, 'ticketable');
+    }
+
     public function invoice() {
         return $this->hasOne(Invoice::class, 'invoice_id', 'invoice_id');
     }

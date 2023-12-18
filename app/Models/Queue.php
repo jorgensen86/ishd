@@ -21,4 +21,8 @@ class Queue extends Model
     public function tickets() {
         return $this->hasMany(Ticket::class, 'queue_id', 'id');
     }
+
+    public function emails() {
+        return $this->hasMany(Email::class, 'queue_id', 'id');
+    }
 }

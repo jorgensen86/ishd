@@ -59,9 +59,13 @@ class TicketDataTable extends DataTable
                             <i class="fas fa-xmark"></i>
                     </button>';
             })
+            ->editColumn('ticket_id', function ($data) {
+                return '<a href="' . route('ticket.show',  ['ticket' => $data, 'queue_id' => request()->input('queue_id')]) . '">' . $data->ticket_id . '</a>';
+            })
             ->setRowClass(function ($data) {
                 return !$data->is_opened ? 'font-weight-bold' : null;
             })
+            ->rawColumns(['ticket_id', 'action'])
             ->setRowId('id');
     }
 

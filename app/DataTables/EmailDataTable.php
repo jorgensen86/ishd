@@ -22,8 +22,9 @@ class EmailDataTable extends DataTable
      */
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {   
-        if(request()->route('queue_id')) {
-            $query->where('queue_id' , request()->route('queue_id'));
+        
+        if(request()->has('queue_id')) {
+            $query->where('queue_id' , request()->input('queue_id'));
         }
         
         if(request()->is_closed) {
@@ -47,17 +48,17 @@ class EmailDataTable extends DataTable
         return (new EloquentDataTable($query))
             ->addColumn('action', function ($data) {
                 return
-                    '<a href="' . route('email.show', $data) . '" class="btn btn-outline-info btn-flat btn-sm">
-                        <i class="fas fa-eye"></i>
-                    </a>
-                    <button data-target="#deleteModal" data-url="' . route('queue.destroy', $data) . '" class="btn btn-outline-danger btn-flat btn-sm btnDeleteModal">
+                    '<button data-target="#deleteModal" data-url="' . route('queue.destroy', $data) . '" class="btn btn-outline-danger btn-flat btn-sm btnDeleteModal">
                             <i class="fas fa-ban"></i>
                     </button>';
             })
             ->setRowClass(function ($data) {
-                return !$data->is_opened ? 'font-weight-bold' : null;
+                // return !$data->is_opened ? 'font-weight-bold' : null;
             })
-            ->setRowId('id');
+            ->addColumn('ticket_number', function ($data) {
+                return '<a href="' . route('email.show',  ['email' => $data, 'queue_id' => request()->input('queue_id')]) . '">' . $data->ticket_number->id . '</a>';
+            })
+            ->rawColumns(['ticket_number','action']);
     }
 
     /**
@@ -68,7 +69,7 @@ class EmailDataTable extends DataTable
      */
     public function query(Email $model): QueryBuilder
     {
-        return $model->newQuery()->with('queue');
+        return $model->newQuery()->with('ticket_number')->select('emails.*');
     }
 
     /**
@@ -88,7 +89,7 @@ class EmailDataTable extends DataTable
             }',
         ])
         ->parameters(array_merge(config('datatables.parameters'), $this->parameters()))
-        ->setTableId('ticketTable')
+        ->setTableId('emailTable')
         ->columns($this->getColumns())
         ->orderBy(4,'asc')
         ->buttons([]);
@@ -102,10 +103,10 @@ class EmailDataTable extends DataTable
     public function getColumns(): array
     {        
         return [
-            Column::make('ticket_id'),
+            Column::make('ticket_number', 'ticket_number.id'),
             Column::make('sender')->title(Lang::get(TicketController::LANG_PATH . 'sender')),
             Column::make('subject')->title(Lang::get(TicketController::LANG_PATH . 'subject')),
-            Column::make('created_at')->title(Lang::get(TicketController::LANG_PATH . 'created'))->className('text-right'),
+            Column::make('sent_at')->title(Lang::get(TicketController::LANG_PATH . 'created'))->className('text-right'),
             Column::make('action')->title('')->searchable(false)->orderable(false)->className('text-right'),
         ];
     }

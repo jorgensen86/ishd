@@ -82,7 +82,6 @@ Route::middleware(['auth','admin'])->group(function() {
 
     Route::prefix('email')->group(function () {
         Route::resource('email',  App\Http\Controllers\Admin\EmailController::class);
-        Route::get('queue/{queue_id?}',  [App\Http\Controllers\Admin\EmailController::class, 'index'])->name('email.index');;
         Route::resource('imap',  App\Http\Controllers\Admin\ImapController::class)->except(['show']);
         Route::get('sync',  [App\Http\Controllers\Admin\SyncEmailController::class, 'index']);
         Route::get('checkConnection/{imap}',  [App\Http\Controllers\Admin\SyncEmailController::class, 'check'])->name('checkConnection');

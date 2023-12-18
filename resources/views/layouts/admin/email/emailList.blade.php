@@ -4,42 +4,124 @@
     <x-admin.page-header :heading="$title"></x-admin.page-header>
     <section class="content">
         <div class="container-fluid">
-            <nav class="navbar navbar-expand navbar-orange navbar-dark">
-                <ul class="navbar-nav">
-                    @foreach ($queues as $queue)
-                        <li class="nav-item d-none d-sm-inline-block">
-                            <a href="{{ route('email.index', $queue->id) }}"
-                                class="nav-link{{ request()->route('queue_id') == $queue->id ? ' active' : null }}">{{ $queue->name }}</a>
-                        </li>
-                    @endforeach
-                </ul>
-            </nav>
-            <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                <label>{{ __('admin/ticket.invoice') }}</label>
-                                <input type="text" id="invoice" name="invoice" value="{{ $filter_invoice }}" class="form-control form-control-sm" placeholder="{{ __('admin/ticket.invoice') }}">
+            <div class="row">
+                <div class="col-md-3 col-lg-2">
+                    <a href="compose.html" class="btn btn-primary btn-block mb-3">Compose</a>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Folders</h3>
+                        </div>
+                        <div class="card-body p-0" style="display: block;">
+                            <ul class="nav nav-pills flex-column">
+                                @foreach ($queues as $queue)
+                                    <li
+                                        class="nav-item {{ request()->input('queue_id') == $queue->id ? ' active' : null }}">
+                                        <a href="{{ route('email.index', ['queue_id' => $queue->id]) }}" class="nav-link">
+                                            {{ $queue->name }}
+                                            <span class="badge bg-primary float-right">{{ $queue->emails->count() }}</span>
+                                        </a>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-md-9 col-lg-10">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Inbox</h3>
+                            <div class="card-tools">
+                                <div class="input-group input-group-sm">
+                                    <input type="text" class="form-control" placeholder="Search Mail">
+                                    <div class="input-group-append">
+                                        <div class="btn btn-primary">
+                                            <i class="fas fa-search"></i>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                <label>{{ __('admin/ticket.sender') }}</label>
-                                <input type="text" name="sender" id="sender" class="form-control form-control-sm" placeholder="{{ __('admin/ticket.sender') }}">
+
+                        <div class="card-body p-0">
+                            <div class="mailbox-controls">
+
+                                <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i
+                                        class="far fa-square"></i>
+                                </button>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-default btn-sm">
+                                        <i class="far fa-trash-alt"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-default btn-sm">
+                                        <i class="fas fa-reply"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-default btn-sm">
+                                        <i class="fas fa-share"></i>
+                                    </button>
+                                </div>
+
+                                <button type="button" class="btn btn-default btn-sm">
+                                    <i class="fas fa-sync-alt"></i>
+                                </button>
+                                <div class="float-right">
+                                    1-50/200
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-default btn-sm">
+                                            <i class="fas fa-chevron-left"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-default btn-sm">
+                                            <i class="fas fa-chevron-right"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
                             </div>
+                            <div class="table-responsive mailbox-messages p-2">
+                                {{ $dataTable->table() }}
+                            </div>
+
                         </div>
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                <label>{{ __('admin/ticket.subject') }}</label>
-                                <input type="text" name="subject" id="subject" class="form-control form-control-sm" placeholder="{{ __('admin/ticket.subject') }}">
+
+                        <div class="card-footer p-0">
+                            <div class="mailbox-controls">
+
+                                <button type="button" class="btn btn-default btn-sm checkbox-toggle">
+                                    <i class="far fa-square"></i>
+                                </button>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-default btn-sm">
+                                        <i class="far fa-trash-alt"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-default btn-sm">
+                                        <i class="fas fa-reply"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-default btn-sm">
+                                        <i class="fas fa-share"></i>
+                                    </button>
+                                </div>
+
+                                <button type="button" class="btn btn-default btn-sm">
+                                    <i class="fas fa-sync-alt"></i>
+                                </button>
+                                <div class="float-right">
+                                    1-50/200
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-default btn-sm">
+                                            <i class="fas fa-chevron-left"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-default btn-sm">
+                                            <i class="fas fa-chevron-right"></i>
+                                        </button>
+                                    </div>
+
+                                </div>
+
                             </div>
                         </div>
                     </div>
-                    <button type="button" id="filter_button" class="btn btn-info btn-sm"><i class="far fa-filter"></i></button>
-                </div>
-                <div class="card-body">
-                    {{ $dataTable->table() }}
+
                 </div>
             </div>
         </div>
@@ -48,15 +130,11 @@
 @push('scripts')
     {{ $dataTable->scripts(attributes: ['type' => 'module']) }}
     <script type="module">
-        $("#test").on('change', function(){
-            $('table').DataTable().draw();
-    });
-
-    $("#filter_button").on('click', function(){
+        $("#filter_button").on('click', function() {
             $('#ticketTable').DataTable().ajax.reload();
-    });
-//     $('#ticketTable').on( 'click', 'tbody tr', function () {
-//   window.location.href = $(this).data('link');
-// });
+        });
+        //     $('#ticketTable').on( 'click', 'tbody tr', function () {
+        //   window.location.href = $(this).data('link');
+        // });
     </script>
 @endpush

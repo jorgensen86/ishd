@@ -15,7 +15,6 @@ return new class extends Migration
     {
         Schema::create('emails', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('ticket_id')->nullable()->index();
             $table->unsignedBigInteger('uid')->nullable()->index();
             $table->foreignId('imap_id')->nullable()->references('id')->on('imaps');
             $table->foreignId('queue_id')->nullable()->constrained('queues');

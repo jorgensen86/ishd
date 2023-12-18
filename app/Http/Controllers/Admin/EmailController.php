@@ -11,18 +11,15 @@ use Illuminate\Http\Request;
 class EmailController extends Controller
 {
     const LAYOUT_PATH = 'layouts.admin.email.email';
-    const LANG_PATH = 'admin/email/email.';
-    const PAGE_CLASS = 'emailPage';
+    const LANG_PATH = 'email.';
 
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(EmailDataTable $emailDataTable, $queue_id = null)
-    {
-        Queue::findOrFail($queue_id);
-        
+    public function index(EmailDataTable $emailDataTable)
+    {   
         return $emailDataTable->render(self::LAYOUT_PATH . 'List', [
             'title' => __(self::LANG_PATH . 'title'),
             'queues' => Queue::all(),
@@ -58,9 +55,9 @@ class EmailController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(Email $email)
-    {
+    {    
         return view(self::LAYOUT_PATH . 'View')
-            ->with('title', __(self::LANG_PATH . 'view'))
+            ->with('title', __(self::LANG_PATH . 'title'))
             ->with('data', $email);
     }
 

@@ -4,11 +4,12 @@
 <div class="modal-body">
     <form action="{{ $action }}" method="{{ $method }}" id="roleForm" autocomplete="false">
         @csrf
-        <x-admin.form.select label="{{ __('admin/email/imap.queue') }}" inputName="queue_id" :options="$queues" :selected="$data->queue_id"></x-admin.form.select>
-        <x-admin.form.text inputName="host" labelFor="input-host" placeholder="{{ __('admin/email/imap.host') }}" :value="$data->host"></x-admin.form.text>
-        <x-admin.form.text inputName="username" labelFor="input-username" placeholder="{{ __('admin/email/imap.username') }}" :value="$data->username"></x-admin.form.text>
-        <x-admin.form.text inputName="password" labelFor="input-password" placeholder="{{ __('admin/email/imap.password') }}" value=""></x-admin.form.text>
-        <x-admin.form.text inputName="port" labelFor="input-port" placeholder="{{ __('admin/email/imap.port') }}" :value="$data->port"></x-admin.form.text>
+
+        <x-form.select label="{{ __('admin/email/imap.queue') }}" name="queue_id" :options="$queues" :selected="$data->queue_id"></x-form.select>
+        <x-form.text name="host" id="input-host" placeholder="{{ __('admin/email/imap.host') }}" :value="$data->host"></x-form.text>
+        <x-form.text name="username" id="input-username" placeholder="{{ __('admin/email/imap.username') }}" :value="$data->username"></x-form.text>
+        <x-form.text name="password" id="input-password" placeholder="{{ __('admin/email/imap.password') }}" value=""></x-form.text>
+        <x-form.text name="port" id="input-port" placeholder="{{ __('admin/email/imap.port') }}" :value="$data->port"></x-form.text>
         <div class="form-group">
             <label>{{  __('admin/email/imap.encryption') }}</label>
             <select name="encryption" class="form-control">
@@ -26,7 +27,8 @@
                 <option  {{ $data->validate_cert === 1 ? 'selected' : null }} value="1">{{ __('el.text_yes') }}</option>
             </select>
         </div>
-        <x-admin.form.checkbox :active="$data->active"></x-admin.form.checkbox>
+
+        <x-form.checkbox :active="$data->active" label="{{ __('user.status') }}"></x-form.checkbox>
     </form>
 </div>
 <div class="modal-footer justify-content-between">

@@ -31,7 +31,7 @@
                 <div class="card-footer">
                     <div class="mt-2">
                         <a href="{{ route('ticket.index', 1) }}" class="btn btn-sm btn-secondary">{{ __('el.button_cancel') }}</a>
-                        <input type="submit" class="btn btn-sm btn-success float-right" value="{{ __('el.button_send') }}">
+                        <input form="ticketForm" type="submit" class="btn btn-sm btn-success float-right" value="{{ __('el.button_send') }}">
                     </div>
                 </div>
             </div>
@@ -46,5 +46,36 @@
 @push('scripts')
     <script src="{{ asset('assets/plugins/select2/js/select2.min.js') }}" defer></script>
     <script src="{{ asset('assets/plugins/select2/js/el.js') }}" defer></script>
+
+    <script type="module">
+            $('#invoices').select2({
+        placeholder: "Αναζήτηση με crm ή domain",
+        width: '100%',
+        theme: "classic",
+        minimumInputLength: 3,
+        language: "el",
+        allowClear: true,
+        ajax: {
+            url: "{{ route('invoice.index') }}",
+            dataType: "json",
+            delay: 600,
+            data: (params) => {
+                return {
+                    filter_invoice: params.term,
+                };
+            },
+            processResults: function(json) {
+                return {
+                    results: $.map(json, function(item) {
+                        return {
+                            text: `${item.invoice_number}  ${item.user.name}`,
+                            id: item.invoice_id
+                        }
+                    })
+                };
+            },
+        },
+    });
+    </script>
 
 @endpush
